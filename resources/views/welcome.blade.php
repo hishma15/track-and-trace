@@ -12,7 +12,7 @@
     <header class="backdrop-blur bg-white/40 fixed top-0 w-full z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div>
-                <h1 class="text-3xl font-bold text-black">Track & Trace</h1>
+                <h1 class="text-3xl font-bold text-black">Track </h1>
                 <h3 class="text-xl font-bold text-black">Track Smarter, Travel Safer</h3>
             </div>
 
