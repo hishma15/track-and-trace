@@ -27,7 +27,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="relative h-screen flex items-center pt-20" style="background-image: url('/images/bluetrain.png'); background-size: cover; background-position: center;">
+    <section class="relative h-screen flex items-center pt-20" style="background-size: cover; background-position: center;">
         
         <!-- Overlay -->
         <div class="absolute inset-0 bg-black/25"></div>
