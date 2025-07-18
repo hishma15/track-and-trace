@@ -14,7 +14,7 @@
 
     <div class="max-w-6xl mx-auto text-center">
     <!-- Main Title -->
-    <div class="mb-16 flex flex-row justify-center items-start">
+    <div class="mb-16 flex flex-row justify-center items-start gap-20">
         <h1 class="font-black text-8xl mb-4 text-right" style="color: #55372c; font-family: 'Anton', sans-serif;">
             TRACK N'<br>TRACE
         </h1>
@@ -43,7 +43,7 @@
 
         <!-- Traveler Portal -->
         <div class="bg-opacity-80 backdrop-blur-sm rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105" style="background-color: #fcf7ed">
-            <a href="{{ route('traveler.login') }}" class="block">
+            <a href="{{ route('traveler.travelerLogin') }}" class="block">
                 <div class="flex items-center space-x-6">
                     <img src="{{ asset('images/traveler.png') }}" alt="Staff" class="w-16 h-16 mb-2">
                     <div class="text-left" style="color: #55372c; font-family: 'Poppins', sans-serif;">

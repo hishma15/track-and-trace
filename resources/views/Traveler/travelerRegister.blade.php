@@ -13,77 +13,93 @@
 </head>
 
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"> 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-[#dec9ae] text-brown-800 p-6 flex flex-col justify-between">
-        <div>
-            <div class="text-2xl font-bold flex items-center gap-2 mb-10">
-                <img src="{{ asset('images/luggage-icon.png') }}" alt="Logo" class="w-10 h-10">
-                <span>Track N’ Trace</span>
-            </div>
-        </div>
+        <!-- Wrapper Flex Container -->
+    <div class="flex min-h-screen">
 
-        <div class="text-sm space-y-4">
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M11 17a1 1 0 01-.117-1.993L11 15h1a1 1 0 01.117 1.993L12 17h-1zm-3-4a1 1 0 01-.117-1.993L8 11h5a1 1 0 01.117 1.993L13 13H8zm3-4a1 1 0 01-.117-1.993L11 7h2a1 1 0 01.117 1.993L13 9h-2z"/></svg>
-                <span>Settings</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.366-.446.957-.535 1.414-.21l.09.082 5 5c.35.35.385.902.082 1.29l-.082.09-5 5c-.446.366-1.038.277-1.414-.21l-.082-.09-5-5c-.35-.35-.385-.902-.082-1.29l.082-.09 5-5z"/></svg>
-                <span>Help & Support</span>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Registration Form -->
-    <main class="flex-1 px-12 py-8">
-        <h1 class="text-2xl font-semibold mb-6">Traveler Registration Form</h1>
-
-        <div class="bg-[#6d402e] rounded-t-xl p-6 text-white flex justify-between items-center mb-4">
+        <!-- Sidebar -->
+        <aside class="w-64 text-brown-800 p-6 flex flex-col justify-between" style="background-color: #dec9ae;">
             <div>
-                <h2 class="text-xl font-bold">Welcome to Track N’ Trace.</h2>
-                <p class="text-sm">QR Based Lost Luggage Management System</p>
-            </div>
-            <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto">
-        </div>
-
-        <form action="{{ route('traveler.register') }}" method="POST" class="bg-[#f1e7d6] rounded-b-xl p-6 shadow space-y-4">
-            @csrf
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">First Name</label>
-                    <input type="text" name="first_name" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">Last Name</label>
-                    <input type="text" name="last_name" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block mb-1 font-medium text-brown-800">Email Address</label>
-                    <input type="email" name="email" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">Phone Number</label>
-                    <input type="text" name="phone" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">National ID</label>
-                    <input type="text" name="national_id" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">Password</label>
-                    <input type="password" name="password" class="w-full border rounded px-3 py-2" required>
-                </div>
-                <div>
-                    <label class="block mb-1 font-medium text-brown-800">Repeat Password</label>
-                    <input type="password" name="password_confirmation" class="w-full border rounded px-3 py-2" required>
+                <div class="text-2xl font-bold flex items-center gap-2 mb-10">
+                    <img src="{{ asset('images/luggage-icon.png') }}" alt="Logo" class="w-10 h-10">
+                    <span>Track N’ Trace</span>
                 </div>
             </div>
 
-            <button type="submit" class="w-full mt-6 bg-[#6d402e] text-white py-3 font-bold rounded hover:bg-[#5c3726] transition">
-                REGISTER NOW
-            </button>
-        </form>
-    </main>
+            <div class="text-sm space-y-4">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M11 17a1 1 0 01-.117-1.993L11 15h1a1 1 0 01.117 1.993L12 17h-1zm-3-4a1 1 0 01-.117-1.993L8 11h5a1 1 0 01.117 1.993L13 13H8zm3-4a1 1 0 01-.117-1.993L11 7h2a1 1 0 01.117 1.993L13 9h-2z"/></svg>
+                    <span>Settings</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.366-.446.957-.535 1.414-.21l.09.082 5 5c.35.35.385.902.082 1.29l-.082.09-5 5c-.446.366-1.038.277-1.414-.21l-.082-.09-5-5c-.35-.35-.385-.902-.082-1.29l.082-.09 5-5z"/></svg>
+                    <span>Help & Support</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Registration Form -->
+        <main class="flex-1 px-12 py-8">
+            <h1 class="text-2xl font-normal mb-6" style="color: #55372c;">Traveler Registration Form</h1>
+
+            <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color:  #edede1;">
+                <div>
+                    <h2 class="text-xl font-bold">Welcome to Track N’ Trace.</h2>
+                    <p class="text-sm">QR Based Lost Luggage Management System</p>
+                </div>
+                <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto">
+            </div>
+
+            <form action="{{ route('traveler.register') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
+                @csrf
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Your form fields -->
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">First Name</label>
+                        <input type="text" name="first_name" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Last Name</label>
+                        <input type="text" name="last_name" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Email Address</label>
+                        <input type="email" name="email" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Username</label>
+                        <input type="text" name="username" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Phone Number</label>
+                        <input type="text" name="phone_no" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">National ID</label>
+                        <input type="text" name="national_id" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Password</label>
+                        <input type="password" name="password" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium" style="color: #55372c;">Repeat Password</label>
+                        <input type="password" name="password_confirmation" class="w-full border rounded px-3 py-2" required>
+                    </div>
+                </div>
+
+                <!-- <button type="submit" class="w-full mt-6 py-3 font-bold rounded hover:bg-[#5c3726] transition"  style="background-color: #55372c; color:  #edede1;">
+                    REGISTER NOW
+                </button> -->
+                <button 
+                    type="submit" 
+                    class="w-full py-4 px-6 text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300"
+                    style="background-color: #55372c; color: #edede1;"
+                >
+                    REGISTER NOW
+                </button>
+            </form>
+        </main>
+    </div> <!-- end flex wrapper -->
 
 </body>
 </html>

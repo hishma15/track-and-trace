@@ -68,16 +68,16 @@
                     <form method="POST" action="{{ route('traveler.login') }}" class="space-y-6">
                         @csrf
                         
-                        <!-- Username Field -->
+                        <!-- Username or Email Field -->
                         <div>
-                            <label for="username" class="block text-xl font-semibold mb-2" style="color: #55372c;">
-                                Username
+                            <label for="login" class="block text-xl font-semibold mb-2" style="color: #55372c;">
+                                Username or Email
                             </label>
                             <input 
                                 type="text" 
-                                id="username" 
-                                name="username" 
-                                value="{{ old('username') }}"
+                                id="login" 
+                                name="login" 
+                                value="{{ old('login') }}"
                                 class="w-full px-0 py-3 text-lg border-0 border-b-2 border-gray-400 bg-transparent focus:border-gray-600 focus:outline-none focus:ring-0 transition-colors"
                                 style="border-bottom-color: #8B4513;"
                                 required
@@ -119,17 +119,19 @@
                         
                         <!-- Forgot Password Link -->
                         <div class="flex justify-end">
-                            <a href="{{ route('password.request') }}" class="text-gray-600 hover:text-gray-800 text-lg">
+                            {{--
+                                <a href="{{ route('password.request') }}" class="text-gray-600 hover:text-gray-800 text-lg">
                                 Forgot Password?
                             </a>
+                            --}}
                         </div>
                         
                         <!-- Login Button -->
                         <div class="pt-4">
                             <button 
                                 type="submit" 
-                                class="w-full py-4 px-6 text-white text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300"
-                                style="background-color: #2D2D2D;"
+                                class="w-full py-4 px-6 text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300"
+                                style="background-color: #55372c; color: #edede1;"
                             >
                                 Log In
                             </button>

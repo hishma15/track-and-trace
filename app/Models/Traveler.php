@@ -13,7 +13,6 @@ class Traveler extends Model
     protected $fillable = [
         'user_id',
         'national_id',
-        'address',
     ];
 
     // Relationships
