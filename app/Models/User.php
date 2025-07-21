@@ -18,9 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'username',
         'email',
+        'phone_no',
         'password',
+        'role'
     ];
 
     /**
@@ -45,4 +49,42 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relationships
+    
+    public function staff()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+     public function traveler()
+    {
+        return $this->hasOne(Traveler::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'Admin';
+    }
+
+    public function isStaff()
+    {
+        return $this->role === 'Staff';
+    }
+
+    public function isTraveler()
+    {
+        return $this->role === 'Traveler';
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
 }
