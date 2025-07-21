@@ -91,7 +91,7 @@ class TravelerController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'login' => __('The provided credentials do not match our records.'),
+            'login' => __('Invalid credentials. Please try again.'),
         ]);
     }
 

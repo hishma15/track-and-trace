@@ -6,26 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
 
-    <!-- Google fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!--Icons from fontawsome -->
+        <!--Icons from fontawsome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    
+
 </head>
-<!-- <body class="relative h-screen flex items-center pt-20" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
-    <!-- Text section -->
-    <!-- <section> -->
-        <!-- <h1 class="font-anton text-7xl font-bold leading-tight uppercase text- drop-shadow-lg">TRACK N'<br>TRACE -->
-        <!-- </h1> -->
 
-    <!-- </section> -->
-    <!-- Form section 
-</body> -->
-
-<!-- <body class="min-h-screen" style="background-color: #E5D5C7;"> -->
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">    
     <div class="min-h-screen flex items-center justify-center px-4 py-12">
         <div class="max-w-6xl w-full flex overflow-hidden">
@@ -37,7 +28,7 @@
                         TRACK N'<br>TRACE
                     </h1>
                 </div>
-                
+
                 <div class="mt-12">
                     <p class="text-4xl mb-2 font-light" style="color: #55372c; font-family: 'Poppins', sans-serif;">
                         QR BASED
@@ -61,10 +52,9 @@
             <div class="flex-1 flex flex-col justify-center p-12 rounded-3xl shadow-2xl"  style="background-color: #edede1;">
                 <div class="max-w-md mx-auto w-full">
                     <div class="text-center mb-8">
-
-                    <div>
-                        <p class="text-[#55372c] text-3xl font-medium" style="color: #55372c; font-family: 'Poppins', sans-serif;">TRAVELERS</p>
-                    </div> 
+                        <div>
+                            <p class="text-[#55372c] text-3xl font-medium" style="color: #55372c; font-family: 'Poppins', sans-serif;">STAFF</p>
+                        </div>  
                         <h2 class="text-4xl font-bold mb-2" style="color: #55372c;">
                             Welcome again!
                         </h2>
@@ -73,7 +63,7 @@
                         </p>
                     </div>
                     
-                    <form method="POST" action="{{ route('traveler.login') }}" class="space-y-6">
+                    <form method="POST" action="{{ route('staff.login') }}" class="space-y-6">
                         @csrf
 
                         @if ($errors->has('login'))
@@ -117,7 +107,7 @@
                                     id="togglePassword"
                                     class="absolute right-0 top-3 p-1 text-gray-600 hover:text-gray-800 focus:outline-none"
                                 >
-                                <i id="eyeIcon" class="fa-solid fa-eye text-xl"></i>
+                                    <i id="eyeIcon" class="fa-solid fa-eye text-xl"></i>
                                 </button>
                             </div>
                         </div>
@@ -144,7 +134,7 @@
                         
                         <!-- Create Account Link -->
                         <div class="text-center pt-4">
-                            <a href="{{ route('traveler.register') }}" class="text-xl font-semibold hover:underline" style="color: #55372c;">
+                            <a href="{{ route('staff.register') }}" class="text-xl font-semibold hover:underline" style="color: #55372c;">
                                 Create Account
                             </a>
                         </div>

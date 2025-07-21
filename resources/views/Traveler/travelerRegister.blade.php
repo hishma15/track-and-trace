@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+        <!--Icons from fontawsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
 </head>
 
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"> 
@@ -19,9 +23,9 @@
         <!-- Sidebar -->
         <aside class="w-64 text-brown-800 p-6 flex flex-col justify-between" style="background-color: #dec9ae;">
             <div>
-                <div class="text-2xl font-bold flex items-center gap-2 mb-10">
-                    <img src="{{ asset('images/luggage-icon.png') }}" alt="Logo" class="w-10 h-10">
-                    <span>Track N’ Trace</span>
+                <div class="text-2xl font-bold flex items-center mb-10">
+                    <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-20 h-20">
+                    <span style="color: #55372c; font-family: 'Anton', sans-serif;">Track N’ Trace</span>
                 </div>
             </div>
 
@@ -51,6 +55,13 @@
 
             <form action="{{ route('traveler.register') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
                 @csrf
+
+                 @if ($errors->has('login'))
+                            <div class="bg-red-100 text-red-700 border border-red-300 p-3 rounded mb-6 text-center">
+                                {{ $errors->first('login') }}
+                            </div>
+                        @endif
+                        
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Your form fields -->
                     <div>

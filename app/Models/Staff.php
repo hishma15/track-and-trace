@@ -15,6 +15,7 @@ class Staff extends Model
         'organization',
         'position',
         'staff_official_id',
+        'approval_status', 
     ];
 
     public function user()
@@ -30,6 +31,21 @@ class Staff extends Model
     public function getFullNameAttribute()
     {
         return $this->user->full_name;
+    }
+
+    public function scopePending($query)   //used for admin to view pending staff approval
+    {
+        return $query->where('approval_status', 'pending');
+    }
+
+    public function scopeApproved($query)  //used for admin to view approved staff
+    {
+        return $query->where('approval_status', 'approved');
+    }
+
+    public function scopeRejected($query)   //used for admin to view rejected staff
+    {
+        return $query->where('approval_status', 'rejected');
     }
 
 

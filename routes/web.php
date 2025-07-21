@@ -13,11 +13,12 @@ use Illuminate\Support\Facades\Route;
 
 
 // use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AdminLoginController;
 // use App\Http\Controllers\Auth\RegisterController;
 // use App\Http\Controllers\Auth\ForgotPasswordController;
 // use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TravelerController;
+use App\Http\Controllers\StaffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,8 @@ use App\Http\Controllers\TravelerController;
 Route::get('/', function () {
     return view('welcome'); // landing blade
 })->name('landing');
+
+Route::view('/about', 'aboutUs')->name('about');
 
 // Redirect root to traveler login
 // Route::get('/', function () {
@@ -54,13 +57,17 @@ Route::middleware('guest')->group(function () {
     // Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     // Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
+
+    Route::get('/staff/login', [StaffController::class, 'showStaffLoginForm'])->name('staff.staffLogin');
+    Route::post('/staff/login', [StaffController::class, 'login'])->name('staff.login');
+
     //staff
-    Route::get('/staff/login', [LoginController::class, 'showStaffLoginForm'])->name('staff.login');
-    Route::post('/staff/login', [LoginController::class, 'staffLogin']);
+    Route::get('/staff/register', [StaffController::class, 'showStaffRegistrationForm'])->name('staff.staffRegister');
+    Route::post('/staff/register', [StaffController::class, 'register'])->name('staff.register');
 
     // Admin
-    Route::get('/admin/login', [LoginController::class, 'showAdminLoginForm'])->name('admin.login');
-    Route::post('/admin/login', [LoginController::class, 'adminLogin']);
+    Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.login');
+    Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
 
 
 });

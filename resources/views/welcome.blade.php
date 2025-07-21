@@ -6,8 +6,13 @@
     <title>Track N' Trace</title>
     @vite('resources/css/app.css') <!-- Tailwind CSS -->
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     
+        <!--Icons from fontawsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body class="min-h-screen flex items-center justify-center" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
@@ -67,8 +72,14 @@
             </a>
         </div>
     </div>
-</div>
     
+    <section class="text-center mt-10">
+        <h2 class="text-4xl font-bold text-[#55372c]">Want to learn more?</h2>
+        <a href="{{ route('about') }}" class="mt-4 inline-block bg-[#55372c] text-[#fcf7ed] text-2xl px-6 py-2 rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">Read About Us</a>
+    </section>
+
+</div>
+
 
 </body>
 </html>
