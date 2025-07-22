@@ -81,8 +81,19 @@ Route::middleware('auth')->group(function () {
     Route::prefix('traveler')->group(function () {
         Route::get('/dashboard', [TravelerController::class, 'dashboard'])->name('traveler.travelerDashboard');
         Route::post('/logout', [TravelerController::class, 'logout'])->name('traveler.logout');
+    
+
+        // Update profile routes here
+        Route::get('/profile', [TravelerController::class, 'showProfileForm'])->name('traveler.profile.show');
+        Route::post('/profile', [TravelerController::class, 'updateProfile'])->name('traveler.profile.update');
+        Route::post('/profile/password', [TravelerController::class, 'updatePassword'])->name('traveler.profile.updatePassword');
+        //Delete acccount 
+        Route::delete('/traveler/profile/delete', [TravelerController::class, 'destroy'])->name('traveler.profile.destroy');
+
     });
     
+
+
     // Add your luggage management routes here
     Route::prefix('luggage')->group(function () {
         Route::get('/', function () {

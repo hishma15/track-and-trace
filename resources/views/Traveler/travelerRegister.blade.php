@@ -50,51 +50,81 @@
                     <h2 class="text-xl font-bold">Welcome to Track N’ Trace.</h2>
                     <p class="text-sm">QR Based Lost Luggage Management System</p>
                 </div>
-                <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto">
+                <!-- <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto"> -->
             </div>
 
             <form action="{{ route('traveler.register') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
                 @csrf
 
                  @if ($errors->has('login'))
-                            <div class="bg-red-100 text-red-700 border border-red-300 p-3 rounded mb-6 text-center">
-                                {{ $errors->first('login') }}
-                            </div>
-                        @endif
+                    <div class="bg-red-100 text-red-700 border border-red-300 p-3 rounded mb-6 text-center">
+                        {{ $errors->first('login') }}
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4">
+                        {{ session('success') }}
+                    </div>
+                @endif
                         
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Your form fields -->
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">First Name</label>
-                        <input type="text" name="first_name" class="w-full border rounded px-3 py-2" required>
+                        <input type="text" name="first_name" value="{{ old('first_name') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('first_name')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Last Name</label>
-                        <input type="text" name="last_name" class="w-full border rounded px-3 py-2" required>
+                        <input type="text" name="last_name" value="{{ old('last_name') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('last_name')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Email Address</label>
-                        <input type="email" name="email" class="w-full border rounded px-3 py-2" required>
+                        <input type="email" name="email" value="{{ old('email') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('email')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Username</label>
-                        <input type="text" name="username" class="w-full border rounded px-3 py-2" required>
+                        <input type="text" name="username" value="{{ old('username') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('username')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Phone Number</label>
-                        <input type="text" name="phone_no" class="w-full border rounded px-3 py-2" required>
+                        <input type="text" name="phone_no" value="{{ old('phone_no') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('phone_no')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">National ID</label>
-                        <input type="text" name="national_id" class="w-full border rounded px-3 py-2" required>
+                        <input type="text" name="national_id" value="{{ old('national_id') }}" class="w-full border rounded px-3 py-2" required>
+                        @error('national_id')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Password</label>
                         <input type="password" name="password" class="w-full border rounded px-3 py-2" required>
+                        @error('password')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     <div>
                         <label class="block mb-1 font-medium" style="color: #55372c;">Repeat Password</label>
                         <input type="password" name="password_confirmation" class="w-full border rounded px-3 py-2" required>
+                        @error('password')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
@@ -111,6 +141,8 @@
             </form>
         </main>
     </div> <!-- end flex wrapper -->
+
+
 
 </body>
 </html>

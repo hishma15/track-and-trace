@@ -93,9 +93,9 @@
                         <i class="fas fa-file-alt w-5 h-5"></i>
                         Total Reports
                     </a>
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-cog w-5 h-5"></i>
-                        Settings
+                    <a href="{{ route('traveler.profile.show') }}" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
+                        <i class="fas fa-user w-5 h-5"></i>
+                        My Profile
                     </a>
                     
                     <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
@@ -114,6 +114,15 @@
                         Help & Support   
                     </a>
 
+                    <!-- Logout Button (at bottom) -->
+                    <form method="POST" action="{{ route('traveler.logout') }}" class="mt-10">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 font-medium nav-item hover:bg-red-100 transition">
+                            <i class="fas fa-sign-out-alt w-5 h-5"></i>
+                            Logout
+                        </button>
+                    </form>
+
                 </nav>
             </div>
         </aside>
@@ -127,14 +136,14 @@
                     
                     <div class="flex items-center gap-4">
                         <!-- Search Box -->
-                        <div class="relative">
+                        <!-- <div class="relative">
                             <input type="text" 
                                    placeholder="Search..." 
                                    class="search-box pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80">
                             <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
-                        </div>
+                        </div> -->
                         
                         <!-- User Profile
                         <div class="flex items-center gap-3">
@@ -149,6 +158,13 @@
 
             <!-- Dashboard Content -->
             <div class="p-8 overflow-y-auto">
+
+            @if (session('success'))
+                <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 text-center">
+                    {{ session('success') }}
+                </div>
+            @endif
+
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
                     <!-- Left Column - Welcome & Actions -->
                     <div class="lg:col-span-2 space-y-6">
@@ -250,7 +266,7 @@
 
                             <!-- Edit Button -->
                             <div class="mt-8 flex justify-center">
-                                <a href="#" class="flex items-center gap-2 bg-[#55372c] text-[#edede1] px-6 py-3 rounded-lg font-medium transition-all duration-200  hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                <a href="{{ route('traveler.profile.show') }}" class="flex items-center gap-2 bg-[#55372c] text-[#edede1] px-6 py-3 rounded-lg font-medium transition-all duration-200  hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">
                                     <span>EDIT DETAILS</span>
                                     <i class="fas fa-chevron-right text-sm"></i>
                                 </a>
@@ -273,6 +289,20 @@
         </div>
     </footer>
 
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.bg-green-100');
+            if (alert) {
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
+
+                // Remove the element from DOM after fade-out
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); // wait for fade-out transition to finish
+            }
+        }, 2000);
+    </script>
 </body>
 
 </html>

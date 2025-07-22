@@ -32,6 +32,17 @@ class TravelerController extends Controller
             'phone_no' => 'required|string|regex:/^[0-9]{10}$/',
             'password' => 'required|string|confirmed|min:6',
             'national_id' => 'required|string|min:10|max:12|unique:travelers,national_id',
+        ], 
+        [    
+            'username.unique' => 'This username is already taken.',
+            'email.unique' => 'This email is already registered.',
+            'phone_no.regex' => 'Phone number must be exactly 10 digits. [format- 0xxxxxxxxx]',
+            'password.min' => 'Password must be at least 6 characters.',
+            'password.confirmed' => 'Passwords do not match.',
+            'national_id.unique' => 'This National ID is already registered.',
+            'national_id.min' => 'National ID must be in the format xxxxxxxxxV or xxxxxxxxxxxx.',
+
+
         ]);
 
         $user = User::create([
@@ -79,20 +90,29 @@ class TravelerController extends Controller
         // Retrieve user by email or username
         $user = User::where($fieldType, $login)->first();
 
-        if ($user && $user->role === 'Traveler'){
-
-            if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
-                $request->session()->regenerate();
-
-                // Redirect to traveler dashboard
-                return redirect()->intended(route('traveler.travelerDashboard'));
-            }
-
+         // Handle if user doesn't exist
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'login' => 'No account found with these credentials.',
+            ]);
         }
 
-        throw ValidationException::withMessages([
-            'login' => __('Invalid credentials. Please try again.'),
-        ]);
+        // Handle role mismatch
+        if ($user->role !== 'Traveler') {
+            throw ValidationException::withMessages([
+                'login' => 'You are not authorized to login here. Please use the correct portal for your role.',
+            ]);
+        }
+
+        // Handle incorrect password
+        if (!Auth::attempt([$fieldType => $login, 'password' => $password])) {
+            throw ValidationException::withMessages([
+                'login' => 'Incorrect password. Please try again.',
+            ]);
+        }
+        // Success
+        $request->session()->regenerate();
+        return redirect()->intended(route('traveler.travelerDashboard'))->with('success', 'Login successful');
     }
 
     /**
@@ -103,6 +123,68 @@ class TravelerController extends Controller
         return view('traveler.travelerDashboard');
     }
 
+    // Show traveler profile form (with password change popup in view)
+    public function showProfileForm()
+    {
+        $user = auth()->user();
+        $traveler = $user->traveler;
+        return view('traveler.travelerProfile', compact('user', 'traveler'));
+    }
+
+    // Update profile details (excluding email, national_id)
+    public function updateProfile(Request $request)
+    {
+
+        $user = auth()->user();
+
+        // Validate the form input
+        $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'username' => 'required|string|max:120|unique:users,username,' . $user->id,
+            'phone_no' => 'required|string|regex:/^[0-9]{10}$/',
+        ], 
+        [    
+            'username.unique' => 'This username is already taken.',
+            'phone_no.regex' => 'Phone number must be exactly 10 digits. [format- 0xxxxxxxxx]',
+
+
+        ]);
+
+        // Update user details
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->username = $request->username;
+        $user->phone_no = $request->phone_no;
+        $user->save();
+
+        return redirect()->route('traveler.profile.show')->with('success', 'Profile updated successfully!');
+    }
+
+    //Handle password update (via AJAX or form submit)
+    public function updatePassword(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'current_password' => ['required'],
+            'new_password' => ['required', 'string', 'min:6', 'confirmed'],
+        ], [
+            'new_password.confirmed' => 'New password and confirmation do not match.',
+            'new_password.min' => 'New password must be at least 6 characters.',
+        ]);
+
+        // Check current password
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+        }
+
+        // Update password
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('traveler.profile.show')->with('success', 'Password changed successfully!');
+    }
 
 
     /**
@@ -117,4 +199,15 @@ class TravelerController extends Controller
 
         return redirect()->route('traveler.travelerLogin');
     }
+
+    //to delete the account permentantly
+    public function destroy(Request $request)
+    {
+        $user = Auth::user();
+        Auth::logout();
+        $user->delete();
+
+        return redirect('/')->with('success', 'Your account has been deleted.');
+    }
+
 }

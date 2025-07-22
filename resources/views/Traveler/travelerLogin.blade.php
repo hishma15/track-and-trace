@@ -15,15 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
-<!-- <body class="relative h-screen flex items-center pt-20" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
-    <!-- Text section -->
-    <!-- <section> -->
-        <!-- <h1 class="font-anton text-7xl font-bold leading-tight uppercase text- drop-shadow-lg">TRACK N'<br>TRACE -->
-        <!-- </h1> -->
-
-    <!-- </section> -->
-    <!-- Form section 
-</body> -->
 
 <!-- <body class="min-h-screen" style="background-color: #E5D5C7;"> -->
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">    
@@ -79,6 +70,12 @@
                         @if ($errors->has('login'))
                             <div class="bg-red-100 text-red-700 border border-red-300 p-3 rounded mb-6 text-center">
                                 {{ $errors->first('login') }}
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-6 text-center">
+                                {{ session('success') }}
                             </div>
                         @endif
                         
@@ -165,7 +162,23 @@
         eyeIcon.classList.toggle('fa-eye');
         eyeIcon.classList.toggle('fa-eye-slash');
     });
+
+    //success messsage time
+    setTimeout(() => {
+            const alert = document.querySelector('.bg-green-100');
+            if (alert) {
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
+
+                // Remove the element from DOM after fade-out
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); // wait for fade-out transition to finish
+            }
+        }, 2000);
+
 </script>
+
 
 </body>
 </html>

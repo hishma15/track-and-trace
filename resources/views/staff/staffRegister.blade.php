@@ -50,7 +50,7 @@
                     <h2 class="text-xl font-bold">Welcome to Track N’ Trace.</h2>
                     <p class="text-sm">QR Based Lost Luggage Management System</p>
                 </div>
-                <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto">
+                <!-- <img src="{{ asset('images/register-banner.png') }}" alt="Banner" class="w-24 h-auto"> -->
             </div>
 
             <form action="{{ route('staff.register') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
