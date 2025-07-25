@@ -91,6 +91,8 @@
     </div>
 
 
+    <!-- Footer -->
+    @include('partials.footer')
  
 
 </body>

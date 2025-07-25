@@ -19,6 +19,7 @@
         referrerpolicy="no-referrer"
     />
 
+    <!-- Alphine.js -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <style>
@@ -41,64 +42,14 @@
 >
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="w-72 shadow-lg" style="background-color: #dec9ae;">
-            <div class="p-6">
-                <!-- Logo -->
-                <div>
-                    <div class="text-2xl font-bold flex items-center gap-2 mb-10">
-                        <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-20 h-20" />
-                        <span style="color: #55372c; font-family: 'Anton', sans-serif;">Track N’ <br /> Trace</span>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <nav class="space-y-2">
-                    <a href="{{ route('traveler.travelerDashboard') }}" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-home w-5 h-5"></i> Dashboard
-                    </a>
-
-                    <a
-                        href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-suitcase-rolling w-5 h-5"></i> My Luggages
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-search w-5 h-5"></i> Lost Luggage
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-box-open w-5 h-5"></i> Found Luggage
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-file-alt w-5 h-5"></i> Total Reports
-                    </a>
-
-                    <a href="{{ route('traveler.profile.show') }}" class="nav-item active flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-user w-5 h-5"></i> My Profile
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-bell w-5 h-5"></i> Notifications
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-info-circle w-5 h-5"></i> About Us
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-question-circle w-5 h-5"></i> Help & Support
-                    </a>
-                </nav>
-            </div>
-        </aside>
+        @include('partials.traveler-sidebar', ['active' => 'profile'])
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
             <!-- Header -->
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
                 <div class="flex items-center justify-between">
-                    <h1 class="text-2xl font-semibold text-[#55372c]">Traveler Profile</h1>
+                    <h1 class="text-2xl font-semibold text-[#55372c]">My Profile</h1>
                 </div>
             </header>
 
@@ -108,6 +59,14 @@
                     class="rounded-2xl p-10 max-w-3xl mx-auto shadow-md"
                 > -->
 
+                <!-- Intro Section (like brown top box) -->
+                <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
+                    <div>
+                        <h2 class="text-xl font-bold">Update Profile</h2>
+                        <p class="text-sm">Edit your personal details to keep your profile up to date.</p>
+                    </div>
+                    <!-- <img src="{{ asset('images/luggage-icon.png') }}" alt="Luggage" class="w-24 h-auto"> -->
+                </div>
 
                 <form action="{{ route('traveler.profile.update') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
                 @csrf
@@ -180,24 +139,25 @@
                     @endphp
 
                     <!-- Password & Delete Buttons and Popups -->
-                    <div x-data="{ open: @json($openPasswordPopup), deleteOpen: false }" class="text-center">
+                    <div x-data="{ open: @json($openPasswordPopup), deleteOpen: false }" class="text-center" >
                         <div class="flex justify-center gap-4 mb-6">
                             <!-- Change Password Button -->
-                            <button @click="open = true" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded transition">
+                            <button @click="open = true" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition">
                                 Change Password
                             </button>
 
                             <!-- Delete Account Button -->
-                            <button @click="deleteOpen = true" class="bg-gray-700 hover:bg-black text-white font-semibold py-2 px-6 rounded transition">
+                            <button @click="deleteOpen = true" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded transition">
                                 Delete Account
                             </button>
                         </div>
 
                         <!-- Password change modal -->
-                        <div x-show="open" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div x-show="open" x-cloak class="fixed inset-0 flex items-center justify-center z-50" style="background-color: rgba(0, 0, 0, 0.70);">
                             <div
                                 @click.away="open = false"
-                                class="bg-white rounded-lg shadow-lg max-w-md w-full p-6"
+                                class="bg-[#edede1] rounded-lg shadow-lg max-w-md w-full p-6"
+                                
                             >
                                 <h2 class="text-xl font-bold mb-4 text-[#55372c]">
                                     Change Password
@@ -294,9 +254,10 @@
                         <div
                             x-show="deleteOpen"
                             x-cloak
-                            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                            class="fixed inset-0 flex items-center justify-center z-50" 
+                            style="background-color: rgba(0, 0, 0, 0.70);"
                         >
-                            <div @click.away="deleteOpen = false" class="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+                            <div @click.away="deleteOpen = false" class="bg-[#edede1] rounded-lg shadow-lg max-w-md w-full p-6">
                                 <h2 class="text-xl font-bold mb-4 text-[#55372c]">
                                     Confirm Delete Account
                                 </h2>
@@ -333,6 +294,10 @@
             </div>
         </main>
     </div>
+
+    <!-- Footer -->
+     @include('partials.footer')
+
 </body>
 </html>
 

@@ -13,6 +13,8 @@
         <!--Icons from fontawsome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Alpine JS  -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <style>
 
@@ -57,75 +59,7 @@
     <div class="flex min-h-screen">
         
         <!-- Sidebar -->
-        <aside class="w-72 shadow-lg" style="background-color: #dec9ae;">
-            <div class="p-6">
-                <!-- Logo -->
-                <div>
-                <div class="text-2xl font-bold flex items-center gap-2 mb-10">
-                    <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-20 h-20">
-                    <span style="color: #55372c; font-family: 'Anton', sans-serif;">Track N’ <br> Trace</span>
-                </div>
-                </div>
-
-                <!-- Navigation -->
-                <nav class="space-y-2">
-                    <a href="{{ route('traveler.travelerDashboard') }}" class="nav-item active flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-home w-5 h-5"></i>
-                        Dashboard
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-suitcase-rolling w-5 h-5"></i>
-                        My Luggages
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-search w-5 h-5"></i>
-                        Lost Luggage
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-box-open w-5 h-5"></i>
-                        Found Luggage
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-file-alt w-5 h-5"></i>
-                        Total Reports
-                    </a>
-                    <a href="{{ route('traveler.profile.show') }}" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-user w-5 h-5"></i>
-                        My Profile
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-bell w-5 h-5"></i>
-                        Notifications
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-info-circle w-5 h-5"></i>
-                        About Us
-                    </a>
-
-                    <!-- FAQs , Contact options, or how to use video and user guide -->
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-question-circle w-5 h-5"></i>
-                        Help & Support   
-                    </a>
-
-                    <!-- Logout Button (at bottom) -->
-                    <form method="POST" action="{{ route('traveler.logout') }}" class="mt-10">
-                        @csrf
-                        <button type="submit" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 font-medium nav-item hover:bg-red-100 transition">
-                            <i class="fas fa-sign-out-alt w-5 h-5"></i>
-                            Logout
-                        </button>
-                    </form>
-
-                </nav>
-            </div>
-        </aside>
+        @include('partials.traveler-sidebar', ['active' => 'dashboard'])
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
@@ -183,6 +117,7 @@
                                     </button>
                                 </div>
                             </div>
+
                         </div>
 
                         <!-- Quick Report Button -->
@@ -195,26 +130,27 @@
                         <!-- Action Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Register Luggages -->
-                            <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all">
+                            <!-- <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center">
                                         <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                                         </svg>
                                     </div>
-                                    <div>
-                                        <h3 class="text-xl font-semibold text-gray-800">Register Luggages</h3>
+                                     <div>
+                                        <!-- <h3 class="text-xl font-semibold text-gray-800">Register Luggages</h3> -->
+                                        <!-- <a href="{{ route('luggage.create') }}" class="text-xl font-semibold text-gray-800">Register Luggage</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div>   -->
+
+                            @include('partials.register-luggage-popup')
 
                             <!-- Report Lost Luggage -->
                             <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-16 h-16 bg-teal-100 rounded-xl flex items-center justify-center">
-                                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.860-.833-2.630 0L3.184 16.5c-.77.833.192 2.5 1.732 2.5z"/>
-                                        </svg>
+                                    <div class="w-20 h-20 bg-teal-100 rounded-xl flex items-center justify-center">
+                                        <img src="{{ asset('images/report.png') }}" alt="Report" class="w-12 h-17">
                                     </div>
                                     <div>
                                         <h3 class="text-xl font-semibold text-gray-800">Report Lost Luggage</h3>
@@ -275,19 +211,14 @@
                     </div>
                 </div>
             </div>
+
+            
+
         </main>
     </div>
 
-    <footer class="bg-gray-100 mt-0 border-t py-6 text-center text-sm text-gray-600">
-        <div class="max-w-7xl mx-auto px-4">
-            <p>&copy; {{ date('Y') }} Track & Trace · Sri Lanka Railways. All rights reserved.</p>
-            <div class="mt-2 flex justify-center gap-4 text-gray-500">
-                <a href="#" class="hover:text-blue-600 transition">Help & Support</a>
-                <a href="#" class="hover:text-blue-600 transition">About Us</a>
-                <a href="mailto:support@trackntrace.com" class="hover:text-blue-600 transition">Contact</a>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer -->
+     @include('partials.footer')
 
     <script>
         setTimeout(() => {

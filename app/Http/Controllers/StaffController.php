@@ -36,6 +36,15 @@ class StaffController extends Controller
             'organization' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
             'staff_official_id' => 'required|string|unique:staff,staff_official_id',
+        ],
+        [    
+            'username.unique' => 'This username is already taken.',
+            'email.unique' => 'This email is already registered.',
+            'phone_no.regex' => 'Phone number must be exactly 10 digits. [format- 0xxxxxxxxx]',
+            'password.min' => 'Password must be at least 6 characters.',
+            'password.confirmed' => 'Passwords do not match.',
+            'staff_official_id.unique' => 'This Staff Official ID is already registered.',
+
         ]);
 
         $user = User::create([

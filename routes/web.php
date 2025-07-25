@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 // use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TravelerController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\LuggageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,8 +67,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/staff/register', [StaffController::class, 'register'])->name('staff.register');
 
     // Admin
-    Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.login');
-    Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
+    Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.adminLogin');
+    Route::post('/admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login');
+
 
 
 });
@@ -90,22 +92,25 @@ Route::middleware('auth')->group(function () {
         //Delete acccount 
         Route::delete('/traveler/profile/delete', [TravelerController::class, 'destroy'])->name('traveler.profile.destroy');
 
+        // Route::get('/traveler/luggages', [LuggageController::class, 'index'])->name('luggage.index');
+
     });
+
+    
+    Route::get('/admin/dashboard', [AdminLoginController::class, 'showDashboard'])->name('admin.dashboard');
+
+    Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
     
 
 
     // Add your luggage management routes here
     Route::prefix('luggage')->group(function () {
-        Route::get('/', function () {
-            return view('luggage.index');
-        })->name('luggage.index');
-        
-        Route::get('/track', function () {
-            return view('luggage.track');
-        })->name('luggage.track');
-        
-        Route::get('/lost', function () {
-            return view('luggage.lost');
-        })->name('luggage.lost');
+
+        // Luggage Registration Routes
+        Route::get('/register', [LuggageController::class, 'create'])->name('luggage.create');
+        Route::post('/register', [LuggageController::class, 'store'])->name('luggage.store');
+
+        Route::get('/', [LuggageController::class, 'index'])->name('luggage.index'); 
+
     });
 });

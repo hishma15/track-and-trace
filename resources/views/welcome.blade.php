@@ -17,6 +17,7 @@
 
 <body class="min-h-screen flex items-center justify-center" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
 
+
     <div class="max-w-6xl mx-auto text-center">
     <!-- Main Title -->
     <div class="mb-16 flex flex-row justify-center items-start gap-20">
@@ -30,6 +31,12 @@
             SYSTEM
         </p>
     </div>
+
+    @if (session('success'))
+        <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 text-center mx-auto w-fit mt-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <!-- Portal Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -79,6 +86,21 @@
     </section>
 
 </div>
+
+    <script>
+        setTimeout(() => {
+            const alert = document.querySelector('.bg-green-100');
+            if (alert) {
+                alert.style.transition = 'opacity 0.5s ease';
+                alert.style.opacity = '0';
+
+                // Remove the element from DOM after fade-out
+                setTimeout(() => {
+                    alert.remove();
+                }, 500); // wait for fade-out transition to finish
+            }
+        }, 2000);
+    </script>
 
 
 </body>

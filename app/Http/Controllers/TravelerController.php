@@ -197,7 +197,7 @@ class TravelerController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('traveler.travelerLogin');
+        return redirect()->route('landing')->with('success', 'You have been logged out.');
     }
 
     //to delete the account permentantly
