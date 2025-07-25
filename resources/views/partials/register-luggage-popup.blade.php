@@ -72,7 +72,7 @@
                                             </div>
 
                                             <button type="submit" class="w-full mt-4 py-3 text-white rounded-full" style="background-color: #55372c;">
-                                                Submit
+                                                Register Luggage
                                             </button>
                                         </form>
                                     </div>

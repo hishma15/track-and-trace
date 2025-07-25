@@ -112,5 +112,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [LuggageController::class, 'index'])->name('luggage.index'); 
 
+        // Route::put('/luggages/{id}', [LuggageController::class, 'update'])->name('luggage.update');
+        Route::put('/{id}', [LuggageController::class, 'update'])->name('luggage.update');
+        Route::delete('/{id}', [LuggageController::class, 'destroy'])->name('luggage.destroy');
+
+
     });
 });
