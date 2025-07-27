@@ -18,13 +18,14 @@
 
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"> 
         <!-- Wrapper Flex Container -->
-    <div class="flex min-h-screen">
+    <div class="flex flex-col md:flex-row min-h-screen">
 
         <!-- Sidebar -->
-        <aside class="w-64 text-brown-800 p-6 flex flex-col justify-between" style="background-color: #dec9ae;">
+        <!-- <aside class="w-64 text-brown-800 p-6 flex flex-col justify-between" style="background-color: #dec9ae;"> -->
+            <aside class="w-full md:w-56 p-6 flex flex-col justify-between" style="background-color: #dec9ae;">
             <div>
-                <div class="text-2xl font-bold flex items-center mb-10">
-                    <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-20 h-20">
+                <div class="text-2xl font-bold flex items-center gap-2 mb-3">
+                    <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-16 h-16 md:w-20 md:h-20">
                     <span style="color: #55372c; font-family: 'Anton', sans-serif;">Track N’ Trace</span>
                 </div>
             </div>

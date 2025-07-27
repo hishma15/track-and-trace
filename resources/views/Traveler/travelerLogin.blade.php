@@ -19,31 +19,20 @@
 <!-- <body class="min-h-screen" style="background-color: #E5D5C7;"> -->
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">    
     <div class="min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="max-w-6xl w-full flex overflow-hidden">
+        <div class="max-w-6xl w-full flex flex-col lg:flex-row gap-12">
             
             <!-- Left Side - Branding -->
-            <div class="flex-1 flex flex-col justify-center items-center p-12 text-center">
-                <div class="mb-8">
-                    <h1 class="font-black text-8xl mb-4" style="color: #55372c; font-family: 'Anton', sans-serif;">
-                        TRACK N'<br>TRACE
-                    </h1>
-                </div>
-                
-                <div class="mt-12">
-                    <p class="text-4xl mb-2 font-light" style="color: #55372c; font-family: 'Poppins', sans-serif;">
-                        QR BASED
-                    </p>
-                    <p class="text-4xl font-light mb-2" style="color: #55372c; font-family: 'Poppins', sans-serif;">
-                        LOST
-                    </p>
-                    <p class="text-4xl font-light mb-2" style="color: #55372c; font-family: 'Poppins', sans-serif;">
-                        LUGGAGE
-                    </p>
-                    <p class="text-4xl font-light mb-2" style="color: #55372c; font-family: 'Poppins', sans-serif;">
-                        MANAGMENT
-                    </p>
-                    <p class="text-4xl font-light" style="color: #55372c; font-family: 'Poppins', sans-serif;">
-                        SYSTEM
+            <div class="flex-1 flex flex-col justify-center items-center text-center px-4 sm:px-8 lg:p-12">
+                <h1 class="text-5xl sm:text-6xl lg:text-8xl font-black mb-4" style="color: #55372c; font-family: 'Anton', sans-serif;">
+                    TRACK N'<br>TRACE
+                </h1>
+                <div class="mt-8 space-y-2">
+                    <p class="text-2xl sm:text-3xl md:text-4xl font-light" style="color: #55372c; font-family: 'Poppins', sans-serif;">
+                        QR BASED 
+                        <br> LOST
+                        <br>LUGGAGE
+                        <br> MANAGEMENT 
+                        <br> SYSTEM
                     </p>
                 </div>
             </div>

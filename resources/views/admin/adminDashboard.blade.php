@@ -41,69 +41,8 @@
     <div class="flex min-h-screen">
         
         <!-- Sidebar -->
-        <aside class="w-72 shadow-lg" style="background-color: #dec9ae;">
-            <div class="p-6">
-                <!-- Logo -->
-                <div class="text-2xl font-bold flex items-center gap-2 mb-10">
-                    <img src="{{ asset('images/tntlogo.png') }}" alt="Logo" class="w-20 h-20">
-                    <span style="color: #55372c; font-family: 'Anton', sans-serif;">Track N'<br>Trace</span>
-                </div>
-
-                <!-- Navigation -->
-                <nav class="space-y-2">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-item active flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-home w-5 h-5"></i>
-                        Dashboard
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-compass w-5 h-5"></i>
-                        Discover
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-search-minus w-5 h-5"></i>
-                        Lost Luggage
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-check-square w-5 h-5"></i>
-                        Found Luggage
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-file-alt w-5 h-5"></i>
-                        Total Reports
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-bell w-5 h-5"></i>
-                        Notifications
-                    </a>
-                    
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-cog w-5 h-5"></i>
-                        Settings
-                    </a>
-
-                    <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
-                        <i class="fas fa-question-circle w-5 h-5"></i>
-                        Help & Support
-                    </a>
-
-                    <!-- Logout Button -->
-                    <div class="mt-10">
-                        <form method="POST" action="{{ route('admin.logout') }}">
-                            @csrf
-                            <button type="submit" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 font-medium nav-item hover:bg-red-100 transition">
-                                <i class="fas fa-sign-out-alt w-5 h-5"></i>
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                </nav>
-            </div>
-        </aside>
+        <!-- Sidebar -->
+        @include('partials.admin-sidebar', ['active' => 'dashboard'])
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
