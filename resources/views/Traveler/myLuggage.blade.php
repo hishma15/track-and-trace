@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
 
-    <!-- Alpine JS -->
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+        <!--Icons from fontawsome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Alpine JS  -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <style>
         .nav-item.active {
@@ -101,7 +105,7 @@
 
             
             {{-- Luggage Cards --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 m-5 p-5 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-5 p-5 gap-8">
                 @forelse ($luggages as $luggage)
                     <div x-data="{ openModal{{ $luggage->id }}: false }" class="bg-white/90 rounded-2xl overflow-hidden shadow-md luggage-card transition transform hover:scale-[1.01] relative flex flex-col justify-between">
 
@@ -119,7 +123,7 @@
                             </div>
 
                             {{-- Buttons --}}
-                            <div class="mt-auto px-5 pb-5 flex flex-wrap gap-3 items-center">
+                            <div class="mt-auto px-5 pb-5 flex flex-wrap gap-3 justify-between items-center">
                                 <!-- Update Button -->
                                 <button @click="$dispatch('open-update-{{ $luggage->id }}')"
                                     class="bg-[#55372c] text-[#edede1] px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">
@@ -168,7 +172,7 @@
                     <!-- Modal Box -->
                     <div 
                         @click.away="isOpen = false"
-                        class="bg-white p-6 rounded-xl shadow-xl w-full max-w-2xl mx-auto relative max-h-[90vh] overflow-y-auto"
+                        class="p-6 rounded-xl shadow-xl w-full max-w-2xl mx-auto relative max-h-[90vh] overflow-y-auto"
                         style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"
                     >
                         <!-- Close Button -->

@@ -76,51 +76,107 @@ class StaffController extends Controller
         return view('staff.staffLogin');
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'login' => ['required', 'string'], // username or email
-            'password' => ['required', 'string'],
-        ]);
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'login' => ['required', 'string'], // username or email
+    //         'password' => ['required', 'string'],
+    //     ]);
 
-        $login = $request->input('login');
-        $password = $request->input('password');
-        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+    //     $login = $request->input('login');
+    //     $password = $request->input('password');
+    //     $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-        $user = User::where($fieldType, $login)->first();
+    //     $user = User::where($fieldType, $login)->first();
 
-        if ($user && $user->role === 'Staff') {
-            $staff = $user->staff;
+    //     if ($user && $user->role === 'Staff') {
+    //         $staff = $user->staff;
 
-            if (!$staff) {
-                throw ValidationException::withMessages([
-                    'login' => 'Staff profile not found.',
-                ]);
-            }
+    //         if (!$staff) {
+    //             throw ValidationException::withMessages([
+    //                 'login' => 'Staff profile not found.',
+    //             ]);
+    //         }
 
-            if ($staff->approval_status === 'pending') {
-                throw ValidationException::withMessages([
-                    'login' => 'Your staff account is pending admin approval.',
-                ]);
-            }
+    //         if ($staff->approval_status === 'pending') {
+    //             throw ValidationException::withMessages([
+    //                 'login' => 'Your staff account is pending admin approval.',
+    //             ]);
+    //         }
 
-            if ($staff->approval_status === 'rejected') {
-                throw ValidationException::withMessages([
-                    'login' => 'Your staff registration has been rejected.',
-                ]);
-            }
+    //         if ($staff->approval_status === 'rejected') {
+    //             throw ValidationException::withMessages([
+    //                 'login' => 'Your staff registration has been rejected.',
+    //             ]);
+    //         }
 
-            if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
-                $request->session()->regenerate();
-                return redirect()->intended(route('staff.staffDashboard'));
-            }
-        }
+    //         if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
+    //             $request->session()->regenerate();
+    //             return redirect()->intended(route('staff.staffDashboard'));
+    //         }
+    //     }
 
-        throw ValidationException::withMessages([
-            'login' => 'Invalid credentials or unapproved account. Please try again',
-        ]);
+    //     throw ValidationException::withMessages([
+    //         'login' => 'Invalid credentials or unapproved account. Please try again',
+    //     ]);
         
+    // }
+
+    public function login(Request $request)
+{
+    $request->validate([
+        'login' => ['required', 'string'],
+        'password' => ['required', 'string'],
+    ]);
+
+    $login = $request->input('login');
+    $password = $request->input('password');
+    $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+    $user = User::where($fieldType, $login)->first();
+
+    if (!$user) {
+        throw ValidationException::withMessages([
+            'login' => 'No account found with provided credentials.',
+        ]);
     }
+
+    if ($user->role !== 'Staff') {
+        throw ValidationException::withMessages([
+            'login' => 'Only staff members can log in from this portal.',
+        ]);
+    }
+
+    $staff = $user->staff;
+
+    if (!$staff) {
+        throw ValidationException::withMessages([
+            'login' => 'Staff profile not found.',
+        ]);
+    }
+
+    if ($staff->approval_status === 'pending') {
+        throw ValidationException::withMessages([
+            'login' => 'Your staff account is pending admin approval.',
+        ]);
+    }
+
+    if ($staff->approval_status === 'rejected') {
+        throw ValidationException::withMessages([
+            'login' => 'Your staff registration has been rejected.',
+        ]);
+    }
+
+    if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('staff.staffDashboard'));
+    }
+
+    throw ValidationException::withMessages([
+        'login' => 'Invalid credentials or unapproved account. Please try again.',
+    ]);
+}
+
 
     /**
      * Staff dashboard

@@ -20,11 +20,11 @@
 
     <div class="max-w-6xl mx-auto text-center">
     <!-- Main Title -->
-    <div class="mb-16 flex flex-row justify-center items-start gap-20">
-        <h1 class="font-black text-8xl mb-4 text-right" style="color: #55372c; font-family: 'Anton', sans-serif;">
+    <div class="mb-12 flex flex-col md:flex-row justify-center items-center gap-5">
+        <h1 class="font-black text-8xl mb-4 md:text-right mt-5 p-5" style="color: #55372c; font-family: 'Anton', sans-serif;">
             TRACK N'<br>TRACE
         </h1>
-        <p class="text-4xl text-brown font-medium mt-8" style="color: #55372c; font-family: 'Poppins', sans-serif; letter-spacing: 1px;">
+        <p class="text-4xl text-brown font-medium mt-4" style="color: #55372c; font-family: 'Poppins', sans-serif; letter-spacing: 1px;">
             QR BASED LOST<br>
             LUGGAGE<br>
             MANAGEMENT<br>
@@ -80,7 +80,7 @@
         </div>
     </div>
     
-    <section class="text-center mt-10">
+    <section class="text-center mt-8 mb-5 md:mb-0">
         <h2 class="text-4xl font-bold text-[#55372c]">Want to learn more?</h2>
         <a href="{{ route('about') }}" class="mt-4 inline-block bg-[#55372c] text-[#fcf7ed] text-2xl px-6 py-2 rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">Read About Us</a>
     </section>

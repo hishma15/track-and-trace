@@ -29,7 +29,7 @@
                 </div>
             </div>
 
-            <div class="text-sm space-y-4">
+            <!-- <div class="text-sm space-y-4">
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M11 17a1 1 0 01-.117-1.993L11 15h1a1 1 0 01.117 1.993L12 17h-1zm-3-4a1 1 0 01-.117-1.993L8 11h5a1 1 0 01.117 1.993L13 13H8zm3-4a1 1 0 01-.117-1.993L11 7h2a1 1 0 01.117 1.993L13 9h-2z"/></svg>
                     <span>Settings</span>
@@ -38,7 +38,7 @@
                     <svg class="w-5 h-5 text-brown-700" fill="currentColor" viewBox="0 0 20 20"><path d="M8.257 3.099c.366-.446.957-.535 1.414-.21l.09.082 5 5c.35.35.385.902.082 1.29l-.082.09-5 5c-.446.366-1.038.277-1.414-.21l-.082-.09-5-5c-.35-.35-.385-.902-.082-1.29l.082-.09 5-5z"/></svg>
                     <span>Help & Support</span>
                 </div>
-            </div>
+            </div> -->
         </aside>
 
         <!-- Registration Form -->

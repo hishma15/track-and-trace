@@ -21,6 +21,8 @@ use App\Http\Controllers\TravelerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\LuggageController;
 
+use App\Http\Controllers\FeedbackController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,7 +94,10 @@ Route::middleware('auth')->group(function () {
         //Delete acccount 
         Route::delete('/traveler/profile/delete', [TravelerController::class, 'destroy'])->name('traveler.profile.destroy');
 
-        // Route::get('/traveler/luggages', [LuggageController::class, 'index'])->name('luggage.index');
+        Route::post('/traveler/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+        // Route::get('/traveler/feedback', [FeedbackController::class, 'create'])->name('feedback.create');  //If having a feedback view blade file
+
+
 
     });
 

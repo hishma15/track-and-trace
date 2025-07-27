@@ -75,7 +75,7 @@
         </div>
 
         <!-- Our solution -->
-            <div class="bg-[#edede1] backdrop-blur-sm rounded-xl p-8 mb-8 shadow-lg border border-[#edede1]/70">
+        <div class="bg-[#edede1] backdrop-blur-sm rounded-xl p-8 mb-8 shadow-lg border border-[#edede1]/70">
                 <h3 class="text-2xl font-bold text-[#55372c] mb-6">Our Solution</h3>
                 
                 <p class="text-lg text-[#55372c]  mb-6 leading-relaxed">
@@ -86,7 +86,53 @@
                 </p>
 
                 
+        </div>
+
+        <!-- Why use track and trace -->
+            <div class="bg-[#edede1] backdrop-blur-sm rounded-xl p-8 mb-8 shadow-lg border border-[#edede1]/70">
+                <h3 class="text-2xl font-bold text-[#55372c] mb-6">Why Use Track & Trace?</h3>
+                
+                <p class="text-lg text-[#55372c]  mb-6 leading-relaxed">
+                    We are not just another digital form, Oir system is, 
+                </p>
+                <ul class="list-disc list-inside space-y-2 text-[#55372c]">
+                        <li>Smart - Each bag gets a QR tag linked to the owner.</li>
+                        <li>Secure - Encrypted data and access controlled dashboard</li>
+                        <li>Fast - Real time notifications and automatic match alerts.</li>
+                        <li>User-friendly - Simple portals for travelers, staff and admin</li>
+                        <li>Scalable - Can be used across all stations</li>
+                        <li>Built for Sri Lanka - Designed with local users, languages and workflows in mind.</li>
+                </ul>
             </div>
+
+        <!-- Quick Guide -->
+            <div class="bg-[#edede1] backdrop-blur-sm rounded-xl p-8 mb-8 shadow-lg border border-[#edede1]/70">
+                <h3 class="text-2xl font-bold text-[#55372c] mb-6">How it works</h3>
+                
+                <ol class="list-inside list-decimal space-y-2 text-[#55372c]">
+                        <li>Travelers register their bags and get a downloadable QR Code.</li>
+                        <li>If an item is lost, they log into the system and mark it as 'Lost'.</li>
+                        <li>Staff scan found items, match them to reports and change status.</li>
+                        <li>Admin verifies Staff, oversease operations and manage analytics.</li>
+                        <li>Everyone stayed informed with notifications.</li>
+                </ol>
+            </div>
+
+        <!-- Last section-->
+        <div class="bg-[#edede1] backdrop-blur-sm rounded-xl p-8 mb-8 shadow-lg border border-[#edede1]/70">
+                <h3 class="text-2xl font-bold text-[#55372c] mb-6">Join the change</h3>
+                
+                <p class="text-lg text-[#55372c]  mb-6 leading-relaxed">
+                    We're building a smarter future for pbulic transport - one language report at a time.
+                </p>
+                <p class="text-lg text-[#55372c]  mb-6 leading-relaxed">
+                    If you're a commuter, staff member or decision maker- Track and Trace is mode for you. 
+                    <br>
+                    Lets not just report lost luggage - let's recover it, securely and swiftly.
+                </p>
+
+                
+        </div>
 
     </div>
 
