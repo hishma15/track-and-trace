@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Route;
 
 
 // use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AdminLoginController;
 // use App\Http\Controllers\Auth\RegisterController;
 // use App\Http\Controllers\Auth\ForgotPasswordController;
 // use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TravelerController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\LuggageController;
+
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +37,8 @@ use App\Http\Controllers\TravelerController;
 Route::get('/', function () {
     return view('welcome'); // landing blade
 })->name('landing');
+
+Route::view('/about', 'aboutUs')->name('about');
 
 // Redirect root to traveler login
 // Route::get('/', function () {
@@ -54,13 +60,18 @@ Route::middleware('guest')->group(function () {
     // Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
     // Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 
+
+    Route::get('/staff/login', [StaffController::class, 'showStaffLoginForm'])->name('staff.staffLogin');
+    Route::post('/staff/login', [StaffController::class, 'login'])->name('staff.login');
+
     //staff
-    Route::get('/staff/login', [LoginController::class, 'showStaffLoginForm'])->name('staff.login');
-    Route::post('/staff/login', [LoginController::class, 'staffLogin']);
+    Route::get('/staff/register', [StaffController::class, 'showStaffRegistrationForm'])->name('staff.staffRegister');
+    Route::post('/staff/register', [StaffController::class, 'register'])->name('staff.register');
 
     // Admin
-    Route::get('/admin/login', [LoginController::class, 'showAdminLoginForm'])->name('admin.login');
-    Route::post('/admin/login', [LoginController::class, 'adminLogin']);
+    Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.adminLogin');
+    Route::post('/admin/login', [AdminLoginController::class, 'adminLogin'])->name('admin.login');
+
 
 
 });
@@ -74,20 +85,42 @@ Route::middleware('auth')->group(function () {
     Route::prefix('traveler')->group(function () {
         Route::get('/dashboard', [TravelerController::class, 'dashboard'])->name('traveler.travelerDashboard');
         Route::post('/logout', [TravelerController::class, 'logout'])->name('traveler.logout');
-    });
     
+
+        // Update profile routes here
+        Route::get('/profile', [TravelerController::class, 'showProfileForm'])->name('traveler.profile.show');
+        Route::post('/profile', [TravelerController::class, 'updateProfile'])->name('traveler.profile.update');
+        Route::post('/profile/password', [TravelerController::class, 'updatePassword'])->name('traveler.profile.updatePassword');
+        //Delete acccount 
+        Route::delete('/traveler/profile/delete', [TravelerController::class, 'destroy'])->name('traveler.profile.destroy');
+
+        Route::post('/traveler/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+        // Route::get('/traveler/feedback', [FeedbackController::class, 'create'])->name('feedback.create');  //If having a feedback view blade file
+
+
+
+    });
+
+    
+    Route::get('/admin/dashboard', [AdminLoginController::class, 'showDashboard'])->name('admin.dashboard');
+
+    Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+    
+
+
     // Add your luggage management routes here
     Route::prefix('luggage')->group(function () {
-        Route::get('/', function () {
-            return view('luggage.index');
-        })->name('luggage.index');
-        
-        Route::get('/track', function () {
-            return view('luggage.track');
-        })->name('luggage.track');
-        
-        Route::get('/lost', function () {
-            return view('luggage.lost');
-        })->name('luggage.lost');
+
+        // Luggage Registration Routes
+        Route::get('/register', [LuggageController::class, 'create'])->name('luggage.create');
+        Route::post('/register', [LuggageController::class, 'store'])->name('luggage.store');
+
+        Route::get('/', [LuggageController::class, 'index'])->name('luggage.index'); 
+
+        // Route::put('/luggages/{id}', [LuggageController::class, 'update'])->name('luggage.update');
+        Route::put('/{id}', [LuggageController::class, 'update'])->name('luggage.update');
+        Route::delete('/{id}', [LuggageController::class, 'destroy'])->name('luggage.destroy');
+
+
     });
 });

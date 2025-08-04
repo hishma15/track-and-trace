@@ -17,6 +17,7 @@ class Feedback extends Model
         'admin_response',
         'submitted_at',
         'responded_at',
+        'rating',
     ];
 
     protected function casts(): array
