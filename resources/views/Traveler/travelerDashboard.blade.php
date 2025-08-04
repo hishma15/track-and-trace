@@ -73,7 +73,7 @@
                         <img src="{{ asset('images/luggage-icon.png') }}" alt="Logo" class="w-6 h-6">
                     </div>
                     <div>
-                        <h1 class="text-xl font-bold text-gray-800">Track N'</h1>
+                        <h1 class="text-xl font-bold text-gray-800">Track '</h1>
                         <h1 class="text-xl font-bold text-gray-800">Trace</h1>
                     </div>
                 </div>
