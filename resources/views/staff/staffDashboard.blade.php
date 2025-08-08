@@ -66,7 +66,9 @@
             <!-- Header -->
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
                 <div class="flex items-center justify-between">
+
                     <h1 class="text-2xl font-semibold text-[#55372c]">Staff Dashboard</h1>
+
                     
                     <div class="flex items-center gap-4">
                         <!-- Search Box -->
