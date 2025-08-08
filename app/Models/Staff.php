@@ -15,7 +15,6 @@ class Staff extends Model
         'organization',
         'position',
         'staff_official_id',
-        'approval_status', 
     ];
 
     public function user()
