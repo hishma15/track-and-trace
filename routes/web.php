@@ -20,7 +20,7 @@ use App\Http\Controllers\Auth\AdminLoginController;
 use App\Http\Controllers\TravelerController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\LuggageController;
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
 
 use Illuminate\Support\Facades\Storage;
@@ -68,9 +68,6 @@ Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [StaffController::class, 'showStaffLoginForm'])->name('staff.staffLogin');
     Route::post('/staff/login', [StaffController::class, 'login'])->name('staff.login');
 
-    //staff
-    Route::get('/staff/register', [StaffController::class, 'showStaffRegistrationForm'])->name('staff.staffRegister');
-    Route::post('/staff/register', [StaffController::class, 'register'])->name('staff.register');
 
     // Admin
     Route::get('/admin/login', [AdminLoginController::class, 'showAdminLoginForm'])->name('admin.adminLogin');
@@ -99,14 +96,22 @@ Route::middleware('auth')->group(function () {
         Route::post('/traveler/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
         // Route::get('/traveler/feedback', [FeedbackController::class, 'create'])->name('feedback.create');  //If having a feedback view blade file
 
-
+        
+        
 
     });
 
-    
-    Route::get('/admin/dashboard', [AdminLoginController::class, 'showDashboard'])->name('admin.dashboard');
+    Route::prefix('staff')->group(function () {
+        Route::get('/dashboard', [StaffController::class, 'dashboard'])->name('staff.staffDashboard');
 
-    Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+    });
+
+    // Show the staff registration form (GET)
+        Route::get('/admin/staff/register', [AdminController::class, 'showStaffRegistrationForm'])->name('staff.register.form');
+        Route::post('/admin/staff/register', [AdminController::class, 'registerStaff'])->name('staff.register');
+        Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.adminDashboard');
+        Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
+
     
 
 

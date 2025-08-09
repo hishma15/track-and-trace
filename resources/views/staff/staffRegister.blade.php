@@ -1,3 +1,5 @@
+<!-- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,17 +12,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-        <!--Icons from fontawsome -->
+        <!--Icons from fontawsome --
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 </head>
 
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
-    <!-- Wrapper Flex Container -->
+    <!-- Wrapper Flex Container --
     <div class="flex flex-col md:flex-row min-h-screen">
 
-        <!-- Sidebar -->
+        <!-- Sidebar --
         <aside class="w-full md:w-56 p-6 flex flex-col justify-between" style="background-color: #dec9ae;">
             <div>
                 <div class="text-2xl font-bold flex items-center gap-2 mb-3">
@@ -30,7 +32,7 @@
             </div>
         </aside>
 
-        <!-- Registration Form -->
+        <!-- Registration Form --
         <main class="flex-1 px-4 py-6 md:px-12 md:py-8">
             <h1 class="text-xl md:text-2xl font-normal mb-4 md:mb-6" style="color: #55372c;">Staff Registration Form</h1>
 
@@ -127,4 +129,4 @@
     </div>
 </body>
 
-</html>
+</html> -->

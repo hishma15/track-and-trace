@@ -50,7 +50,7 @@
 
             {{-- Navigation --}}
             <nav class="space-y-2">
-                <a href="{{ route('admin.dashboard') }}"
+                <a href="{{ route('admin.adminDashboard') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'dashboard' ? 'active' : '' }}">
                     <i class="fas fa-home w-5 h-5"></i>
                     Dashboard

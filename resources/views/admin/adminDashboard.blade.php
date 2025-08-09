@@ -41,8 +41,8 @@
     <div class="flex min-h-screen">
         
         <!-- Sidebar -->
-        <!-- Sidebar -->
         @include('partials.admin-sidebar', ['active' => 'dashboard'])
+
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
@@ -51,25 +51,7 @@
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-semibold text-[#55372c]">Admin Dashboard</h1>
                     
-                    <!-- <div class="flex items-center gap-4">
-                        <!-- Search Box -->
-                        <!-- <div class="relative">
-                            <input type="text" 
-                                   placeholder="Search..." 
-                                   class="bg-white/90 backdrop-blur-sm pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent w-80">
-                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                            </svg>
-                        </div> -->
-                        
-                        <!-- User Profile -->
-                        <!-- <div class="flex items-center gap-3">
-                            <span class="text-gray-700 font-medium">{{ auth()->user()->name ?? 'Admin' }}</span>
-                            <div class="w-10 h-10 bg-gradient-to-br from-sky-400 to-blue-600 rounded-full flex items-center justify-center">
-                                <i class="fas fa-user-shield text-white"></i>
-                            </div>
-                        </div> 
-                    </div> -->
+
                 </div>
             </header>
 
@@ -96,9 +78,17 @@
                                     <a href="#" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
                                         Reports
                                     </a>
-                                    <a href="#" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
-                                        Manage Staff
-                                    </a>
+                                   <button
+                                            id="openRegisterStaffModalBtn"
+                                            class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition"
+                                            type="button"
+                                        >
+                                            Manage Staff
+                                        </button>
+
+@include('partials.register-staff-modal')
+
+
                                 </div>
                             </div>
                             <!-- Train illustration -->

@@ -31,7 +31,7 @@ class AdminLoginController extends Controller
 
             $request->session()->regenerate();
 
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.adminDashboard');
         }
 
         return back()->withErrors(['login' => 'Invalid credentials.']);
