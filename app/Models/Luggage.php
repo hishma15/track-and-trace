@@ -41,12 +41,12 @@ class Luggage extends Model
 
     public function qrCode()
     {
-        return $this->hasOne(QrCode::class);
+        return $this->hasOne(QRCode::class);
     }
 
     public function qrScanLogs()
     {
-        return $this->hasMany(QrScanLog::class);
+        return $this->hasMany(QRScanLog::class);
     }
 
     public function notifications()

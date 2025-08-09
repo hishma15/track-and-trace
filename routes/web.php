@@ -23,6 +23,10 @@ use App\Http\Controllers\LuggageController;
 
 use App\Http\Controllers\FeedbackController;
 
+use Illuminate\Support\Facades\Storage;
+
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,8 +82,6 @@ Route::middleware('guest')->group(function () {
 
 // Protected Routes
 Route::middleware('auth')->group(function () {
-    // Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    // Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Traveler protected routes
     Route::prefix('traveler')->group(function () {
@@ -121,6 +123,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [LuggageController::class, 'update'])->name('luggage.update');
         Route::delete('/{id}', [LuggageController::class, 'destroy'])->name('luggage.destroy');
 
-
     });
+
+            // QR Code routes
+        Route::post('/luggage/{id}/generate-qr', [LuggageController::class, 'generateQrCode'])->name('luggage.generate-qr');
+        Route::get('/luggage/{id}/download-qr', [LuggageController::class, 'downloadQrCode'])->name('luggage.download-qr');
+
 });

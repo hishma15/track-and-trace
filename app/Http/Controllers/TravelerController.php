@@ -136,7 +136,7 @@ class TravelerController extends Controller
     {
 
         $user = auth()->user();
-
+    
         // Validate the form input
         $request->validate([
             'first_name' => 'required|string|max:100',
