@@ -104,36 +104,34 @@
                             </a>
                         </div>
 
-                        <!-- Station Cards Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            @php
-                                $stations = [
-                                    ['name' => 'Shwetha', 'albums' => 4],
-                                    ['name' => 'Hishma', 'albums' => 2],
-                                    ['name' => 'Dahemi', 'albums' => 4],
-                                    ['name' => 'Aamina', 'albums' => 4]
-                                ];
-                            @endphp
+                        
 
-                            @foreach($stations as $station)
+
+                        <!-- Station Cards Grid --->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    @foreach($staff as $member)
                             <div class="station-card bg-white/80 backdrop-blur-sm rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg">
                                 <div class="flex items-center gap-4 mb-4">
                                     <div class="w-16 h-16 bg-gradient-to-br from-sky-400 to-blue-600 rounded-full flex items-center justify-center">
                                         <i class="fas fa-train text-white text-xl"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-semibold text-gray-800">{{ $station['name'] }}</h3>
-                                        <p class="text-gray-600">{{ $station['albums'] }} Albums</p>
+                                        <p>{{ $member->user ? $member->user->first_name : 'User not loaded' }}</p>
+                    <p class="text-gray-600">{{ $member->organization }}</p>
                                     </div>
                                 </div>
-                                <a href="#" class="text-amber-800 font-medium hover:underline">
-                                    <i class="fas fa-chevron-right mr-2"></i>See Details
-                                </a>
+                                <a href="{{ route('admin.staff.show', $member->id) }}" class="text-amber-800 font-medium hover:underline flex items-center">
+    <i class="fas fa-chevron-right mr-2"></i>See Details
+</a>
+
+        
                             </div>
                             @endforeach
                         </div>
                     </div>
-
+                    
+                    
                     <!-- Right Column - Lost and Found Reports -->
                     <div class="lg:col-span-1">
                         <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 h-full">
