@@ -186,6 +186,7 @@ class TravelerController extends Controller
         return redirect()->route('traveler.profile.show')->with('success', 'Password changed successfully!');
     }
 
+ 
 
     /**
      * Handle traveler logout

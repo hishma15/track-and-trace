@@ -48,6 +48,13 @@ class LuggageController extends Controller
         return view('traveler.myLuggage', compact('luggages'));
     }
 
+    public function reportlostluggage()
+    {
+        $travelerId = Auth::user()->traveler->id;
+        $luggages = Luggage::where('traveler_id', $travelerId)->get();
+        return view('Traveler.reportlostluggage',compact('luggages'));
+    }
+
     
     public function update(Request $request, $id)
     {

@@ -64,15 +64,87 @@ class AdminController extends Controller
     return redirect()->route('admin.adminDashboard')->with('success', 'Staff created successfully!');
 }
 
+public function updateProfile(Request $request, $id)
+{
+    $staff = Staff::findOrFail($id);
+    $user = $staff->user;
+
+    $request->validate([
+        'first_name' => 'required|string|max:100',
+        'last_name' => 'required|string|max:100',
+        'phone_no' => 'required|string|max:10',
+        'staff_official_id' => 'required|string|unique:staff,staff_official_id,' . $staff->id,
+    ]);
+
+    $user->first_name = $request->first_name;
+    $user->last_name = $request->last_name;
+    $user->phone_no = $request->phone_no;
+    $user->save();
+
+    $staff->organization = $request->organization;
+    $staff->position = $request->position;
+    $staff->staff_official_id = $request->staff_official_id;
+    $staff->save();
+
+    return back()->with('success', 'Profile updated successfully!');
+}
+
+public function updatePassword(Request $request, $id)
+{
+    $staff = Staff::findOrFail($id);
+    $user = $staff->user;
+ // or load user by $id if different
+
+    $request->validate([
+        'current_password' => 'required',
+        'new_password' => 'required|string|min:6|confirmed',
+    ], [
+        'new_password.confirmed' => 'New password and confirmation do not match.',
+        'new_password.min' => 'New password must be at least 6 characters.',
+    ]);
+
+    if (!Hash::check($request->current_password, $user->password)) {
+        return back()->withErrors(['current_password' => 'Current password is incorrect.'])->withInput();
+    }
+
+    $user->password = Hash::make($request->new_password);
+    $user->save();
+
+    return redirect()->route('admin.staff.show', $id)->with('password_success', 'Password changed successfully!');
+}
 
 
+
+
+public function staffList()
+{
+    $staff = Staff::all(); // fetch all staff
+    return view('admin.adminDashboard', compact('staff'));
+}
+
+public function showStaff($id)
+{
+    $staff = Staff::with('user')->findOrFail($id);
+    return view('admin.staffprofile', compact('staff'));
+}
 
     public function showDashboard()
 {
     // Fetch all staff with user info
-    $staffs = Staff::with('user')->get();
+    $staff = Staff::with('user')->get();
 
-    return view('admin.adminDashboard', compact('staffs'));
+    return view('admin.adminDashboard', compact('staff'));
 }
+
+public function destroy($staffId)
+{
+    $staff = Staff::with('user')->findOrFail($staffId);
+
+    $staff->user->delete();
+    $staff->delete();
+
+    return redirect()->route('admin.adminDashboard')->with('success', 'Staff profile deleted successfully.');
+}
+
 
 }

@@ -94,8 +94,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/traveler/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
         // Route::get('/traveler/feedback', [FeedbackController::class, 'create'])->name('feedback.create');  //If having a feedback view blade file
 
-        
-        
+        Route::get('/traveler/report/luggage', [LuggageController::class, 'reportlostluggage'])->name('traveler.luggage.report');
 
     });
 
@@ -109,8 +108,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/staff/register', [AdminController::class, 'registerStaff'])->name('staff.register');
         Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.adminDashboard');
         Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-
-    
+        Route::get('/admin/staff-list', [AdminController::class, 'staffList'])->name('admin.staff.list');
+        Route::get('/staff/{id}', [AdminController::class, 'showStaff'])->name('admin.staff.show');
+        Route::post('/admin/staff/{id}/profile-update', [AdminController::class, 'updateProfile'])->name('staff.profile.update');
+        Route::post('/staff/profile/{id}/update-password', [AdminController::class, 'updatePassword'])->name('staff.profile.updatePassword');
+        Route::delete('/staff/{staff}', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
 
 
     // Add your luggage management routes here
