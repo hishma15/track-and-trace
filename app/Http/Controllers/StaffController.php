@@ -72,6 +72,6 @@ class StaffController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('staff.staffLogin');
+        return redirect()->route('landing')->with('success', 'You have been logged out.');
     }
 }

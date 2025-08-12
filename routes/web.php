@@ -23,6 +23,8 @@ use App\Http\Controllers\LuggageController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
 
+use App\Http\Controllers\QRScanController;
+
 use Illuminate\Support\Facades\Storage;
 
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -103,6 +105,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('staff')->group(function () {
         Route::get('/dashboard', [StaffController::class, 'dashboard'])->name('staff.staffDashboard');
+        Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
+
 
     });
 
@@ -133,5 +137,30 @@ Route::middleware('auth')->group(function () {
             // QR Code routes
         Route::post('/luggage/{id}/generate-qr', [LuggageController::class, 'generateQrCode'])->name('luggage.generate-qr');
         Route::get('/luggage/{id}/download-qr', [LuggageController::class, 'downloadQrCode'])->name('luggage.download-qr');
+
+
+
+    // QR Scanner page for staff
+    Route::get('/staff/qr-scanner', [QRScanController::class, 'showScanner'])->name('staff.qr-scanner');
+    
+    // API routes for QR scanning
+    Route::prefix('api/qr-scan')->group(function () {
+        
+        // Get luggage details by ID
+        Route::get('/luggage/{luggage_id}', [QRScanController::class, 'getLuggageDetails'])
+            ->name('api.qr-scan.luggage-details');
+        
+        // Mark luggage as found
+        Route::post('/luggage/{luggage_id}/found', [QRScanController::class, 'markAsFound'])
+            ->name('api.qr-scan.mark-found');
+        
+        // Get scan history
+        Route::get('/luggage/{luggage_id}/history', [QRScanController::class, 'getScanHistory'])
+            ->name('api.qr-scan.history');
+        
+        // Get staff dashboard stats
+        Route::get('/stats', [QRScanController::class, 'getStaffStats'])
+            ->name('api.qr-scan.stats');
+    });
 
 });
