@@ -21,6 +21,7 @@ class Luggage extends Model
         'date_registered',
         'date_lost',
         'date_found',
+        'comment',
     ];
 
     protected function casts(): array
@@ -86,6 +87,17 @@ class Luggage extends Model
             'date_found' => now(),
         ]);
     }
+
+    public function markAsSafe()
+{
+    $this->update([
+        'status' => 'Safe',
+        'lost_station' => null,
+        'date_lost' => null,
+        'comment' => null,
+    ]);
+}
+
 
 
 }

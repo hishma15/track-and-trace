@@ -91,6 +91,46 @@ class LuggageController extends Controller
     }
     
 
+    public function markLost(Request $request, Luggage $luggage)
+{
+    $validated = $request->validate([
+        'lost_station' => 'required|string|max:255',
+        'comment' => 'required|string',
+        'date_lost' => 'required|date',
+    ]);
+
+    $luggage->update([
+        'status' => 'Lost',
+        'lost_station' => $validated['lost_station'],
+        'comment' => $validated['comment'],
+        'date_lost' => $validated['date_lost'],  // save user-provided date/time
+    ]);
+
+    return redirect()->back()->with('success', 'Luggage marked as lost successfully.');
+}
+    public function cancelReport(Luggage $luggage)
+    {
+        $luggage->update([
+            'status' => 'Safe', // or whatever status means not lost
+            'lost_station' => null,
+            'comment' => null,
+            'date_lost' => null,
+        ]);
+
+        return redirect()->back()->with('success', 'Lost report cancelled successfully.');
+    }
+
+    public function cancelLostReport(Luggage $luggage)
+{
+    // Optionally validate ownership or permissions here
+
+    $luggage->markAsSafe();
+
+    return redirect()->back()->with('success', 'Lost report canceled, luggage marked as safe.');
+}
+
+
+    
     public function destroy($id)
     {
         $luggage = Luggage::findOrFail($id);
