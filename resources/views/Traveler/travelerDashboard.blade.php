@@ -246,7 +246,9 @@
                                         <img src="{{ asset('images/report.png') }}" alt="Report" class="w-12 h-17">
                                     </div>
                                     <div>
+                                        <a href="{{ route('traveler.reportlostluggage') }}" >
                                         <h3 class="text-xl font-semibold text-gray-800">Report Lost Luggage</h3>
+    </a>
                                     </div>
                                 </div>
                             </div>
