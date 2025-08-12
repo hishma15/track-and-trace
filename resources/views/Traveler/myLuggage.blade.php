@@ -303,7 +303,7 @@
             @endforeach
         </main>
 
-        <!-- QR Code Modal - Now outside of cards, similar to update modal -->
+        <!-- QR Code Modal -->
         <div x-show="qrModalOpen" 
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0"

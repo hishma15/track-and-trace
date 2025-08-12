@@ -59,7 +59,7 @@
     <div class="flex min-h-screen">
         
         <!-- Sidebar -->
-        @include('partials.traveler-sidebar', ['active' => 'dashboard'])
+        @include('partials.staff-sidebar', ['active' => 'dashboard'])
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
@@ -239,16 +239,27 @@
                                 </div>
                             </div>   -->
 
-                            @include('partials.register-luggage-popup')
+                            <!-- Report Lost Luggage -->
+                            <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-25 h-22 bg-gray-100 rounded-xl flex items-center justify-center">
+                                        <img src="{{ asset('images/scanqrcode.jpg') }}" alt="Report" class="w-23 h-20 rounded-xl">
+                                    </div>
+                                    <div>
+                                        <!-- <h3 class="text-xl font-semibold text-gray-800">Report Found Luggage <br> Scan QR Code</h3> -->
+                                        <a href="{{ route('staff.qr-scanner') }}" class="text-xl font-semibold text-gray-800">Report Found Luggage <br> Scan QR Code</a>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Report Lost Luggage -->
                             <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-20 h-20 bg-teal-100 rounded-xl flex items-center justify-center">
-                                        <img src="{{ asset('images/report.png') }}" alt="Report" class="w-12 h-17">
+                                    <div class="w-25 h-22 bg-gray-100 rounded-xl flex items-center justify-center">
+                                        <img src="{{ asset('images/manualid.jpg') }}" alt="Report" class="w-23 h-20 rounded-xl">
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-semibold text-gray-800">Report Lost Luggage</h3>
+                                        <h3 class="text-xl font-semibold text-gray-800">Report Found Luggage <br> Enter Manual ID</h3>
                                     </div>
                                 </div>
                             </div>
