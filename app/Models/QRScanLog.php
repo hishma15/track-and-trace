@@ -9,6 +9,8 @@ class QRScanLog extends Model
 {
     use HasFactory;
 
+    protected $table = 'qr_scan_logs';
+
     protected $fillable = [
         'staff_id',
         'luggage_id',

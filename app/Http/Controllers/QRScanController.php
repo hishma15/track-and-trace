@@ -9,6 +9,7 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
 class QRScanController extends Controller
 {
     /**
