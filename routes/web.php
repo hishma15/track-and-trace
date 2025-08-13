@@ -115,14 +115,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/staff/register', [AdminController::class, 'registerStaff'])->name('staff.register');
         Route::get('/admin/dashboard', [AdminController::class, 'showDashboard'])->name('admin.adminDashboard');
         Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
-        Route::get('/admin/staff/{id}', [AdminController::class, 'showStaff'])
-    ->name('admin.staff.show');
-    Route::post('/admin/staff/{id}/profile', [AdminController::class, 'updateProfile'])
-    ->name('staff.profile.update');
-    Route::post('/admin/staff/{id}/password', [AdminController::class, 'updatePassword'])
-    ->name('staff.profile.updatePassword');
-    Route::delete('/admin/staff/{id}/profile', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
-    Route::get('/admin/staff/{id}/profile', [AdminController::class, 'showStaff'])->name('staff.profile.show');
+        Route::get('/admin/staff/{id}', [AdminController::class, 'showStaff'])->name('admin.staff.show');
+        Route::post('/admin/staff/{id}/profile', [AdminController::class, 'updateProfile'])->name('staff.profile.update');
+        Route::post('/admin/staff/{id}/password', [AdminController::class, 'updatePassword'])->name('staff.profile.updatePassword');
+        Route::delete('/admin/staff/{id}/profile', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
+        Route::get('/admin/staff/{id}/profile', [AdminController::class, 'showStaff'])->name('staff.profile.show');
+        Route::get('/profile', [StaffController::class, 'showProfileForm'])->name('staff.profile.show');
 
 
 
@@ -145,6 +143,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [LuggageController::class, 'destroy'])->name('luggage.destroy');
 
         Route::get('/traveler/report-lost-luggage', [LuggageController::class, 'reportlostluggage'])->name('traveler.reportlostluggage');
+        Route::put('/{luggage}/mark-lost', [LuggageController::class, 'markLost'])->name('luggage.markLost');
+        Route::put('/{luggage}/cancel-report', [LuggageController::class, 'cancelLostReport'])->name('luggage.cancelReport');
+
+
 
 
     });

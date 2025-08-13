@@ -6,17 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lustria&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
-        <!--Icons from fontawsome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Alpine JS  -->
+    {{-- Other meta tags and links --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
     <style>
+        /* THIS IS THE CRUCIAL FIX for the flickering/flashing modal */
+        [x-cloak] { display: none !important; }
+
+        /* Other styles */
         .nav-item.active {
             background: rgba(139, 69, 19, 0.15);
             border-right: 3px solid #8B4513;
@@ -25,152 +23,169 @@
             transform: translateY(-4px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-
-        .welcome-card {
-            background: linear-gradient(135deg, #8B4513 0%, #654321 100%);
-        }
-        
-        /* .action-card {
-            background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
-            border: 1px solid #e0e6ed;
-            transition: all 0.3s ease;
-        } */
-        .action-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .nav-item {
-            transition: all 0.3s ease;
-        }
-        .nav-item:hover {
-            background: rgba(139, 69, 19, 0.1);
-            transform: translateX(5px);
-        }
-        .nav-item.active {
-            background: rgba(139, 69, 19, 0.15);
-            border-right: 3px solid #8B4513;
-        }
-        .search-box {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-        }
-        .profile-avatar {
-            background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
-        }
-
     </style>
 </head>
 
 <body style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover;">
     <div class="flex min-h-screen">
         
-        {{-- Sidebar --}}
         @include('partials.traveler-sidebar', ['active' => 'my-luggages'])
 
-        {{-- Main --}}
-
         <main class="flex-1 overflow-hidden">
-            <!-- Header -->
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
-                <div class="flex items-center justify-between">
-                    <h1 class="text-2xl font-semibold text-[#55372c]">Report Luggage</h1>
-                </div>
+                <h1 class="text-2xl font-semibold text-[#55372c]">My Luggages</h1>
             </header>
 
-            {{-- Success Message --}}
             @if(session('success'))
-                <div class="bg-green-100 text-green-800 px-4 py-3 rounded mb-6 text-center">
+                <div class="bg-green-100 text-green-800 px-4 py-3 rounded m-5 text-center" id="success-alert">
                     {{ session('success') }}
                 </div>
             @endif
 
-           
-
-            
-            {{-- Luggage Cards --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-5 p-5 gap-8">
+            <div x-data="{ openModalId: null }" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-5 p-5 gap-8">
     @forelse ($luggages as $luggage)
-        <div x-data="{ openModal{{ $luggage->id }}: false }" 
-             class="bg-white/90 rounded-2xl overflow-hidden shadow-md luggage-card transition transform hover:scale-[1.01] relative flex flex-col justify-between">
-
-            {{-- Image --}}
+        <div class="bg-white/90 rounded-2xl overflow-hidden shadow-md luggage-card transition flex flex-col">
+            
             <img src="{{ $luggage->image_path ? asset('storage/' . $luggage->image_path) : asset('images/noimage.png') }}"
                 class="w-full h-48 object-contain bg-white rounded-t-2xl" alt="Luggage Image">
 
-            {{-- Details & Buttons --}}
-            <div class="flex flex-col justify-between flex-grow">
-                <div class="p-5 space-y-2">
-                    <p><strong>Color:</strong> {{ $luggage->color ?? 'None' }}</p>
-                    <p><strong>Brand / Type:</strong> {{ $luggage->brand_type ?? 'None' }}</p>
-                    <p><strong>Description:</strong> {{ $luggage->description ?? 'None' }}</p>
-                    <p><strong>Features:</strong> {{ $luggage->unique_features ?? 'None' }}</p>
-
-                    {{-- Status Radio Buttons --}}
-                    <div class="mt-4">
-                        <form action="{{ route('luggage.update', $luggage->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <label class="block font-medium mb-1">Status:</label>
-                            <div class="flex gap-4">
-                                <label class="flex items-center gap-1">
-                                    <input type="radio" name="status" value="lost" 
-                                        {{ $luggage->status === 'lost' ? 'checked' : '' }}>
-                                    Lost
-                                </label>
-
-                                <label class="flex items-center gap-1">
-                                    <input type="radio" name="status" value="found" 
-                                        {{ $luggage->status === 'found' ? 'checked' : '' }}>
-                                    Found
-                                </label>
-                            </div>
-
-                            <button type="submit" 
-                                class="mt-3 px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition">
-                                Update Status
-                            </button>
-                        </form>
-                    </div>
+            <div class="p-5 space-y-2 flex-grow flex flex-col justify-between">
+                <div>
+                    <p><strong>Color:</strong> {{ $luggage->color ?? 'N/A' }}</p>
+                    <p><strong>Brand / Type:</strong> {{ $luggage->brand_type ?? 'N/A' }}</p>
+                    <p><strong>Description:</strong> {{ $luggage->description ?? 'N/A' }}</p>
+                </div>
+                
+                <div class="mt-4">
+    @if($luggage->isLost())
+        <!-- Cancel Report button -->
+        <form action="{{ route('luggage.cancelReport', ['luggage' => $luggage->id]) }}" method="POST" class="inline">
+            @csrf
+            @method('PUT')
+            <button 
+                type="submit"
+                class="mt-3 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition flex items-center"
+            >
+                <i class="fas fa-times-circle mr-2"></i>
+                Cancel Report
+            </button>
+        </form>
+                    @else
+                        <button 
+                            @click="openModalId = {{ $luggage->id }}"
+                            class="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center"
+                        >
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            Mark as Lost
+                        </button>
+                    @endif
                 </div>
             </div>
-
         </div>
-   
+    @empty
+        <div class="col-span-full text-center bg-white/90 text-gray-600 rounded-2xl p-10 shadow-md">
+            <p class="text-lg font-medium">You haven't registered any luggages yet.</p>
+        </div>
+    @endforelse
 
+    <!-- Modals outside the cards, but inside same Alpine scope -->
+    @foreach ($luggages as $luggage)
+        <div
+            x-show="openModalId === {{ $luggage->id }}"
+            x-transition
+            x-cloak
+            @click.outside="openModalId = null"
+            class="fixed inset-0 flex items-center justify-center z-50"
+            style="background-color: rgba(0, 0, 0, 0.7); display: none;"
+        >
+            <div class="relative p-6 rounded-xl shadow-xl w-full max-w-2xl mx-auto max-h-[90vh] overflow-y-auto"
+                style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
 
-                @empty
-                    <div class="col-span-full text-center bg-white/90 text-gray-600 rounded-2xl p-10 shadow-md">
-                        <p class="text-lg font-medium">You haven’t registered any luggages yet.</p>
+                <button 
+                    @click="openModalId = null" 
+                    class="absolute top-2 right-4 text-gray-500 text-2xl hover:text-gray-700 cursor-pointer" 
+                    aria-label="Close modal"
+                >&times;</button>
+
+                <h1 class="text-2xl font-normal mb-6" style="color: #55372c;">Report Lost Luggage</h1>
+
+                <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
+                    <div>
+                        <h2 class="text-xl font-bold">Please provide details</h2>
+                        <p class="text-sm">Fill in the station and any comments about your lost luggage.</p>
+                    </div>
+                </div>
+
+                <form action="{{ route('luggage.markLost', ['luggage' => $luggage->id]) }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="text-black">
+                        <label for="lost_station_{{ $luggage->id }}" class="block font-medium mb-2">
+                            Lost Station <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="lost_station"
+                            id="lost_station_{{ $luggage->id }}"
+                            required
+                            class="w-full border rounded px-3 py-2"
+                            placeholder="Enter the station where luggage was lost"
+                        >
                     </div>
 
-                @endforelse
+                    <div class="text-black">
+                        <label for="comment_{{ $luggage->id }}" class="block font-medium mb-2">
+                            Comment <span class="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            name="comment"
+                            id="comment_{{ $luggage->id }}"
+                            required
+                            class="w-full border rounded px-3 py-2"
+                            placeholder="Add any additional details"
+                        ></textarea>
+                    </div>
 
+                    <!-- Date & Time Lost -->
+                    <div class="text-black">
+                        <label for="date_lost_{{ $luggage->id }}" class="block font-medium mb-2">
+                            Date & Time Lost <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="datetime-local" 
+                            name="date_lost" 
+                            id="date_lost_{{ $luggage->id }}" 
+                            required
+                            class="w-full border rounded px-3 py-2"
+                            value="{{ old('date_lost') }}"
+                        >
+                    </div>
+
+                    <button type="submit" class="w-full py-4 px-6 text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300" style="background-color: #55372c; color: #edede1;">
+                        Submit Report
+                    </button>
+                </form>
             </div>
+        </div>
+    @endforeach
+</div>
 
-           
             
         </main>
     </div>
 
-    <!-- Footer -->
-     @include('partials.footer')
+    @include('partials.footer')
 
-     <script>
+    <script>
         setTimeout(() => {
-            const alert = document.querySelector('.bg-green-100');
+            const alert = document.getElementById('success-alert');
             if (alert) {
                 alert.style.transition = 'opacity 0.5s ease';
                 alert.style.opacity = '0';
-
-                // Remove the element from DOM after fade-out
-                setTimeout(() => {
-                    alert.remove();
-                }, 500); // wait for fade-out transition to finish
+                setTimeout(() => alert.remove(), 500);
             }
-        }, 2000);
+        }, 3000);
     </script>
-
 </body>
 </html>
-

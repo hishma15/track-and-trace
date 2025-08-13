@@ -55,6 +55,13 @@ class StaffController extends Controller
         ]);
     }
 
+     // Show traveler profile form (with password change popup in view)
+    public function showProfileForm()
+    {
+        $user = auth()->user();
+        $staff = $user->staff;
+        return view('staff.staffprofile', compact('user', 'staff'));
+    }
     /**
      * Staff dashboard.
      */
