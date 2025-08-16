@@ -86,11 +86,12 @@
                     My Profile
                 </a>
 
-                <a href="#"
-                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'notifications' ? 'active' : '' }}">
-                    <i class="fas fa-bell w-5 h-5"></i>
-                    Notifications
-                </a>
+                <a href="{{ route('staff.notifications') }}"
+   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'notifications' ? 'active' : '' }}">
+    <i class="fas fa-bell w-5 h-5"></i>
+    Notifications
+</a>
+
 
                 <!-- <a href="#"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'about' ? 'active' : '' }}">

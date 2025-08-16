@@ -22,6 +22,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\LuggageController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\NotificationController;
+
 
 use App\Http\Controllers\QRScanController;
 
@@ -106,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('staff')->group(function () {
         Route::get('/dashboard', [StaffController::class, 'dashboard'])->name('staff.staffDashboard');
         Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
+        Route::get('/staff/notifications', [StaffController::class, 'notifications'])->name('staff.notifications');
 
 
     });
@@ -133,10 +136,14 @@ Route::middleware('auth')->group(function () {
     Route::prefix('luggage')->group(function () {
 
         // Luggage Registration Routes
+
+                Route::get('/luggage/{id}', [LuggageController::class, 'show'])->name('luggage.show');
+
         Route::get('/register', [LuggageController::class, 'create'])->name('luggage.create');
         Route::post('/register', [LuggageController::class, 'store'])->name('luggage.store');
 
         Route::get('/', [LuggageController::class, 'index'])->name('luggage.index'); 
+
 
         // Route::put('/luggages/{id}', [LuggageController::class, 'update'])->name('luggage.update');
         Route::put('/{id}', [LuggageController::class, 'update'])->name('luggage.update');
@@ -145,6 +152,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/traveler/report-lost-luggage', [LuggageController::class, 'reportlostluggage'])->name('traveler.reportlostluggage');
         Route::put('/{luggage}/mark-lost', [LuggageController::class, 'markLost'])->name('luggage.markLost');
         Route::put('/{luggage}/cancel-report', [LuggageController::class, 'cancelLostReport'])->name('luggage.cancelReport');
+        Route::get('/lost-luggage', [LuggageController::class, 'lostLuggage'])->name('lost.luggage');
+Route::get('/luggage/{id}', [LuggageController::class, 'show'])->name('luggage.show');
+// Lost luggage reports page
+Route::get('/lost-luggage-reports', [LuggageController::class, 'lostLuggageReports'])
+    ->name('lost.luggage.reports');
+
+
 
 
 
@@ -154,6 +168,10 @@ Route::middleware('auth')->group(function () {
             // QR Code routes
         Route::post('/luggage/{id}/generate-qr', [LuggageController::class, 'generateQrCode'])->name('luggage.generate-qr');
         Route::get('/luggage/{id}/download-qr', [LuggageController::class, 'downloadQrCode'])->name('luggage.download-qr');
+
+Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])
+     ->name('notifications.destroy');
 
 
 

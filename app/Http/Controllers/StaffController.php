@@ -68,7 +68,26 @@ class StaffController extends Controller
     public function dashboard()
     {
         return view('staff.staffDashboard');
+
     }
+
+public function notifications()
+{
+    // Fetch all notifications for the logged-in staff
+    $notifications = auth()->user()->notifications()
+        ->whereHas('luggage', function($query) {
+            $query->where('status', 'lost'); // Only fetch notifications for lost luggage
+        })
+        ->latest()
+        ->get();
+
+    return view('staff.notification', [
+        'notifications' => $notifications,
+        'active' => 'notifications'
+    ]);
+}
+
+
 
     /**
      * Staff logout.
