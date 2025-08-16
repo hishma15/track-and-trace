@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Luggage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Notification;
+use App\Models\Staff;
+
 
 use App\Models\QRCode as QRCodeModel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -51,12 +54,23 @@ class LuggageController extends Controller
         return view('traveler.myLuggage', compact('luggages'));
     }
 
-    public function reportlostluggage()
-    {
-        $travelerId = Auth::user()->traveler->id;
-        $luggages = Luggage::where('traveler_id', $travelerId)->get();
-        return view('Traveler.reportlostluggage',compact('luggages'));
+   public function reportlostluggage()
+{
+    $traveler = Auth::user()->traveler;
+
+    if (!$traveler) {
+        abort(403, 'You are not authorized as a traveler.');
     }
+
+    $luggages = Luggage::where('traveler_id', $traveler->id)->get();
+    return view('Traveler.reportlostluggage', compact('luggages'));
+}
+
+public function show($id)
+{
+    $luggage = Luggage::findOrFail($id);
+    return view('staff.luggageshow', compact('luggage'));
+}
 
     
     public function update(Request $request, $id)
@@ -96,22 +110,51 @@ class LuggageController extends Controller
 
     public function markLost(Request $request, Luggage $luggage)
 {
-    $validated = $request->validate([
-        'lost_station' => 'required|string|max:255',
-        'comment' => 'required|string',
-        'date_lost' => 'required|date',
+    $request->validate([
+       'data' => json_encode([
+    'traveler_name' => $luggage->traveler->user->first_name,
+    'lost_station' => $request->lost_station,
+    'traveler_comment' => $request->comment,
+]),
+
     ]);
 
+    // Update luggage
     $luggage->update([
-        'status' => 'Lost',
-        'lost_station' => $validated['lost_station'],
-        'comment' => $validated['comment'],
-        'date_lost' => $validated['date_lost'],  // save user-provided date/time
+        'lost_station' => $request->lost_station,
+        'comment' => $request->comment,
+        'date_lost' => $request->date_lost,
+        'status' => 'lost'
     ]);
 
-    return redirect()->back()->with('success', 'Luggage marked as lost successfully.');
+    // Find staff whose organization matches the lost_station
+    $staffs = Staff::where('organization', $request->lost_station)->get();
+
+    foreach ($staffs as $staff) {
+        // Create a notification record
+      
+            Notification::create([
+    'user_id' => $staff->user_id,
+    'luggage_id' => $luggage->id,
+    'notification_type' => 'lost_luggage',
+    'title' => 'New Lost Luggage Reported',
+    'message' => 'A luggage has been reported lost at ' . $request->lost_station,
+    'data' => json_encode([
+        'traveler_name' => $luggage->traveler->user->first_name,
+        'lost_station' => $request->lost_station,
+        'traveler_comment' => $request->comment, // <--- add this line
+    ]),
+    'is_read' => false,
+    'is_email_sent' => false,
+]);
+
+        // Optional: send email here if you want
+        // Mail::to($staff->user->email)->send(new LostLuggageMail($luggage));
+    }
+
+    return back()->with('success', 'Luggage reported as lost successfully!');
 }
-    public function cancelReport(Luggage $luggage)
+   public function cancelReport(Luggage $luggage)
     {
         $luggage->update([
             'status' => 'Safe', // or whatever status means not lost
@@ -123,7 +166,7 @@ class LuggageController extends Controller
         return redirect()->back()->with('success', 'Lost report cancelled successfully.');
     }
 
-    public function cancelLostReport(Luggage $luggage)
+   public function cancelLostReport(Luggage $luggage)
 {
     // Optionally validate ownership or permissions here
 
@@ -132,6 +175,27 @@ class LuggageController extends Controller
     return redirect()->back()->with('success', 'Lost report canceled, luggage marked as safe.');
 }
 
+
+
+public function lostLuggage()
+{
+    // Fetch all luggage where status is 'lost'
+    $luggages = Luggage::where('status', 'lost')->get();
+
+    // Pass it to the view
+    return view('Traveler.lostluggage', compact('luggages'));
+
+    return view('Traveler.lostluggage_reports', compact('luggages'));
+}
+
+public function lostLuggageReports()
+{
+    // Fetch all luggage marked as lost
+    $luggages = Luggage::where('status', 'lost')->get();
+
+    // Return the reports view
+    return view('Traveler.lostluggage_reports', compact('luggages'));
+}
 
     
     public function destroy($id)

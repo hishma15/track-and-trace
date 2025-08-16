@@ -112,13 +112,23 @@
                                 @enderror
                             </div>
 
-                            <div>
-                                <label class="block mb-1 font-medium" style="color: #55372c;">Organization</label>
-                                <input type="text" name="organization" value="{{ old('organization', $staff->organization) }}" class="w-full border rounded px-3 py-2" required>
-                                @error('organization')
-                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
+                           <div>
+    <label for="organization" class="block mb-1 font-medium" style="color: #55372c;">Organization</label>
+    @php
+    $selectedOrg = old('organization', $staff->organization);
+@endphp
+
+<select name="organization" id="organization" class="w-full border rounded px-3 py-2" required>
+    <option value="" disabled {{ $selectedOrg ? '' : 'selected' }}>Select an organization</option>
+    <option value="Kandy Railway Station" {{ $selectedOrg == 'Kandy Railway Station' ? 'selected' : '' }}>Kandy Railway Station</option>
+    <option value="Colombo fort Railway Station" {{ $selectedOrg == 'Colombo fort Railway Station' ? 'selected' : '' }}>Colombo fort Railway Station</option>
+    <option value="Maradana Railway Station" {{ $selectedOrg == 'Maradana Railway Station' ? 'selected' : '' }}>Maradana Railway Station</option>
+</select>
+
+    @error('organization')
+        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
                             <div>
                                 <label class="block mb-1 font-medium" style="color: #55372c;">Position</label>
