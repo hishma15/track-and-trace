@@ -142,7 +142,7 @@ class QRScanController extends Controller
                 Notification::create([
                     'user_id' => $luggage->traveler->user->id,
                     'luggage_id' => $luggage->id,
-                    'type' => 'luggage_found',
+                    'notification_type' => 'found_luggage',
                     'title' => 'Great News! Your Luggage Has Been Found',
                     'message' => "Your {$luggage->color} {$luggage->brand_type} luggage has been found by our staff. Please contact us to arrange collection.",
                     'is_read' => false,
