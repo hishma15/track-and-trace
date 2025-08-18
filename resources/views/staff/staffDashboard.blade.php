@@ -308,7 +308,7 @@
 
                             <!-- Edit Button -->
                             <div class="mt-8 flex justify-center">
-                                <a href="{{ route('traveler.profile.show') }}" class="flex items-center gap-2 bg-[#55372c] text-[#edede1] px-6 py-3 rounded-lg font-medium transition-all duration-200  hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">
+                                <a href="{{ route('staff.profile.show') }}" class="flex items-center gap-2 bg-[#55372c] text-[#edede1] px-6 py-3 rounded-lg font-medium transition-all duration-200  hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300">
                                     <span>EDIT DETAILS</span>
                                     <i class="fas fa-chevron-right text-sm"></i>
                                 </a>

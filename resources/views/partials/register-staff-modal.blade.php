@@ -91,12 +91,20 @@
                     >
                 </div>
 
-                <div>
-                    <label class="block mb-1 font-medium" style="color: #55372c;">Organization</label>
-                    <input type="text" name="organization" class="w-full border border-gray-300 rounded px-3 py-2 bg-white text-[#55372c]" 
-                        required 
-                    value="{{ old('organization') }}">
-                </div>
+            <div class="text-black">
+                    <label for="organization" class="block font-medium mb-2">
+                        Organization <span class="text-red-500">*</span>
+                    </label>
+                    <select name="organization" id="organization"
+                            required
+                            class="w-full border rounded px-3 py-2">
+                        <option value="" disabled {{ old('organization') ? '' : 'selected' }}>Select an organization</option>
+                        <option value="Kandy Railway Station" {{ old('organization') == 'Kandy Railway Station' ? 'selected' : '' }}>Kandy Railway Station</option>
+                        <option value="Colombo fort Railway Station" {{ old('organization') == 'Colombo fort Railway Station' ? 'selected' : '' }}>Colombo fort Railway Station</option>
+                        <option value="Maradana Railway Station" {{ old('organization') == 'Maradana Railway Station' ? 'selected' : '' }}>Maradana Railway Station</option>
+                    </select>
+            </div>
+
 
                 <div>
                     <label class="block mb-1 font-medium" style="color: #55372c;">Position</label>

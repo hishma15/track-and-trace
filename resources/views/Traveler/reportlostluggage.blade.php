@@ -120,19 +120,21 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="text-black">
-                        <label for="lost_station_{{ $luggage->id }}" class="block font-medium mb-2">
-                            Lost Station <span class="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="lost_station"
-                            id="lost_station_{{ $luggage->id }}"
-                            required
-                            class="w-full border rounded px-3 py-2"
-                            placeholder="Enter the station where luggage was lost"
-                        >
-                    </div>
+            <div class="text-black">
+                    <label for="organization" class="block font-medium mb-2">
+                        Organization <span class="text-red-500">*</span>
+                    </label>
+                    <select name="lost_station" id="organization" required
+        class="w-full border rounded px-3 py-2">
+    <option value="" disabled {{ old('lost_station') ? '' : 'selected' }}>Select an organization</option>
+    <option value="Kandy Railway Station" {{ old('lost_station') == 'Kandy Railway Station' ? 'selected' : '' }}>Kandy Railway Station</option>
+    <option value="Colombo fort Railway Station" {{ old('lost_station') == 'Colombo fort Railway Station' ? 'selected' : '' }}>Colombo fort Railway Station</option>
+    <option value="Maradana Railway Station" {{ old('lost_station') == 'Maradana Railway Station' ? 'selected' : '' }}>Maradana Railway Station</option>
+</select>
+
+            </div>
+
+
 
                     <div class="text-black">
                         <label for="comment_{{ $luggage->id }}" class="block font-medium mb-2">

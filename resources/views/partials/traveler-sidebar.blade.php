@@ -62,7 +62,7 @@
                     My Luggages
                 </a>
 
-                <a href="#"
+                <a href="{{ route('lost.luggage') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'lost-luggage' ? 'active' : '' }}">
                     <i class="fas fa-search w-5 h-5"></i>
                     Lost Luggage
@@ -74,7 +74,7 @@
                     Found Luggage
                 </a>
 
-                <a href="#"
+                <a href="{{route('lost.luggage.reports')}}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'reports' ? 'active' : '' }}">
                     <i class="fas fa-file-alt w-5 h-5"></i>
                     Total Reports

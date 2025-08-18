@@ -175,57 +175,60 @@ class QRScanController extends Controller
      * Get scan history for a specific luggage
      */
     public function getScanHistory($luggageId)
-    {
-        try {
-            if (!Auth::user() || !Auth::user()->staff) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized access'
-                ], 403);
-            }
+{
+    try {
+        $user = Auth::user();
 
-            $luggage = Luggage::find($luggageId);
-            
-            if (!$luggage) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Luggage not found'
-                ], 404);
-            }
+        $luggage = Luggage::find($luggageId);
 
-            $scanLogs = QRScanLog::where('luggage_id', $luggageId)
-                ->with('staff.user')
-                ->orderBy('scan_datetime', 'desc')
-                ->get()
-                ->map(function ($log) {
-                    return [
-                        'id' => $log->id,
-                        'action' => $log->action,
-                        'comment' => $log->comment,
-                        'scan_location' => $log->scan_location,
-                        'scan_datetime' => $log->scan_datetime->format('Y-m-d H:i:s'),
-                        'staff' => [
-                            'name' => $log->staff->user->first_name . ' ' . $log->staff->user->last_name,
-                            'email' => $log->staff->user->email,
-                        ]
-                    ];
-                });
-
-            return response()->json([
-                'success' => true,
-                'scan_logs' => $scanLogs
-            ]);
-
-        } catch (\Exception $e) {
+        if (!$luggage) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error retrieving scan history: ' . $e->getMessage()
-            ], 500);
+                'message' => 'Luggage not found'
+            ], 404);
         }
-    }
 
-    /**
-     * Get staff dashboard stats
+        // Allow traveler to see only their own luggage OR allow staff
+        if ($user->traveler && $luggage->traveler_id != $user->traveler->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized access'
+            ], 403);
+        }
+
+        $scanLogs = QRScanLog::where('luggage_id', $luggageId)
+            ->with('staff.user')
+            ->orderBy('scan_datetime', 'desc')
+            ->get()
+            ->map(function ($log) {
+                return [
+                    'id' => $log->id,
+                    'action' => $log->action,
+                    'comment' => $log->comment,
+                    'scan_location' => $log->scan_location,
+                    'scan_datetime' => $log->scan_datetime->format('Y-m-d H:i:s'),
+                    'staff' => $log->staff ? [
+                        'name' => $log->staff->user->first_name . ' ' . $log->staff->user->last_name,
+                        'email' => $log->staff->user->email,
+                    ] : null
+                ];
+            });
+
+        return response()->json([
+            'success' => true,
+            'scan_logs' => $scanLogs
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error retrieving scan history: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
+
+     /* Get staff dashboard stats
      */
     public function getStaffStats()
     {
