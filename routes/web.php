@@ -109,6 +109,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [StaffController::class, 'dashboard'])->name('staff.staffDashboard');
         Route::post('/logout', [StaffController::class, 'logout'])->name('staff.logout');
         Route::get('/staff/notifications', [StaffController::class, 'notifications'])->name('staff.notifications');
+        Route::get('/staff/lost-luggages', [LuggageController::class, 'staffLostLuggages'])
+    ->name('staff.lost_luggages')
+    ->middleware('auth');
 
 
     });
@@ -122,8 +125,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/staff/{id}/profile', [AdminController::class, 'updateProfile'])->name('staff.profile.update');
         Route::post('/admin/staff/{id}/password', [AdminController::class, 'updatePassword'])->name('staff.profile.updatePassword');
         Route::delete('/admin/staff/{id}/profile', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
-        Route::get('/admin/staff/{id}/profile', [AdminController::class, 'showStaff'])->name('staff.profile.show');
-        Route::get('/profile', [StaffController::class, 'showProfileForm'])->name('staff.profile.show');
+Route::get('/admin/staff/{id}/profile', [AdminController::class, 'showStaff'])
+    ->name('admin.staff.profile.show'); 
+
+Route::get('/profile', [StaffController::class, 'showProfileForm'])
+    ->name('staff.profile.show'); // unique name for staff
 
 
 

@@ -154,6 +154,24 @@ public function show($id)
 
     return back()->with('success', 'Luggage reported as lost successfully!');
 }
+
+
+public function staffLostLuggages()
+{
+    $staff = Auth::user()->staff;
+
+    if (!$staff) {
+        abort(403, 'Unauthorized.'); // in case a non-staff tries
+    }
+
+    // Fetch lost luggages for the staff's organization
+    $lostLuggages = Luggage::where('status', 'lost')
+        ->where('lost_station', $staff->organization)
+        ->get();
+
+    return view('staff.lost_luggages', compact('lostLuggages'));
+}
+
    public function cancelReport(Luggage $luggage)
     {
         $luggage->update([
