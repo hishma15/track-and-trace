@@ -5,6 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/app.css')
     <title>QR Code Scanner - Track N' Trace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -71,6 +72,27 @@
         .nav-item.active {
             background: rgba(139, 69, 19, 0.15);
             border-right: 3px solid #8B4513;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
         }
     </style>
 </head>
@@ -192,10 +214,6 @@
 
                 <!-- Luggage Info -->
                 <div class="lg:col-span-2 space-y-4">
-                    <!-- <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-track-brown">
-                        <div class="text-sm font-semibold text-track-brown mb-1">Luggage ID</div>
-                        <div class="text-gray-800" x-text="luggageData?.luggage?.id || '-'"></div>
-                    </div> -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-track-brown">
                             <div class="text-sm font-semibold text-track-brown mb-1">Color</div>
@@ -213,6 +231,13 @@
                     <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-track-brown">
                         <div class="text-sm font-semibold text-track-brown mb-1">Unique Features</div>
                         <div class="text-gray-800" x-text="luggageData?.luggage?.unique_features || 'No unique features listed'"></div>
+                    </div>
+                    <!-- Traveler's Lost Report Comment (if exists) -->
+                    <div x-show="luggageData?.luggage?.comment" class="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-400">
+                        <div class="text-sm font-semibold text-yellow-700 mb-1">
+                            <i class="fas fa-comment-alt mr-1"></i>Traveler's Lost Report Comment
+                        </div>
+                        <div class="text-gray-800" x-text="luggageData?.luggage?.comment || ''"></div>
                     </div>
                 </div>
             </div>
@@ -256,7 +281,7 @@
                 
                 <div class="flex justify-center gap-4">
                     <button x-show="luggageData?.luggage?.status !== 'Found'"
-                            @click="markAsFound()"
+                            @click="showMarkFoundModal = true"
                             :disabled="isProcessing"
                             class="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full font-semibold transition-all transform hover:-translate-y-1 disabled:opacity-50 disabled:transform-none">
                         <i class="fas fa-check mr-2"></i>Mark as Found
@@ -268,6 +293,95 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mark as Found Modal -->
+<div 
+    x-show="showMarkFoundModal"
+    x-transition
+    class="fixed inset-0 flex items-center justify-center z-50"
+    style="background-color: rgba(0, 0, 0, 0.7);"
+>
+    <!-- Modal Content -->
+    <div 
+        class="relative p-6 rounded-xl shadow-xl w-full max-w-2xl mx-auto max-h-[90vh] overflow-y-auto"
+        style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"
+        @click.stop
+    >
+        <!-- Close Button -->
+        <button @click="showMarkFoundModal = false" 
+                class="absolute top-2 right-4 text-gray-500 text-2xl hover:text-gray-700 cursor-pointer">&times;</button>
+
+        <!-- Modal Title -->
+        <h1 class="text-2xl font-normal mb-6" style="color: #55372c;">Mark Luggage as Found</h1>
+
+        <!-- Top Banner -->
+        <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
+            <div>
+                <h2 class="text-xl font-bold">Add Found Luggage Details</h2>
+                <p class="text-sm">Please provide where and when this luggage was found</p>
+            </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
+            
+            <!-- Found Location -->
+            <div>
+                <label class="block font-medium text-lg text-[#55372c] mb-2">
+                    <i class="fas fa-map-marker-alt mr-1"></i>Found Location <span class="text-red-500">*</span>
+                </label>
+                <input type="text" 
+                       x-model="foundLocation"
+                       placeholder="e.g., Terminal 2 - Gate A5, Baggage Claim Area 3"
+                       class="w-full border rounded px-3 py-2 focus:border-[#55372c] focus:outline-none">
+                <p class="text-xs text-gray-700 mt-1">Where exactly was this luggage found?</p>
+            </div>
+
+            <!-- Staff Comment -->
+            <div>
+                <label class="block font-medium text-lg text-[#55372c] mb-2">
+                    <i class="fas fa-comment mr-1"></i>Staff Comment <span class="text-gray-500">(Optional)</span>
+                </label>
+                <textarea x-model="staffComment"
+                          placeholder="e.g., Found near check-in counter, luggage appears to be in good condition..."
+                          rows="3"
+                          class="w-full border rounded px-3 py-2 focus:border-[#55372c] focus:outline-none resize-none"></textarea>
+            </div>
+
+            <!-- Current Date/Time -->
+            <div class="bg-gray-50 rounded-lg p-3">
+                <div class="text-sm font-semibold text-[#55372c] mb-1">
+                    <i class="fas fa-clock mr-1"></i>Found Date & Time
+                </div>
+                <div class="text-gray-700" 
+                     x-text="new Date().toLocaleString('en-US', {
+                         year: 'numeric',
+                         month: 'long', 
+                         day: 'numeric',
+                         hour: '2-digit',
+                         minute: '2-digit',
+                         hour12: true
+                     })"></div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 mt-6">
+                <button @click="showMarkFoundModal = false"
+                        class="flex-1 px-4 py-3 border-2 border-gray-700 text-gray-700 rounded-lg font-semibold hover:bg-gray-800 hover:text-gray-100 transition-colors">
+                    <i class="fas fa-times mr-2"></i>Cancel
+                </button>
+                <button @click="confirmMarkAsFound()"
+                        :disabled="isProcessing || !foundLocation.trim()"
+                        class="flex-1 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fas fa-check mr-2"></i>
+                    <span x-text="isProcessing ? 'Processing...' : 'Confirm Found'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+        
     </div>
 
             </div>
@@ -287,9 +401,12 @@
                 isScanning: false,
                 showCameraWarning: false,
                 showLuggageDetails: false,
+                showMarkFoundModal: false,
                 luggageData: null,
                 isProcessing: false,
                 html5QrcodeScanner: null,
+                foundLocation: '',
+                staffComment: '',
 
                 async toggleScanner() {
                     if (this.isScanning) {
@@ -437,12 +554,12 @@
                     }
                 },
 
-                async markAsFound() {
-                    if (!this.luggageData) return;
+                async confirmMarkAsFound() {
+                    if (!this.luggageData || !this.foundLocation.trim()) {
+                        this.showAlert('Please enter the found location', 'error');
+                        return;
+                    }
 
-                    const comment = prompt('Add a comment (optional):') || '';
-                    const location = prompt('Current location (optional):') || '';
-                    
                     this.isProcessing = true;
                     this.showAlert('Marking luggage as found...', 'info');
                     
@@ -455,8 +572,8 @@
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                             },
                             body: JSON.stringify({
-                                comment: comment,
-                                location: location
+                                comment: this.staffComment.trim() || null,
+                                location: this.foundLocation.trim()
                             })
                         });
 
@@ -464,6 +581,9 @@
                         
                         if (data.success) {
                             this.luggageData.luggage.status = 'Found';
+                            this.showMarkFoundModal = false;
+                            this.foundLocation = '';
+                            this.staffComment = '';
                             this.showAlert('Luggage successfully marked as found! Owner will be notified.', 'success');
                         } else {
                             this.showAlert('Error: ' + (data.message || 'Failed to mark as found'), 'error');
@@ -479,6 +599,8 @@
                 cancelScan() {
                     this.showLuggageDetails = false;
                     this.luggageData = null;
+                    this.foundLocation = '';
+                    this.staffComment = '';
                     this.showAlert('Scan cancelled', 'info');
                 },
 
