@@ -62,6 +62,13 @@ class StaffController extends Controller
         $staff = $user->staff;
         return view('staff.staffprofile', compact('user', 'staff'));
     }
+
+       public function showProfiledetails()
+    {
+        $user = auth()->user();
+        $staff = $user->staff;
+        return view('staff.staffprofile', compact('user', 'staff'));
+    }
     /**
      * Staff dashboard.
      */

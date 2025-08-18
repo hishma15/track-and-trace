@@ -51,7 +51,7 @@
             {{-- Navigation --}}
             <nav class="space-y-2">
                 <a href="{{ route('staff.staffDashboard') }}"
-                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'dashboard' ? 'active' : '' }}">
+                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'staffDashboard' ? 'active' : '' }}">
                     <i class="fas fa-home w-5 h-5"></i>
                     Dashboard
                 </a>
@@ -62,7 +62,7 @@
                     Report [Scan QR Code]
                 </a>
 
-                <a href="#"
+                <a href="{{route('staff.lost_luggages')}}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'lost-luggage' ? 'active' : '' }}">
                     <i class="fas fa-search w-5 h-5"></i>
                     Lost Luggage
@@ -80,7 +80,7 @@
                     Total Reports
                 </a>
 
-                <a href="#"
+                <a href="{{route('staff.profile.show')}}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'profile' ? 'active' : '' }}">
                     <i class="fas fa-user w-5 h-5"></i>
                     My Profile

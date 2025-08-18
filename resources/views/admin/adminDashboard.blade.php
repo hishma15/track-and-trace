@@ -121,7 +121,7 @@
                     <p class="text-gray-600">{{ $member->organization }}</p>
                                     </div>
                                 </div>
-                                <a href="{{ route('admin.staff.show', $member->id) }}" class="text-amber-800 font-medium hover:underline flex items-center">
+                                <a href="{{ route('admin.staff.profile.show', $member->id) }}" class="text-amber-800 font-medium hover:underline flex items-center">
     <i class="fas fa-chevron-right mr-2"></i>See Details
 </a>
 
