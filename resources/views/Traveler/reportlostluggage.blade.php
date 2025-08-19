@@ -33,7 +33,7 @@
 
         <main class="flex-1 overflow-hidden">
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
-                <h1 class="text-2xl font-semibold text-[#55372c]">My Luggages</h1>
+                <h1 class="text-2xl font-semibold text-[#55372c]">Report Lost Luggage</h1>
             </header>
 
             @if(session('success'))

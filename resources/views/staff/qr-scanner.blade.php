@@ -332,9 +332,8 @@
                 </label>
                 <input type="text" 
                        x-model="foundLocation"
-                       placeholder="e.g., Terminal 2 - Gate A5, Baggage Claim Area 3"
                        class="w-full border rounded px-3 py-2 focus:border-[#55372c] focus:outline-none">
-                <p class="text-xs text-gray-700 mt-1">Where exactly was this luggage found?</p>
+                <!-- <p class="text-xs text-gray-700 mt-1">Where exactly was this luggage found?</p> -->
             </div>
 
             <!-- Staff Comment -->
@@ -343,7 +342,6 @@
                     <i class="fas fa-comment mr-1"></i>Staff Comment <span class="text-gray-500">(Optional)</span>
                 </label>
                 <textarea x-model="staffComment"
-                          placeholder="e.g., Found near check-in counter, luggage appears to be in good condition..."
                           rows="3"
                           class="w-full border rounded px-3 py-2 focus:border-[#55372c] focus:outline-none resize-none"></textarea>
             </div>
@@ -513,7 +511,7 @@
                         }
                         this.fetchLuggageDetails(luggageId);
                     } else {
-                        this.showAlert('Invalid QR code format', 'error');
+                        this.showAlert('Invalid QR code. Please try again with Valid QR Code.', 'error');
                     }
                 },
 
