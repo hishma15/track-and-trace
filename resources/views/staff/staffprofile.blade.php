@@ -39,7 +39,7 @@
     style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"
 >
     <div class="flex min-h-screen">
-        @include('partials.staff-sidebar', ['active' => 'staff-profile'])
+        @include('partials.admin-sidebar', ['active' => 'staff-profile'])
 
         <main class="flex-1 overflow-hidden">
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
