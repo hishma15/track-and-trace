@@ -110,7 +110,8 @@
                                 <h2 class="text-3xl font-bold mb-2">Welcome to Track N' Trace.</h2>
                                 <p class="text-lg mb-6 opacity-90">QR Based Lost Luggage management system</p>
                                 
-                                <!--  -->
+                                <!--
+                                SPRINT 3 CHANGES HAS DONE SUCCESSFULLY  -->
                             </div>
 
                         </div>
