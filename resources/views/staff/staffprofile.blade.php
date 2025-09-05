@@ -39,29 +39,58 @@
     style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;"
 >
     <div class="flex min-h-screen">
-        @include('partials.admin-sidebar', ['active' => 'staff-profile'])
+        @include('partials.staff-sidebar', ['active' => 'staff-profile'])
 
         <main class="flex-1 overflow-hidden">
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-semibold text-[#55372c]">Staff Profile</h1>
                 </div>
+                
             </header>
 
-            @if(session('password_success'))
-            <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 max-w-md mx-auto mt-6">
-                {{ session('password_success') }}
-            </div>
-            @endif
 
-            @if(session('success'))
-            <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 max-w-md mx-auto mt-6">
-                {{ session('success') }}
-            </div>
-            @endif
+            <div class="p-8 overflow-y-auto">
+            <!-- Intro Section (like brown top box) -->
+                <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
+                    <div>
+                        <h2 class="text-xl font-bold">Update Profile</h2>
+                        <p class="text-sm">You cannot edit your personal details. Please Contact Admin.</p>
+                    </div>
+                    {{-- 2FA Enabling --}}
+                    <form action="{{ route('staff.toggle-2fa') }}" method="POST" class="mt-6">
+                        @csrf
+                        <button type="submit"
+                            class="relative inline-flex h-6 w-12 items-center rounded-full transition-colors focus:outline-none
+                                {{ auth()->user()->staff?->two_factor_enabled ? 'bg-green-500' : 'bg-gray-300' }}">
+                            <span class="sr-only">Toggle OTP Verification (2FA)</span>
+                            <span class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform
+                                {{ auth()->user()->staff?->two_factor_enabled ? 'translate-x-6' : 'translate-x-1' }}">
+                            </span>
+                        </button>
+                        <span class="ml-3 text-[#edede1] font-medium">Enable OTP Verification (2FA)</span>
+                    </form>
+
+
+
+                    <!-- <img src="{{ asset('images/luggage-icon.png') }}" alt="Luggage" class="w-24 h-auto"> -->
+                </div>
 
             <form action="{{ route('staff.profile.update', $staff->id) }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
                 @csrf
+
+                @if(session('password_success'))
+                <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 max-w-md mx-auto mt-6">
+                    {{ session('password_success') }}
+                </div>
+                @endif
+
+                @if(session('success'))
+                <div class="bg-green-100 text-green-700 border border-green-300 p-3 rounded mb-4 max-w-md mx-auto mt-6">
+                    {{ session('success') }}
+                </div>
+                @endif
+                
 
                 <div class="p-8 overflow-y-auto max-w-4xl mx-auto">
                     <div class="rounded-xl bg-[#edede1]/90 shadow-md p-8 space-y-6">
@@ -275,13 +304,13 @@
                         class="bg-[#edede1] rounded-lg shadow-lg max-w-md w-full p-6"
                     >
                         <h2 class="text-xl font-bold mb-4 text-[#55372c]">
-                            Confirm Delete Account
+                            Sorry
                         </h2>
                         <p class="mb-6 text-gray-700">
-                            Are you sure you want to delete your account? This action cannot be undone.
+                            Account deletion is not allowed by users. Please reach out to the admin for assistance
                         </p>
 
-                        <form method="POST" action="{{ route('staff.profile.destroy', $staff->id) }}">
+                        <!-- <form method="POST" action="{{ route('staff.profile.destroy', $staff->id) }}">
                             @csrf
                             @method('DELETE')
 
@@ -299,15 +328,30 @@
                                 >
                                     Delete Account
                                 </button>
-                            </div>
+                            </div> -->
                         </form>
                     </div>
                 </div>
 
+            </div>
             </div>
         </main>
     </div>
 
     @include('partials.footer')
 </body>
+<script>
+    // Success message auto-hide
+setTimeout(() => {
+    const alert = document.querySelector('.bg-green-100');
+    if (alert) {
+        alert.style.transition = 'opacity 0.5s ease';
+        alert.style.opacity = '0';
+
+        setTimeout(() => {
+            alert.remove();
+        }, 500);
+    }
+}, 2000);
+</script>
 </html>

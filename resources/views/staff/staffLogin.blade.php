@@ -93,6 +93,15 @@
                             </div>
                         </div>
 
+                        <!-- Forgot Password Link -->
+                        <div class="flex justify-end">
+                            
+                            <a href="{{ route('staff.password.request') }}" class="text-gray-600 hover:text-gray-800 text-lg">
+                                Forgot Password?
+                            </a>
+                           
+                        </div>
+
                         <!-- Submit -->
                         <div class="pt-4">
                             <button 
@@ -104,12 +113,12 @@
                             </button>
                         </div>
 
-                        <!-- Create Account -->
+                        {{-- <!-- Create Account -->
                         <div class="text-center pt-4">
                             <a href="{{ route('staff.register') }}" class="text-lg sm:text-xl font-semibold hover:underline" style="color: #55372c;">
                                 Create Account
                             </a>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>

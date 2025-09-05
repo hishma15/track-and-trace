@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Traveler;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+
 class TravelerController extends Controller
 {
     
@@ -110,17 +113,69 @@ class TravelerController extends Controller
                 'login' => 'Incorrect password. Please try again.',
             ]);
         }
-        // Success
-        $request->session()->regenerate();
-        return redirect()->intended(route('traveler.travelerDashboard'))->with('success', 'Login successful');
+
+        // Handle login
+        if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
+            $user = Auth::user();
+
+            // Only send OTP if traveler enabled 2FA
+            if ($user->role === 'Traveler' && $user->traveler?->two_factor_enabled){
+                $otp = rand(100000, 999999);
+                $user->update([
+                    'otp_code' => $otp,
+                    'otp_expires_at' => Carbon::now()->addMinutes(5),
+                    'is_otp_verified' => false,
+                ]);
+
+                // Send OTP via email
+                Mail::raw("Your OTP is: $otp", function ($message) use ($user) {
+                    $message->to($user->email)->subject('Your Traveler OTP');
+                });
+
+                $request->session()->regenerate();
+                return redirect()->route('traveler.verify-otp')->with('status', 'OTP sent to your email.');
+            }
+
+            // If 2FA is disabled → login directly
+            $request->session()->regenerate();
+            return redirect()->intended(route('traveler.travelerDashboard'))->with('success', 'Login successful');
+    
+
+        }
+
+        
+        // // Success
+        // $request->session()->regenerate();
+        // return redirect()->intended(route('traveler.travelerDashboard'))->with('success', 'Login successful');
     }
+
+    // 2FA enabling
+    public function toggle2FA(Request $request)
+{
+    $traveler = Auth::user()->traveler;
+
+    if (!$traveler) {
+        return back()->withErrors(['error' => 'Traveler profile not found.']);
+    }
+
+    $traveler->two_factor_enabled = !$traveler->two_factor_enabled;
+    $traveler->save();
+
+    return back()->with('success', $traveler->two_factor_enabled
+        ? 'Two-factor authentication enabled.'
+        : 'Two-factor authentication disabled.');
+}
+
 
     /**
      * Show traveler dashboard
      */
     public function dashboard()
     {
-        return view('traveler.travelerDashboard');
+        if (Auth::check() && Auth::user()->role === 'Traveler' && Auth::user()->is_otp_verified) {
+            return view('traveler.travelerDashboard');
+        }
+        return redirect()->route('traveler.otp.verify')->withErrors(['otp' => 'Please verify OTP first.']);
     }
 
     // Show traveler profile form (with password change popup in view)
@@ -208,6 +263,56 @@ class TravelerController extends Controller
         $user->delete();
 
         return redirect('/')->with('success', 'Your account has been deleted.');
+    }
+
+
+
+
+    public function showOtpForm()
+    {
+        return view('traveler.verifyOtp');
+    }
+
+    public function verifyOtp(Request $request)
+    {
+        $request->validate(['otp' => 'required|numeric']);
+
+        $user = Auth::user();
+
+        if ($user->otp_code == $request->otp && $user->otp_expires_at->isFuture()) {
+            $user->update(['is_otp_verified' => true]);
+            return redirect()->route('traveler.travelerDashboard')->with('success', 'OTP verified successfully.');
+        }
+
+        return back()->withErrors(['otp' => 'Invalid or expired OTP.']);
+    }
+
+    public function resendOtp()
+    {
+        $user = Auth::user();
+
+        // Only allow if user is an admin
+        if ($user->role !== 'Traveler') {
+            Auth::logout();
+            return redirect()->route('traveler.travelerLogin')->withErrors(['login' => 'Unauthorized']);
+        }
+
+        // Generate new OTP
+        $otp = rand(100000, 999999);
+
+        $user->update([
+            'otp_code' => $otp,
+            'otp_expires_at' => Carbon::now()->addMinutes(5),
+            'is_otp_verified' => false,
+        ]);
+
+        // Send OTP via email (or log it)
+        Mail::raw("Your new OTP is: $otp", function($message) use ($user) {
+            $message->to($user->email)->subject('Your Traveler OTP');
+        });
+
+        return redirect()->route('traveler.verify-otp')
+            ->with('status', 'A new OTP has been sent to your email.');
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Luggage extends Model
 {
@@ -34,7 +35,6 @@ class Luggage extends Model
     }
 
     //Relationships
-
     public function traveler()
     {
         return $this->belongsTo(Traveler::class);
@@ -89,15 +89,12 @@ class Luggage extends Model
     }
 
     public function markAsSafe()
-{
-    $this->update([
-        'status' => 'Safe',
-        'lost_station' => null,
-        'date_lost' => null,
-        'comment' => null,
-    ]);
-}
-
-
-
+    {
+        $this->update([
+            'status' => 'Safe',
+            'lost_station' => null,
+            'date_lost' => null,
+            'comment' => null,
+        ]);
+    }
 }

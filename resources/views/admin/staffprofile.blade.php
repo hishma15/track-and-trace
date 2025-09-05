@@ -174,7 +174,7 @@
             >
                 <div class="flex justify-center gap-4 mb-6">
                     <button @click="open = true; deleteOpen = false" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded transition">
-                        Change Password
+                        Reset Password
                     </button>
 
                     <button @click="deleteOpen = true; open = false" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded transition">
@@ -182,99 +182,32 @@
                     </button>
                 </div>
 
-                <div
-                    x-show="open"
-                    x-cloak
-                    class="fixed inset-0 flex items-center justify-center z-50"
-                    style="background-color: rgba(0, 0, 0, 0.70);"
-                >
-                    <div
-                        @click.away="open = false"
-                        class="bg-[#edede1] rounded-lg shadow-lg max-w-md w-full p-6"
-                    >
-                        <h2 class="text-xl font-bold mb-4 text-[#55372c]">
-                            Change Password
-                        </h2>
+                <!-- Modal -->
+<div x-show="open" x-cloak class="fixed inset-0 flex items-center justify-center z-50" style="background-color: rgba(0,0,0,0.7);">
+    <div @click.away="open = false" class="bg-[#edede1] rounded-lg shadow-lg max-w-md w-full p-6">
+        <h2 class="text-xl font-bold mb-4 text-[#55372c]">Reset Password</h2>
 
-                        <form
-                            action="{{ route('staff.profile.updatePassword', $staff->id) }}"
-                            method="POST"
-                            class="space-y-4"
-                        >
-                            @csrf
+        <form action="{{ route('staff.profile.resetPassword', $staff->id) }}" method="POST" class="space-y-4">
+            @csrf
 
-                            <div>
-                                <label
-                                    for="current_password"
-                                    class="block font-medium text-[#55372c] mb-1"
-                                >Current Password</label>
-                                <input
-                                    id="current_password"
-                                    name="current_password"
-                                    type="password"
-                                    required
-                                    class="w-full border border-gray-300 rounded px-3 py-2"
-                                />
-                                @error('current_password')
-                                    <p class="text-red-600 text-sm mt-1">
-                                        {{ $message }}
-                                    </p>
-                                @enderror
-                            </div>
+            <div>
+                <label for="new_password" class="block font-medium text-[#55372c] mb-1">New Password</label>
+                <input id="new_password" name="new_password" type="password" required minlength="6" class="w-full border border-gray-300 rounded px-3 py-2">
+                @error('new_password') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+            </div>
 
-                            <div>
-                                <label
-                                    for="new_password"
-                                    class="block font-medium text-[#55372c] mb-1"
-                                >New Password</label>
-                                <input
-                                    id="new_password"
-                                    name="new_password"
-                                    type="password"
-                                    required
-                                    minlength="6"
-                                    class="w-full border border-gray-300 rounded px-3 py-2"
-                                />
-                                @error('new_password')
-                                    <p class="text-red-600 text-sm mt-1">
-                                        {{ $message }}
-                                    </p>
-                                @enderror
-                            </div>
+            <div>
+                <label for="new_password_confirmation" class="block font-medium text-[#55372c] mb-1">Confirm Password</label>
+                <input id="new_password_confirmation" name="new_password_confirmation" type="password" required minlength="6" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
 
-                            <div>
-                                <label
-                                    for="new_password_confirmation"
-                                    class="block font-medium text-[#55372c] mb-1"
-                                >Confirm New Password</label>
-                                <input
-                                    id="new_password_confirmation"
-                                    name="new_password_confirmation"
-                                    type="password"
-                                    required
-                                    minlength="6"
-                                    class="w-full border border-gray-300 rounded px-3 py-2"
-                                />
-                            </div>
-
-                            <div class="flex justify-end gap-2 mt-4">
-                                <button
-                                    type="button"
-                                    @click="open = false"
-                                    class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    class="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white transition"
-                                >
-                                    Update Password
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="flex justify-end gap-2 mt-4">
+                <button type="button" @click="open = false" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition">Cancel</button>
+                <button type="submit" class="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white transition">Reset Password</button>
+            </div>
+        </form>
+    </div>
+</div>
 
                 <div
                     x-show="deleteOpen"

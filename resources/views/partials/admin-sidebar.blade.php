@@ -56,9 +56,16 @@
                     Dashboard
                 </a>
 
-                <a href="#" class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium">
+                <a href="{{ route('statistics') }}" 
+                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'discover' ? 'active' : '' }}">
                         <i class="fas fa-compass w-5 h-5"></i>
                         Discover
+                </a>
+
+                <a href="{{ route('staff.manage') }}"
+                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'notifications' ? 'active' : '' }}">
+                    <i class="fas fa-bell w-5 h-5"></i>
+                    Manage Staff
                 </a>
 
                 <a href="#"
@@ -77,13 +84,6 @@
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'reports' ? 'active' : '' }}">
                     <i class="fas fa-file-alt w-5 h-5"></i>
                     Total Reports
-                </a>
-
-
-                <a href="#"
-                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'notifications' ? 'active' : '' }}">
-                    <i class="fas fa-bell w-5 h-5"></i>
-                    Notifications
                 </a>
 
                 <!-- <a href="#"

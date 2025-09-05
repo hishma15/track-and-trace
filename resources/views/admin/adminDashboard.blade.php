@@ -38,11 +38,11 @@
 </head>
 
 <body class="min-h-screen" style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
-    <div class="flex min-h-screen">
+    <!-- Wrap everything in Alpine.js context -->
+    <div x-data="registerStaffModal()" class="flex min-h-screen">
         
         <!-- Sidebar -->
         @include('partials.admin-sidebar', ['active' => 'dashboard'])
-
 
         <!-- Main Content -->
         <main class="flex-1 overflow-hidden">
@@ -50,8 +50,6 @@
             <header class="bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
                 <div class="flex items-center justify-between">
                     <h1 class="text-2xl font-semibold text-[#55372c]">Admin Dashboard</h1>
-                    
-
                 </div>
             </header>
 
@@ -78,17 +76,14 @@
                                     <a href="#" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
                                         Reports
                                     </a>
-                                   <button
-                                            id="openRegisterStaffModalBtn"
-                                            class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition"
-                                            type="button"
-                                        >
-                                            Manage Staff
-                                        </button>
-
-@include('partials.register-staff-modal')
-
-
+                                    <!-- Updated button with Alpine.js click handler -->
+                                    <button
+                                        @click="openModal = true"
+                                        class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition"
+                                        type="button"
+                                    >
+                                        Manage Staff
+                                    </button>
                                 </div>
                             </div>
                             <!-- Train illustration -->
@@ -104,13 +99,9 @@
                             </a>
                         </div>
 
-                        
-
-
-                        <!-- Station Cards Grid --->
+                        <!-- Station Cards Grid -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-    @foreach($staff as $member)
+                            @foreach($staff as $member)
                             <div class="station-card bg-white/80 backdrop-blur-sm rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:shadow-lg">
                                 <div class="flex items-center gap-4 mb-4">
                                     <div class="w-16 h-16 bg-gradient-to-br from-sky-400 to-blue-600 rounded-full flex items-center justify-center">
@@ -118,19 +109,16 @@
                                     </div>
                                     <div>
                                         <p>{{ $member->user ? $member->user->first_name : 'User not loaded' }}</p>
-                    <p class="text-gray-600">{{ $member->organization }}</p>
+                                        <p class="text-gray-600">{{ $member->organization }}</p>
                                     </div>
                                 </div>
                                 <a href="{{ route('admin.staff.profile.show', $member->id) }}" class="text-amber-800 font-medium hover:underline flex items-center">
-    <i class="fas fa-chevron-right mr-2"></i>See Details
-</a>
-
-        
+                                    <i class="fas fa-chevron-right mr-2"></i>See Details
+                                </a>
                             </div>
                             @endforeach
                         </div>
                     </div>
-                    
                     
                     <!-- Right Column - Lost and Found Reports -->
                     <div class="lg:col-span-1">
@@ -183,6 +171,9 @@
                 </div>
             </div>
         </main>
+
+        <!-- Include the modal (it will use the same Alpine.js context) -->
+        @include('partials.register-staff-modal')
     </div>
 
     <footer class="bg-gray-100 border-t py-6 text-center text-sm text-gray-600">
@@ -208,6 +199,13 @@
                 }, 500);
             }
         }, 3000);
+
+        // Register Staff Modal Function
+        function registerStaffModal() {
+            return {
+                openModal: {{ $errors->any() ? 'true' : 'false' }}, // Keep modal open if errors exist
+            }
+        }
     </script>
 </body>
 </html>

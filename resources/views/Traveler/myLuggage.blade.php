@@ -111,6 +111,7 @@
         qrModalOpen: false, 
         currentLuggageId: null, 
         qrImageUrl: '', 
+        currentUniqueCode: '',
         generatingLuggageIds: [] 
     }" class="flex min-h-screen">
         
@@ -304,59 +305,63 @@
         </main>
 
         <!-- QR Code Modal -->
-        <div x-show="qrModalOpen" 
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-in duration-200"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="fixed inset-0 z-50 flex items-center justify-center qr-modal"
-             @click.away="qrModalOpen = false">
-            
-            <div class="qr-content p-6 mx-4 max-w-2xl w-full relative">
-                <!-- Close Button -->
-                <button @click="qrModalOpen = false" 
-                        class="absolute top-2 right-4 text-gray-500 text-2xl hover:text-gray-700 cursor-pointer z-10">
-                    &times;
-                </button>
-
-                <!-- Header Section -->
-                
-                <div style="color: #55372c;">
-                    <h2 class="text-2xl font-normal mb-6" style="color: #55372c;">QR Code Generator</h2>
-                    
-                </div>
-                
-
-                <!-- QR Code Container -->
-                <div class="bg-[#edede1]/80 p-6 rounded-lg">
-
-                
-                    <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
-                        <div>
-                            <h2 class="text-xl font-bold">Download your QR Code from  here.</h2>
-                            <p class="text-sm">Please note that it is the traveler's responsibility to print and securely attach the QR code to their luggage prior to travel.</p>
-                        </div>
-                    </div>
-
-                    <!-- QR Code Display -->
-                    <div class="qr-image-container mb-6 text-center">
-                        <div class="flex justify-center">
-                            <div :id="'qr-container-' + currentLuggageId" x-html="qrImageUrl" class="inline-block"></div>
-                        </div>
-
-                        <!-- Download Button -->
-                        <button 
-                            @click="downloadPNG(currentLuggageId)"
-                            class="mt-6 download-btn px-8 py-3 text-white font-semibold rounded-full text-lg"
-                        >
-                            Download QR
-                        </button>
-                    </div>
+        <!-- QR Code Modal -->
+<div x-show="qrModalOpen" 
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0"
+     x-transition:enter-end="opacity-100"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-50 flex items-center justify-center qr-modal"
+     @click.away="qrModalOpen = false">
+    
+    <div class="qr-content p-6 mx-4 max-w-2xl w-full relative">
+        <!-- Close Button -->
+        <button @click="qrModalOpen = false" 
+                class="absolute top-2 right-4 text-gray-500 text-2xl hover:text-gray-700 cursor-pointer z-10">
+            &times;
+        </button>
+        
+        <!-- Header Section -->
+        <div style="color: #55372c;">
+            <h2 class="text-2xl font-normal mb-6" style="color: #55372c;">QR Code Generator</h2>
+        </div>
+        
+        <!-- QR Code Container -->
+        <div class="bg-[#edede1]/80 p-6 rounded-lg">
+            <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
+                <div>
+                    <h2 class="text-xl font-bold">Download your QR Code from here.</h2>
+                    <p class="text-sm">Please note that it is the traveler's responsibility to print and securely attach the QR code to their luggage prior to travel.</p>
                 </div>
             </div>
+            
+            <!-- QR Code Display -->
+            <div class="qr-image-container mb-6 text-center">
+                <!-- QR Code -->
+                <div class="flex justify-center mb-4">
+                    <div :id="'qr-container-' + currentLuggageId" x-html="qrImageUrl" class="inline-block"></div>
+                </div>
+                
+                <!-- Unique Code Display -->
+                <div class="bg-white p-4 rounded-lg border-2 border-dashed border-gray-400 mb-4 mx-auto max-w-md">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">Unique Code:</p>
+                    <p class="text-2xl font-bold text-[#55372c] tracking-wider" x-text="currentUniqueCode || 'Loading...'"></p>
+                    <p class="text-xs text-gray-500 mt-2">Use this code for manual luggage lookup</p>
+                </div>
+                
+                <!-- Download Button -->
+                <button 
+                    @click="downloadPNG(currentLuggageId)"
+                    class="mt-4 download-btn px-8 py-3 text-white font-semibold rounded-full text-lg"
+                >
+                    Download QR Code & Unique Code
+                </button>
+            </div>
         </div>
+    </div>
+</div>
     </div>
 
     <!-- Footer -->
@@ -407,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function() {
         mainComponent.generatingLuggageIds.push(luggageId);
         mainComponent.currentLuggageId = luggageId;
 
-        fetch(`/luggage/${luggageId}/generate-qr`, {
+        fetch(`/traveler/luggage/${luggageId}/generate-qr`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -426,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Response data:', data);
             if (data.success) {
                 mainComponent.qrImageUrl = data.qr_svg;
+                mainComponent.currentUniqueCode = data.unique_code; // Set the unique code
                 
                 // Wait for Alpine.js to render the SVG before opening modal
                 waitForSvgRender(luggageId, () => {
@@ -449,9 +455,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Make downloadPNG function globally available
+    // Make downloadPNG function globally available - Enhanced version
     window.downloadPNG = function(luggageId) {
         console.log('Attempting to download PNG for luggage ID:', luggageId);
+        
+        // Get the main Alpine component to access the unique code
+        const mainComponent = Alpine.$data(document.querySelector('[x-data*="qrModalOpen"]'));
+        const uniqueCode = mainComponent.currentUniqueCode;
         
         const container = document.getElementById(`qr-container-${luggageId}`);
         if (!container) {
@@ -463,107 +473,86 @@ document.addEventListener('DOMContentLoaded', function() {
         const svg = container.querySelector('svg');
         if (!svg) {
             console.error('SVG not found in container for ID:', luggageId);
-            
-            // Get the main Alpine component and close the modal
-            const mainComponent = Alpine.$data(document.querySelector('[x-data*="qrModalOpen"]'));
             mainComponent.qrModalOpen = false;
-            
-            // Show alert and suggest trying again
             alert('QR code is not ready yet. Please click "Generate QR" again to retry.');
             return;
         }
-
-        performPngDownload(luggageId, svg);
+        
+        performEnhancedPngDownload(luggageId, svg, uniqueCode);
     };
 
-    // Separate function to perform the actual PNG download
-    function performPngDownload(luggageId, svg) {
-        console.log('SVG found, starting conversion...');
+    // Enhanced function to create a comprehensive downloadable image
+    function performEnhancedPngDownload(luggageId, svg, uniqueCode) {
+    const svgWidth = parseInt(svg.getAttribute('width')) || parseInt(svg.viewBox?.baseVal.width) || 300;
+    const svgHeight = parseInt(svg.getAttribute('height')) || parseInt(svg.viewBox?.baseVal.height) || 300;
+    
+    const scale = 3; // higher resolution
+    const padding = 50 * scale;
+    const textHeight = 120 * scale;
 
-        try {
-            // Get SVG dimensions or set default
-            const svgWidth = svg.getAttribute('width') || svg.viewBox?.baseVal.width || 300;
-            const svgHeight = svg.getAttribute('height') || svg.viewBox?.baseVal.height || 300;
-            
-            // Create a new SVG with explicit dimensions and white background
-            const svgClone = svg.cloneNode(true);
-            svgClone.setAttribute('width', svgWidth);
-            svgClone.setAttribute('height', svgHeight);
-            
-            // Add white background rectangle if it doesn't exist
-            const hasBackground = svgClone.querySelector('rect[fill="white"], rect[fill="#ffffff"]');
-            if (!hasBackground) {
-                const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                bgRect.setAttribute('width', '100%');
-                bgRect.setAttribute('height', '100%');
-                bgRect.setAttribute('fill', 'white');
-                svgClone.insertBefore(bgRect, svgClone.firstChild);
-            }
+    const canvas = document.getElementById('qr-canvas');
+    canvas.width = svgWidth * scale + padding * 2;
+    canvas.height = svgHeight * scale + textHeight + padding;
+    const ctx = canvas.getContext('2d');
 
-            const svgData = new XMLSerializer().serializeToString(svgClone);
-            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(svgBlob);
+    // white background
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            const img = new Image();
-            img.onload = function() {
-                console.log('Image loaded, creating canvas...');
-                
-                const canvas = document.getElementById('qr-canvas');
-                if (!canvas) {
-                    console.error('Canvas element not found');
-                    alert('Canvas element not found');
-                    URL.revokeObjectURL(url);
-                    return;
-                }
-                
-                // Set canvas size (make it larger for better quality)
-                const scale = 2; // 2x scale for better quality
-                canvas.width = parseInt(svgWidth) * scale;
-                canvas.height = parseInt(svgHeight) * scale;
+    // SVG to image
+    const svgClone = svg.cloneNode(true);
+    svgClone.setAttribute('width', svgWidth);
+    svgClone.setAttribute('height', svgHeight);
 
-                const ctx = canvas.getContext('2d');
-                
-                // Fill with white background first
-                ctx.fillStyle = 'white';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // Scale the context for better quality
-                ctx.scale(scale, scale);
-                
-                // Draw the SVG image
-                ctx.drawImage(img, 0, 0, parseInt(svgWidth), parseInt(svgHeight));
+    const svgData = new XMLSerializer().serializeToString(svgClone);
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(svgBlob);
+    const img = new Image();
 
-                // Convert to PNG and download
-                canvas.toBlob(function(blob) {
-                    const pngUrl = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = pngUrl;
-                    a.download = `luggage-qr-${luggageId}.png`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    
-                    // Clean up URLs
-                    URL.revokeObjectURL(pngUrl);
-                    URL.revokeObjectURL(url);
-                    
-                    console.log('PNG download completed successfully');
-                }, 'image/png', 1.0);
-            };
-            
-            img.onerror = function() {
-                console.error('Failed to load SVG as image');
-                alert('Failed to convert SVG to image');
-                URL.revokeObjectURL(url);
-            };
-            
-            img.src = url;
-            
-        } catch (error) {
-            console.error('Error during PNG conversion:', error);
-            alert('Error occurred during PNG conversion: ' + error.message);
-        }
-    }
+    img.onload = function() {
+        // draw QR centered
+        const qrX = (canvas.width - svgWidth * scale) / 2;
+        const qrY = padding;
+        ctx.drawImage(img, qrX, qrY, svgWidth * scale, svgHeight * scale);
+
+        // draw text below QR
+        const textY = qrY + svgHeight * scale + 30 * scale;
+        ctx.font = `bold ${24 * scale}px Arial`;
+        ctx.fillStyle = '#000000';
+        ctx.textAlign = 'center';
+        ctx.fillText('Unique Code:', canvas.width / 2, textY);
+
+        ctx.font = `bold ${36 * scale}px Courier New`;
+        ctx.fillText(uniqueCode, canvas.width / 2, textY + 50 * scale);
+
+        // ctx.font = `${18 * scale}px Arial`;
+        // ctx.fillStyle = '#666666';
+        // ctx.fillText('Use this code for manual luggage lookup', canvas.width / 2, textY + 90 * scale);
+
+        // download
+        canvas.toBlob(function(blob) {
+            const pngUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = pngUrl;
+            a.download = `luggage-qr-${luggageId}-${uniqueCode}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(pngUrl);
+            URL.revokeObjectURL(url);
+        }, 'image/png', 1.0);
+    };
+
+    img.onerror = function() {
+        console.error('Failed to load SVG as image');
+        alert('Failed to convert SVG to image');
+        URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
+}
+
+
 });
 
 // Success message auto-hide

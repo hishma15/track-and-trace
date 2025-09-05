@@ -110,16 +110,17 @@
                         
                         <!-- Forgot Password Link -->
                         <div class="flex justify-end">
-                            {{--
-                                <a href="{{ route('password.request') }}" class="text-gray-600 hover:text-gray-800 text-lg">
+                            
+                            <a href="{{ route('traveler.password.request') }}" class="text-gray-600 hover:text-gray-800 text-lg">
                                 Forgot Password?
                             </a>
-                            --}}
+                           
                         </div>
                         
                         <!-- Login Button -->
                         <div class="pt-4">
                             <button 
+                                id="login-btn"
                                 type="submit" 
                                 class="w-full py-4 px-6 text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300"
                                 style="background-color: #55372c; color: #edede1;"

@@ -56,13 +56,13 @@
                     Dashboard
                 </a>
 
-                <a href="{{ route('luggage.index') }}"
+                <a href="{{ route('traveler.myLuggages') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'my-luggages' ? 'active' : '' }}">
                     <i class="fas fa-suitcase-rolling w-5 h-5"></i>
                     My Luggages
                 </a>
 
-                <a href="{{ route('lost.luggage') }}"
+                <a href="{{ route('traveler.lostLuggage') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'lost-luggage' ? 'active' : '' }}">
                     <i class="fas fa-search w-5 h-5"></i>
                     Lost Luggage
@@ -74,7 +74,7 @@
                     Found Luggage
                 </a>
 
-                <a href="{{route('lost.luggage.reports')}}"
+                <a href="{{route('traveler.lostLuggageReports')}}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'reports' ? 'active' : '' }}">
                     <i class="fas fa-file-alt w-5 h-5"></i>
                     Total Reports

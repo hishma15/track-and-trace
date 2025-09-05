@@ -231,57 +231,62 @@ public function lostLuggageReports()
     }  
 
 
-
-    /**
-     * Generate QR Code as SVG - No ImageMagick needed!
-     */
-    public function generateQrCode($id)
-    {
-        try {
-            $luggage = Luggage::findOrFail($id);
-            
-            if ($luggage->traveler_id !== Auth::user()->traveler->id) {
-                return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
-            }
-
-            // Check if QR already exists
-            $existingQr = QRCodeModel::where('luggage_id', $luggage->id)->first();
-            if ($existingQr) {
-                return response()->json([
-                    'success' => true,
-                    'qr_svg' => $existingQr->qr_code_data,
-                    'tracking_url' => $existingQr->qr_image_path // We'll store the URL here
-                ]);
-            }
-
-            // Create tracking URL
-            $trackingUrl = url('/track/' . $luggage->id);
-            
-            // Generate QR code as SVG
-            $qrSvg = QrCode::format('svg')->size(300)->generate($trackingUrl);
-            
-            // Save to database (store SVG in qr_code_data, URL in qr_image_path)
-            QRCodeModel::create([
-                'luggage_id' => $luggage->id,
-                'qr_code_data' => $qrSvg, // Store SVG here
-                'qr_image_path' => $trackingUrl, 
-                'is_active' => true,
-                'date_created' => now(),
-            ]);
-
+/**
+ * Generate QR Code as SVG with unique code display
+ */
+public function generateQrCode($id)
+{
+    try {
+        $luggage = Luggage::findOrFail($id);
+        
+        if ($luggage->traveler_id !== Auth::user()->traveler->id) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        // Check if QR already exists
+        $existingQr = QRCodeModel::where('luggage_id', $luggage->id)->first();
+        if ($existingQr) {
             return response()->json([
                 'success' => true,
-                'qr_svg' => $qrSvg,
-                'tracking_url' => $trackingUrl
+                'qr_svg' => $existingQr->qr_code_data,
+                'tracking_url' => $existingQr->qr_image_path,
+                'unique_code' => $existingQr->unique_code
             ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to generate QR code: ' . $e->getMessage()
-            ], 500);
         }
+        
+        // Generate unique code first
+        $uniqueCode = QRCodeModel::generateUniqueCode();
+        
+        // Create tracking URL
+        $trackingUrl = url('/track/' . $luggage->id);
+        
+        // Generate QR code as SVG
+        $qrSvg = QrCode::format('svg')->size(300)->generate($trackingUrl);
+        
+        // Save to database
+        $qrCodeRecord = QRCodeModel::create([
+            'luggage_id' => $luggage->id,
+            'qr_code_data' => $qrSvg,
+            'qr_image_path' => $trackingUrl,
+            'unique_code' => $uniqueCode,
+            'is_active' => true,
+            'date_created' => now(),
+        ]);
+        
+        return response()->json([
+            'success' => true,
+            'qr_svg' => $qrSvg,
+            'tracking_url' => $trackingUrl,
+            'unique_code' => $uniqueCode
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to generate QR code: ' . $e->getMessage()
+        ], 500);
     }
+}
+
 
     /**
      * Download QR Code (will be handled by frontend JS)
@@ -312,6 +317,204 @@ public function lostLuggageReports()
             return redirect()->back()->with('error', 'Failed to download QR code.');
         }
     }
+
+
+
+
+public function manualLookup($unique_code)
+{
+    $qrCode = QRCodeModel::where('unique_code', strtolower(trim($unique_code)))
+        ->with(['luggage.traveler.user'])
+        ->first();
+
+    if (!$qrCode || !$qrCode->luggage) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Luggage not found'
+        ]);
+    }
+
+    $luggage = $qrCode->luggage;
+
+    // Prepare luggage data with proper image path
+    $luggageData = [
+        'id' => $luggage->id,
+        'color' => $luggage->color,
+        'brand_type' => $luggage->brand_type,
+        'description' => $luggage->description,
+        'unique_features' => $luggage->unique_features,
+        'status' => $luggage->status,
+        'lost_station' => $luggage->lost_station,
+        'comment' => $luggage->comment,
+        'unique_code' => $qrCode->unique_code,
+        'date_lost' => $luggage->date_lost ? $luggage->date_lost->format('Y-m-d H:i:s') : null,
+        'date_found' => $luggage->date_found ? $luggage->date_found->format('Y-m-d H:i:s') : null,
+        'image_path' => $luggage->image_path ? asset('storage/' . $luggage->image_path) : null
+    ];
+
+    // Prepare traveler data
+    $travelerData = [
+        'first_name' => $luggage->traveler->user->first_name ?? '',
+        'last_name' => $luggage->traveler->user->last_name ?? '',
+        'email' => $luggage->traveler->user->email ?? '',
+        'phone_no' => $luggage->traveler->user->phone_no ?? '',
+        'national_id' => $luggage->traveler->national_id ?? ''
+    ];
+
+    return response()->json([
+        'success' => true,
+        'luggage' => [
+            'luggage' => $luggageData,
+            'traveler' => $travelerData
+        ]
+    ]);
+}
+
+
+
+    
+/**
+ * Show manual luggage lookup page
+ */
+public function showManualLookup()
+{
+    $staff = Auth::user()->staff;
+    
+    if (!$staff) {
+        abort(403, 'Unauthorized. Staff access required.');
+    }
+    
+    return view('staff.manual-luggage-lookup');
+}
+
+/**
+ * API endpoint to lookup luggage by unique code
+ */
+public function lookupByUniqueCode($uniqueCode)
+{
+    try {
+        $qrCode = QRCodeModel::where('unique_code', strtolower(trim($uniqueCode)))
+            ->with(['luggage.traveler.user'])
+            ->first();
+        
+        if (!$qrCode || !$qrCode->luggage) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No luggage found with this unique code. Please verify the code and try again.'
+            ], 404);
+        }
+        
+        $luggage = $qrCode->luggage;
+        
+        // Prepare traveler data
+        $travelerData = [
+            'first_name' => $luggage->traveler->user->first_name ?? '',
+            'last_name' => $luggage->traveler->user->last_name ?? '',
+            'email' => $luggage->traveler->user->email ?? '',
+            'phone_no' => $luggage->traveler->user->phone_no ?? '',
+            'national_id' => $luggage->traveler->national_id ?? ''
+        ];
+        
+        // Prepare luggage data
+        $luggageData = [
+            'id' => $luggage->id,
+            'color' => $luggage->color,
+            'brand_type' => $luggage->brand_type,
+            'description' => $luggage->description,
+            'unique_features' => $luggage->unique_features,
+            'status' => $luggage->status,
+            'lost_station' => $luggage->lost_station,
+            'comment' => $luggage->comment,
+            'unique_code' => $qrCode->unique_code, // Get from QR code table
+            'date_lost' => $luggage->date_lost ? $luggage->date_lost->format('Y-m-d H:i:s') : null,
+            'date_found' => $luggage->date_found ? $luggage->date_found->format('Y-m-d H:i:s') : null,
+            'image_path' => $luggage->image_path ? asset('storage/' . $luggage->image_path) : null
+        ];
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Luggage found successfully',
+            'luggage' => $luggageData,
+            'traveler' => $travelerData
+        ]);
+        
+    } catch (\Exception $e) {
+        \Log::error('Luggage lookup error: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while looking up the luggage. Please try again.'
+        ], 500);
+    }
+}
+
+/**
+ * Mark luggage as found via manual lookup
+ */
+public function markAsFoundManual(Request $request, $id)
+{
+    try {
+        $staff = Auth::user()->staff;
+        
+        if (!$staff) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Staff access required.'
+            ], 403);
+        }
+        
+        $request->validate([
+            'location' => 'required|string|max:255',
+            'comment' => 'nullable|string|max:500'
+        ]);
+        
+        $luggage = Luggage::findOrFail($id);
+        
+        // Update luggage status
+        $luggage->update([
+            'status' => 'Found',
+            'date_found' => now(),
+            'comment' => $request->comment
+        ]);
+        
+        // Create notification for the traveler
+        Notification::create([
+            'user_id' => $luggage->traveler->user_id,
+            'luggage_id' => $luggage->id,
+            'notification_type' => 'luggage_found',
+            'title' => 'Your Luggage Has Been Found!',
+            'message' => 'Great news! Your luggage has been found at ' . $request->location,
+            'data' => json_encode([
+                'staff_name' => $staff->user->first_name . ' ' . $staff->user->last_name,
+                'found_location' => $request->location,
+                'staff_comment' => $request->comment,
+                'found_date' => now()->format('Y-m-d H:i:s'),
+                'staff_organization' => $staff->organization
+            ]),
+            'is_read' => false,
+            'is_email_sent' => false,
+        ]);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Luggage successfully marked as found. The owner has been notified.'
+        ]);
+        
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed: ' . implode(', ', $e->validator->errors()->all())
+        ], 422);
+        
+    } catch (\Exception $e) {
+        \Log::error('Mark found manual error: ' . $e->getMessage());
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'An error occurred while updating the luggage status. Please try again.'
+        ], 500);
+    }
+}
 
 
 }

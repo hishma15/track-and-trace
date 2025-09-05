@@ -1,15 +1,14 @@
-<!-- resources/views/partials/register-staff-modal.blade.php -->
-
 <!-- Modal Background Overlay -->
 <div
-    id="registerStaffModal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50"
+    x-show="openModal"
+    x-transition
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
 >
     <!-- Modal Container -->
     <div class="bg-[#edede1] rounded-lg max-w-4xl w-full max-h-[90vh] overflow-auto p-6 relative">
         <!-- Close Button -->
         <button
-            id="closeRegisterStaffModal"
+            @click="openModal = false"
             class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold"
             aria-label="Close modal"
         >&times;</button>
@@ -91,7 +90,7 @@
                     >
                 </div>
 
-            <div class="text-black">
+                <div class="text-black">
                     <label for="organization" class="block font-medium mb-2">
                         Organization <span class="text-red-500">*</span>
                     </label>
@@ -103,8 +102,7 @@
                         <option value="Colombo fort Railway Station" {{ old('organization') == 'Colombo fort Railway Station' ? 'selected' : '' }}>Colombo fort Railway Station</option>
                         <option value="Maradana Railway Station" {{ old('organization') == 'Maradana Railway Station' ? 'selected' : '' }}>Maradana Railway Station</option>
                     </select>
-            </div>
-
+                </div>
 
                 <div>
                     <label class="block mb-1 font-medium" style="color: #55372c;">Position</label>
@@ -150,28 +148,3 @@
         </form>
     </div>
 </div>
-
-<!-- Modal toggle JS -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const openBtn = document.getElementById('openRegisterStaffModalBtn');
-        const modal = document.getElementById('registerStaffModal');
-        const closeBtn = document.getElementById('closeRegisterStaffModal');
-
-        if(openBtn && modal && closeBtn){
-            openBtn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-            });
-
-            closeBtn.addEventListener('click', () => {
-                modal.classList.add('hidden');
-            });
-
-            window.addEventListener('click', (e) => {
-                if(e.target === modal){
-                    modal.classList.add('hidden');
-                }
-            });
-        }
-    });
-</script>

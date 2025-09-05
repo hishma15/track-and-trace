@@ -110,107 +110,7 @@
                                 <h2 class="text-3xl font-bold mb-2">Welcome to Track N' Trace.</h2>
                                 <p class="text-lg mb-6 opacity-90">QR Based Lost Luggage management system</p>
                                 
-                                <div class="flex gap-4">
-                                    <button class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
-                                        Reports
-                                    </button>
-                                    <!-- <button class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
-                                        Give Feedback
-                                    </button> -->
-                                    
-                                    <!-- Feedback Popup -->
-<div x-data="feedbackModal()" x-init="rating = 0">
-
-    <!-- Trigger Button -->
-    <div class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition" @click="openModal = true">
-        <p>Give Feedback</p>
-    </div>
-
-    <!-- Modal -->
-    <div
-        x-show="openModal"
-        x-transition
-        class="fixed inset-0 flex items-center justify-center z-50"
-        style="background-color: rgba(0, 0, 0, 0.7);"
-    >
-        <!-- Modal Content -->
-        <div class="relative p-6 rounded-xl shadow-xl w-full max-w-2xl mx-auto max-h-[90vh] overflow-y-auto"
-    style="background-image: url('/images/backgroundimg.jpeg'); background-size: cover; background-position: center;">
-            <button @click="openModal = false" class="absolute top-2 right-4 text-gray-500 text-2xl hover:text-gray-700 cursor-pointer">&times;</button>
-
-            <h1 class="text-2xl font-normal mb-6" style="color: #55372c;">Submit Feedback</h1>
-
-            <!-- Top Banner -->
-            <div class="rounded-t-xl p-6 flex justify-between items-center mb-4" style="background-color: #55372c; color: #edede1;">
-                <div>
-                    <h2 class="text-xl font-bold">We value your feedback!</h2>
-                    <p class="text-sm">Rate your experience and leave comments to help us improve.</p>
-                </div>
-            </div>
-
-            <form action="{{ route('feedback.store') }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
-                @csrf
-
-                <!-- Feedback Rating Section -->
-<div x-data="ratingComponent()" class="space-y-4 max-w-md mx-auto p-6 rounded-lg ">
-    <label class="block font-medium text-lg text-[#55372c]">Rate Your Experience <span class="text-red-500">*</span></label>
-    
-    <div class="flex items-center gap-3">
-        <!-- Stars -->
-        <template x-for="starIndex in 5" :key="starIndex">
-            <button 
-                type="button" 
-                class="text-4xl cursor-pointer transition hover:text-yellow-400 focus:outline-none"
-                :class="{
-    'text-yellow-400 fa-solid': starIndex <= (hoverRating || currentRating),
-    'text-[#55372c] fa-regular': starIndex > (hoverRating || currentRating)
-  }"
-                @click="setRating(starIndex)"
-                @mouseover="hoverRating = starIndex"
-                @mouseleave="hoverRating = 0"
-                :aria-label="`Rate ${starIndex} stars`"
-            >
-                <i class="fa-solid fa-star" x-show="(hoverRating || currentRating) >= starIndex"></i>
-                <i class="fa-regular fa-star" x-show="(hoverRating || currentRating) < starIndex"></i>
-            </button>
-        </template>
-
-        <!-- Rating Text -->
-        <div class="text-xl font-semibold text-[#55372c] min-w-[150px]" x-text="ratingMessage"></div>
-    </div>
-
-    <!-- Hidden input to send rating to backend -->
-    <input type="hidden" name="rating" :value="currentRating" required>
-    @if ($errors->has('rating'))
-    <div class="text-red-600 font-semibold mb-2">
-        {{ $errors->first('rating') }}
-    </div>
-@endif
-
-</div>
-
-                <!-- Subject -->
-<div class="text-black">
-    <label class="block font-medium mb-2">Subject <span class="text-red-500">*</span></label>
-    <input type="text" name="subject" required class="w-full border rounded px-3 py-2" placeholder="Enter subject (e.g., Luggage Issue, Staff Behavior, QR Code Error)">
-</div>
-
-                <!-- Feedback message -->
-                <div class="text-black"> 
-                    <label class="block font-medium">Message <span class="text-red-500">*</span></label>
-                    <textarea name="message" required class="w-full border rounded px-3 py-2"></textarea>
-                </div>
-
-                <button type="submit" class="w-full py-4 px-6 text-xl font-semibold rounded-full transition-all duration-200 hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-gray-300" style="background-color: #55372c; color: #edede1;">
-                    Submit Feedback
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-                                </div>
+                                <!--  -->
                             </div>
 
                         </div>
@@ -259,7 +159,7 @@
                                         <img src="{{ asset('images/manualid.jpg') }}" alt="Report" class="w-23 h-20 rounded-xl">
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-semibold text-gray-800">Report Found Luggage <br> Enter Manual ID</h3>
+                                        <a href="{{ route('staff.manualLookup') }}" class="text-xl font-semibold text-gray-800">Report Found Luggage <br> Enter Manual ID</a>
                                     </div>
                                 </div>
                             </div>

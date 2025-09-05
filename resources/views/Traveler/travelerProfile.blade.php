@@ -65,6 +65,21 @@
                         <h2 class="text-xl font-bold">Update Profile</h2>
                         <p class="text-sm">Edit your personal details to keep your profile up to date.</p>
                     </div>
+                    {{-- 2FA Enabling --}}
+                    <form action="{{ route('traveler.toggle-2fa') }}" method="POST" class="mt-6">
+                        @csrf
+                        <button type="submit"
+                            class="relative inline-flex h-6 w-12 items-center rounded-full transition-colors focus:outline-none
+                                {{ auth()->user()->traveler?->two_factor_enabled ? 'bg-green-500' : 'bg-gray-300' }}">
+                            <span class="sr-only">Toggle OTP Verification (2FA)</span>
+                            <span class="inline-block h-5 w-5 transform rounded-full bg-white transition-transform
+                                {{ auth()->user()->traveler?->two_factor_enabled ? 'translate-x-6' : 'translate-x-1' }}">
+                            </span>
+                        </button>
+                        <span class="ml-3 text-[#edede1] font-medium">Enable OTP Verification (2FA)</span>
+                    </form>
+
+
                     <!-- <img src="{{ asset('images/luggage-icon.png') }}" alt="Luggage" class="w-24 h-auto"> -->
                 </div>
 
@@ -299,6 +314,22 @@
      @include('partials.footer')
 
 </body>
+
+<script>
+    // Success message auto-hide
+setTimeout(() => {
+    const alert = document.querySelector('.bg-green-100');
+    if (alert) {
+        alert.style.transition = 'opacity 0.5s ease';
+        alert.style.opacity = '0';
+
+        setTimeout(() => {
+            alert.remove();
+        }, 500);
+    }
+}, 2000);
+</script>
+
 </html>
 
 
