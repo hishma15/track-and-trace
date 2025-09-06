@@ -43,7 +43,11 @@ class TravelerPasswordResetController extends Controller
         //     $message->subject('Reset Your Traveler Password');
         // });
 
-        $url = route('traveler.password.reset', ['token' => $token]);
+        // $url = route('traveler.password.reset', ['token' => $token]);
+        $url = route('traveler.password.reset', [
+            'token' => $token,
+            'email' => $request->email
+        ]);
 
         Mail::send('emails.password-reset', ['url' => $url], function ($message) use ($request) {
             $message->to($request->email);
@@ -65,6 +69,13 @@ class TravelerPasswordResetController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:6',
             'token' => 'required'
+        ], [
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'password.required' => 'Password is required.',
+            'password.confirmed' => 'Password and Confirm Password do not match.',
+            'password.min' => 'Password must be at least 6 characters long.',
+            'token.required' => 'Invalid reset request. Please use the link from your email.'
         ]);
 
         $reset = DB::table('password_resets')->where([

@@ -289,9 +289,10 @@
     <!-- Sidebar -->
     @include('partials.admin-sidebar', ['active' => 'discover'])
 
-    <div class="container mx-auto px-4 py-6 ">
+    <div class="container mx-1">
+
     <!-- Header -->
-    <div class="mb-8">
+    <div class="mb-8 bg-white/80 backdrop-blur-sm border-b border-gray-200 px-8 py-4">
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
@@ -321,7 +322,7 @@
             @endif
 
     <!-- Main Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         <div class="bg-[#edede1] rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>

@@ -68,10 +68,10 @@
                     Manage Staff
                 </a>
 
-                <a href="#"
-                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'lost-luggage' ? 'active' : '' }}">
+                <a href="{{ route('admin.users') }}"
+                   class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'users' ? 'active' : '' }}">
                     <i class="fas fa-search w-5 h-5"></i>
-                    Lost Luggage
+                    View Users 
                 </a>
 
                 <a href="#"
@@ -80,10 +80,10 @@
                     Found Luggage
                 </a>
 
-                <a href="#"
+                <a href="{{ route('admin.feedback') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'reports' ? 'active' : '' }}">
                     <i class="fas fa-file-alt w-5 h-5"></i>
-                    Total Reports
+                    Feedbacks
                 </a>
 
                 <!-- <a href="#"

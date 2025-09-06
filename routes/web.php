@@ -52,7 +52,7 @@ Route::middleware('guest')->group(function () {
     Route::get('traveler/forgot-password', [TravelerPasswordResetController::class, 'showLinkRequestForm'])->name('traveler.password.request');
     Route::post('traveler/forgot-password', [TravelerPasswordResetController::class, 'sendResetLink'])->name('traveler.password.email');
     Route::get('traveler/reset-password/{token}', [TravelerPasswordResetController::class, 'showResetForm'])->name('traveler.password.reset');
-    Route::post('trveler/reset-password', [TravelerPasswordResetController::class, 'resetPassword'])->name('traveler.password.update');
+    Route::post('traveler/reset-password', [TravelerPasswordResetController::class, 'resetPassword'])->name('traveler.password.update');
 
     // Reset and forgot password [staff]
     Route::get('staff/forgot-password', [StaffPasswordResetController::class, 'showLinkRequestForm'])->name('staff.password.request');
@@ -194,6 +194,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/staff/{id}/profile', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
 
         Route::post('/staff/{id}/reset-password', [AdminController::class, 'resetPassword'])->name('staff.profile.resetPassword');
+
+        // view users
+        Route::get('/admin/users', [AdminController::class, 'viewUsers'])->name('admin.users');
+
+
+        // feedback
+        Route::get('/admin/feedback', [AdminController::class, 'viewFeedback'])->name('admin.feedback');
+        Route::post('/admin/feedback/respond/{id}', [AdminController::class, 'respondFeedback'])->name('admin.feedback.respond');
 
     });
 

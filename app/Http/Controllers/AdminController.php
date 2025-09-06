@@ -10,6 +10,9 @@ use App\Models\Traveler;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
+use App\Models\Feedback;
+use Illuminate\Support\Facades\Mail;
+
 class AdminController extends Controller
 {
     /**
@@ -294,4 +297,55 @@ public function destroy($staffId)
         
         return round($size, $precision) . ' ' . $units[$i];
     }
+
+    /**
+     * Show all users for admin
+     */
+    public function viewUsers()
+    {
+        $users = User::all();
+        return view('admin.users', compact('users')); // 👈 updated to match your file
+    }
+
+
+    /**
+     * Show all feedback to admin
+     */
+    public function viewFeedback()
+    {
+        $feedbacks = Feedback::with('traveler.user')->get(); // eager load traveler->user
+        return view('admin.feedback', compact('feedbacks'));
+    }
+
+    /**
+     * Respond to feedback via email
+     */
+    public function respondFeedback(Request $request, $id)
+{
+    $feedback = Feedback::findOrFail($id);
+    $userEmail = $feedback->traveler->user->email;
+
+    $message = $request->message ?? "Hello Traveler, 
+
+    Thank you for reaching out to us through the feedback form. 
+    We truly appreciate your input and will take your suggestions into account to improve the Track & Trace system.
+
+    Best regards,  
+    Track & Trace Support Team";
+
+    Mail::raw($message, function ($mail) use ($userEmail) {
+        $mail->to($userEmail)
+             ->subject("Response to your feedback from Track & Trace");
+    });
+
+    // feedback status and admin response
+    $feedback->update([
+        'status' => 'Responded',
+        'admin_response' => $message,
+        'responded_at' => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Feedback response sent successfully!');
+}
+
 }

@@ -20,13 +20,10 @@ class Feedback extends Model
         'rating',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'submitted_at' => 'datetime',
-            'responded_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+    'submitted_at' => 'datetime',
+    'responded_at' => 'datetime',
+];
 
     // Relationships
     public function traveler()
@@ -35,22 +32,5 @@ class Feedback extends Model
     }
 
     // Helper methods
-    public function markAsResolved($response = null)
-    {
-        $this->update([
-            'status' => 'Resolved',
-            'admin_response' => $response,
-            'responded_at' => now(),
-        ]);
-    }
-
-    public function markInProgress()
-    {
-        $this->update(['status' => 'In Progress']);
-    }
-
-    public function close()
-    {
-        $this->update(['status' => 'Closed']);
-    }
+    
 }
