@@ -140,14 +140,19 @@ class QRScanController extends Controller
 
                 // Create notification for traveler
                 Notification::create([
-                    'user_id' => $luggage->traveler->user->id,
-                    'luggage_id' => $luggage->id,
-                    'notification_type' => 'found_luggage',
-                    'title' => 'Great News! Your Luggage Has Been Found',
-                    'message' => "Your {$luggage->color} {$luggage->brand_type} luggage has been found by our staff. Please contact us to arrange collection.",
-                    'is_read' => false,
-                    'sent_at' => now(),
-                ]);
+    'user_id' => $luggage->traveler->user->id,
+    'staff_id' => Auth::user()->id,
+    'luggage_id' => $luggage->id,
+    'notification_type' => 'luggage_found',
+    'title' => 'Great News! Your Luggage Has Been Found',
+    'message' => "Your {$luggage->color} {$luggage->brand_type} luggage has been found by our staff. Please contact us to arrange collection.",
+    'data' => json_encode([
+        'found_location' => $request->location ?? request()->ip(),
+        'staff_comment' => $request->comment ?: null,
+        'found_date' => now()->toDateTimeString(),
+    ]),
+    'is_read' => false,
+]);
 
                 // You can add email notification here
                 // Mail::to($luggage->traveler->user->email)->send(new LuggageFoundMail($luggage));

@@ -4,7 +4,7 @@
             <div class="mt-2 flex justify-center gap-4 text-gray-500">
                 <a href="#" class="hover:text-blue-600 transition">Help & Support</a>
                 <a href="#" class="hover:text-blue-600 transition">About Us</a>
-                <a href="mailto:support@trackntrace.com" class="hover:text-blue-600 transition">Contact</a>
+                <a href="mailto:trackntrace14@gmail.com" class="hover:text-blue-600 transition">Contact</a>
             </div>
         </div>
 </footer>

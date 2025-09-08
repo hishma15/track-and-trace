@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/my-luggages', [LuggageController::class, 'index'])->name('traveler.myLuggages');
         Route::get('/luggage/register', [LuggageController::class, 'create'])->name('luggage.create');
         Route::post('/luggage/register', [LuggageController::class, 'store'])->name('luggage.store');
-        Route::post('/luggage/{id}/update', [LuggageController::class, 'update'])->name('luggage.update');
+        Route::put('/luggage/{id}/update', [LuggageController::class, 'update'])->name('luggage.update');
         Route::delete('/luggage/{id}/delete', [LuggageController::class, 'destroy'])->name('luggage.destroy');
 
         // Lost luggage
@@ -110,6 +110,9 @@ Route::middleware('auth')->group(function () {
         // QR code (generate/download)
         Route::post('/luggage/{id}/generate-qr', [LuggageController::class, 'generateQrCode'])->name('luggage.generate-qr');
         Route::get('/luggage/{id}/download-qr', [LuggageController::class, 'downloadQrCode'])->name('luggage.download-qr');
+
+        Route::get('/notifications', [TravelerController::class, 'notifications'])->name('traveler.notification');
+        Route::get('/notifications/{id}', [TravelerController::class, 'viewNotification'])->name('traveler.notification.details');
 
         
     });

@@ -11,6 +11,7 @@ class Notification extends Model
 
     protected $fillable = [
         'user_id',
+        'staff_id', 
         'luggage_id',
         'notification_type',
         'title',
@@ -21,20 +22,24 @@ class Notification extends Model
         'sent_date',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'data' => 'array',
-            'is_read' => 'boolean',
-            'is_email_sent' => 'boolean',
-            'sent_date' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'data' => 'array',
+        'is_read' => 'boolean',
+        'is_email_sent' => 'boolean',
+        'sent_date' => 'datetime',
+    ];
+
 
     // Relationships
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+      // The staff user who caused/triggered the notification (nullable)
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class, 'staff_id');
     }
 
     public function luggage()
@@ -52,4 +57,7 @@ class Notification extends Model
     {
         $this->update(['is_email_sent' => true]);
     }
+
+
+
 }

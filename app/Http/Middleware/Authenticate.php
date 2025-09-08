@@ -17,8 +17,17 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
-            // Redirect to traveler login route
-            return route('traveler.travelerLogin');
+            // Check URL or role to send to the right login page
+            if ($request->is('traveler/*')) {
+                return route('traveler.travelerLogin');
+            } elseif ($request->is('staff/*')) {
+                return route('staff.staffLogin');
+            } elseif ($request->is('admin/*')) {
+                return route('admin.adminLogin');
+            }
+
+            // Default fallback
+            return route('landing');
         }
     }
 }

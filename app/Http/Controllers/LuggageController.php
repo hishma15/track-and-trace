@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Notification;
 use App\Models\Staff;
 
+use Illuminate\Support\Facades\Mail;
+
 
 use App\Models\QRCode as QRCodeModel;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -44,7 +46,7 @@ class LuggageController extends Controller
             'status' => 'Safe',
         ]);
 
-        return redirect()->route('luggage.index')->with('success', 'Luggage registered successfully!');
+        return redirect()->route('traveler.myLuggages')->with('success', 'Luggage registered successfully!');
     }
 
     public function index()
@@ -104,7 +106,7 @@ public function show($id)
             'unique_features' => $request->unique_features,
         ]);
 
-        return redirect()->route('luggage.index')->with('success', 'Luggage updated successfully!');
+        return redirect()->route('traveler.myLuggages')->with('success', 'Luggage updated successfully!');
     }
     
 
@@ -454,7 +456,7 @@ public function lookupByUniqueCode($uniqueCode)
 public function markAsFoundManual(Request $request, $id)
 {
     try {
-        $staff = Auth::user()->staff;
+        $staff = Staff::where('user_id', Auth::id())->firstOrFail();
         
         if (!$staff) {
             return response()->json([
@@ -478,22 +480,28 @@ public function markAsFoundManual(Request $request, $id)
         ]);
         
         // Create notification for the traveler
+        // After updating luggage and $staff is the staff model (Auth::user()->staff)
         Notification::create([
-            'user_id' => $luggage->traveler->user_id,
+            'user_id' => $luggage->traveler->user_id, // traveler (receiver)
+            'staff_id' => $staff->id,           // staff (who found it)
             'luggage_id' => $luggage->id,
             'notification_type' => 'luggage_found',
             'title' => 'Your Luggage Has Been Found!',
             'message' => 'Great news! Your luggage has been found at ' . $request->location,
-            'data' => json_encode([
-                'staff_name' => $staff->user->first_name . ' ' . $staff->user->last_name,
+            'data' => [
                 'found_location' => $request->location,
                 'staff_comment' => $request->comment,
-                'found_date' => now()->format('Y-m-d H:i:s'),
-                'staff_organization' => $staff->organization
-            ]),
+                'found_date' => now()->toDateTimeString(),
+                'staff_organization' => $staff->organization ?? null,
+            ],
             'is_read' => false,
             'is_email_sent' => false,
         ]);
+
+        Mail::raw("You have a new notification from Track & Trace. Something new just happened with your luggage. Please log in to your account to view it", function ($message) use ($luggage) {
+            $message->to($luggage->traveler->user->email)
+                    ->subject('Track & Trace: New Notification');
+        });
         
         return response()->json([
             'success' => true,

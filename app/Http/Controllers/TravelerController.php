@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Traveler;
+use App\Models\Staff;
+use App\Models\Notification;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -314,5 +316,34 @@ class TravelerController extends Controller
         return redirect()->route('traveler.verify-otp')
             ->with('status', 'A new OTP has been sent to your email.');
     }
+
+
+
+
+    public function notifications()
+{
+    // Fetch all notifications for the logged-in staff
+    $notifications = auth()->user()->notifications()
+        ->whereHas('luggage', function($query) {
+            $query->where('status', 'found'); // Only fetch notifications for found luggage
+        })
+        ->latest()
+        ->get();
+
+    return view('traveler.notification', [
+        'notifications' => $notifications,
+        'active' => 'notifications'
+    ]);
+}
+
+public function viewNotification($id)
+{
+    $notification = Notification::with(['luggage', 'staff.user'])->findOrFail($id);
+
+    $luggage = $notification->luggage;
+    $staffUser = $notification->staff?->user; // safe check in case staff is null
+
+    return view('traveler.notification-details', compact('notification', 'luggage', 'staffUser'));
+}
 
 }

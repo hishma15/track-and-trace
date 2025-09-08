@@ -31,6 +31,11 @@
             transform: translateY(-4px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
     </style>
 </head>
 
@@ -47,19 +52,22 @@
                 </div>
             </header>
 
-            <div x-data="registerStaffModal()">
-    <!-- Button to open modal -->
-    <button
-        @click="openModal = true"
-        class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition"
-        type="button"
-    >
-        Manage Staff
-    </button>
+            
+    
 
-    <!-- Include modal partial inside same scope -->
-    @include('partials.register-staff-modal')
-</div>
+            <div x-data="registerStaffModal()">
+                <!-- Button to open modal -->
+                <button
+                    @click="openModal = true"
+                    class="bg-[#55372c] backdrop-blur-sm text-white px-6 py-3 w-1/2 m-2 flex justify-center items-center rounded-lg font-medium hover:bg-[#55372c]/90 transition"
+                    type="button"
+                >
+                    Manage Staff
+                </button>
+
+                <!-- Include modal partial inside same scope -->
+                @include('partials.register-staff-modal')
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
                 @forelse ($staffMembers as $member)
@@ -73,7 +81,7 @@
                             <p class="text-sm text-gray-600">{{ $member->phone_no }}</p>
                             <div class="mt-4 flex justify-between">
                                 <a href="{{ route('admin.staff.profile.show', $member->staff->id) }}" 
-                                   class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                                   class="bg-[#55372c] text-white px-3 py-1 rounded-lg hover:bg-[#55372c]/90">
                                     Edit
                                 </a>
                             </div>

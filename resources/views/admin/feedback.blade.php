@@ -111,7 +111,7 @@
                             @if($feedback->status !== 'Responded')
                                 <form action="{{ route('admin.feedback.respond', $feedback->id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                    <button type="submit" class="bg-[#55372c] text-white px-3 py-1 rounded hover:bg-[#55372c]/90">
                                         Send Thank You
                                     </button>
                                 </form>
