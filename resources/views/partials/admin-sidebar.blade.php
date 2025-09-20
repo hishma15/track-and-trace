@@ -74,7 +74,7 @@
                     View Users 
                 </a>
 
-                <a href="#"
+                <a href="{{ route('admin.reclaims') }}"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'found-luggage' ? 'active' : '' }}">
                     <i class="fas fa-box-open w-5 h-5"></i>
                     Found Luggage

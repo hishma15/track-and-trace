@@ -8,9 +8,10 @@ use App\Models\Staff;
 use App\Models\Luggage;
 use App\Models\Traveler;
 use Illuminate\Support\Facades\Hash;
-use Carbon\Carbon;
 
 use App\Models\Feedback;
+
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
