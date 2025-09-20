@@ -23,6 +23,8 @@ class Luggage extends Model
         'date_lost',
         'date_found',
         'comment',
+        'found_station',
+        
     ];
 
     protected function casts(): array
