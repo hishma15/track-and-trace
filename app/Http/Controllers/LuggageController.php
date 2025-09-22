@@ -174,6 +174,22 @@ public function staffLostLuggages()
     return view('staff.lost_luggages', compact('lostLuggages'));
 }
 
+public function staffFoundLuggages()
+{
+    $staff = Auth::user()->staff;
+
+    if (!$staff) {
+        abort(403, 'Unauthorized.'); // in case a non-staff tries
+    }
+
+    // Fetch found luggages for the staff's organization
+    $foundLuggages = Luggage::where('status', 'found')
+        ->where('lost_station', $staff->organization) // 👈 uses the column you just added
+        ->get();
+
+    return view('staff.found_luggages', compact('foundLuggages'));
+}
+
    public function cancelReport(Luggage $luggage)
     {
         $luggage->update([
@@ -207,6 +223,19 @@ public function lostLuggage()
 
     return view('Traveler.lostluggage_reports', compact('luggages'));
 }
+
+public function foundLuggage()
+{
+    $travelerId = Auth::user()->traveler->id;
+
+    $luggages = Luggage::where('traveler_id', $travelerId)
+                        ->where('status', 'found')
+                        ->get();
+
+    // Pass to view
+    return view('Traveler.foundluggage', compact('luggages'));
+}
+
 
 public function lostLuggageReports()
 {

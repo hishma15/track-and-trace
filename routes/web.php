@@ -10,6 +10,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QRScanController;
 use App\Http\Controllers\AdminStatisticsController;
+use App\Http\Controllers\LuggageReclaimController;
 
 use App\Http\Controllers\Auth\TravelerPasswordResetController;
 use App\Http\Controllers\Auth\StaffPasswordResetController;
@@ -107,6 +108,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/{luggage}/mark-lost', [LuggageController::class, 'markLost'])->name('luggage.markLost');
         Route::put('/{luggage}/cancel-report', [LuggageController::class, 'cancelLostReport'])->name('luggage.cancelReport');
 
+        Route::get('/traveler/found-luggage', [LuggageController::class, 'foundLuggage'])->name('traveler.foundLuggage')->middleware('auth');
+
+        Route::get('/staff/found-luggages', [LuggageController::class, 'staffFoundLuggages'])->name('staff.foundLuggages');
+
         // QR code (generate/download)
         Route::post('/luggage/{id}/generate-qr', [LuggageController::class, 'generateQrCode'])->name('luggage.generate-qr');
         Route::get('/luggage/{id}/download-qr', [LuggageController::class, 'downloadQrCode'])->name('luggage.download-qr');
@@ -148,8 +153,9 @@ Route::middleware('auth')->group(function () {
         // Manual lookup
         // Route::get('/manual-lookup', [LuggageController::class, 'showManualLookup'])->name('staff.manualLookup');
         // Route::get('/manual-lookup/api/{uniqueCode}', [LuggageController::class, 'lookupByUniqueCode'])->name('staff.lookupByUniqueCode');
+
+        
         Route::post('/manual-lookup/mark-found/{id}', [LuggageController::class, 'markAsFoundManual'])->name('staff.markAsFoundManual');
-        // Route::get('/manual-lookup/{unique_code}', [StaffController::class, 'manualLookup']);
         
         // Manual lookup page
         Route::get('/manual-lookup', [LuggageController::class, 'showManualLookup'])->name('staff.manualLookup');
@@ -162,6 +168,9 @@ Route::middleware('auth')->group(function () {
 
         // QR Scanner
         Route::get('/qr-scanner', [QRScanController::class, 'showScanner'])->name('staff.qr-scanner');
+
+        Route::get('/reports/reclaims', [LuggageReclaimController::class, 'staffReports'])
+    ->name('staff.reports.reclaims');
     });
 
     /*
@@ -198,6 +207,12 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/staff/{id}/reset-password', [AdminController::class, 'resetPassword'])->name('staff.profile.resetPassword');
 
+        // Staff reclaim reports (all reclaims at their station)
+
+
+    Route::get('/admin/reclaims', [LuggageReclaimController::class, 'adminReclaims'])
+        ->name('admin.reclaims');
+
         // view users
         Route::get('/admin/users', [AdminController::class, 'viewUsers'])->name('admin.users');
 
@@ -215,6 +230,25 @@ Route::middleware('auth')->group(function () {
     */
     Route::get('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+    // 1️⃣ Show reclaim form page (separate page)
+Route::get('/staff/reclaim/{luggage}', [LuggageReclaimController::class, 'showReclaimForm'])
+    ->name('staff.reclaim');
+
+// 2️⃣ Handle Send OTP (from reclaim form)
+Route::post('/staff/reclaim/send-otp/{luggage}', [LuggageReclaimController::class, 'sendOtpForReclaim'])
+    ->name('staff.reclaim.sendOtp');
+
+// 3️⃣ Show OTP verify popup
+Route::get('/staff/reclaim/{reclaim}/verify-otp', [LuggageReclaimController::class, 'showVerifyOtpForm'])
+    ->name('staff.verify-reclaim-otp-form');
+
+// 4️⃣ Verify OTP (popup form submit)
+Route::post('/staff/reclaim/verify-otp/{reclaim}', [LuggageReclaimController::class, 'verifyReclaimOtp'])
+    ->name('staff.reclaim.verifyOtp');
+
+// 5️⃣ Resend OTP (from popup)
+Route::post('/staff/reclaim/{reclaim}/resend-otp', [LuggageReclaimController::class, 'resendReclaimOtp'])
+    ->name('staff.reclaim-resend-otp');
 
     /*
     |--------------------------------------------------------------------------
@@ -227,4 +261,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/luggage/{luggage_id}/history', [QRScanController::class, 'getScanHistory'])->name('api.qr-scan.history');
         Route::get('/stats', [QRScanController::class, 'getStaffStats'])->name('api.qr-scan.stats');
     });
+
+    Route::get('/test-mail', function () {
+    \Mail::raw('This is a test email', function($message) {
+        $message->to('kshwetha2006@gmail.com')->subject('Test Mail');
+    });
+    return 'Mail Sent';
+});
 });

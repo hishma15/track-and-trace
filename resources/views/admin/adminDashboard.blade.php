@@ -65,7 +65,7 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 h-full">
                     <!-- Left Column - Welcome & Station Cards -->
-                    <div class="lg:col-span-2 space-y-6">
+                    <div class="lg:col-span-4 space-y-6">
                         <!-- Welcome Card -->
                         <div class="rounded-2xl p-8 bg-[#55372c] bg-gradient-to-r from-[#7a4f3f] to-[#55372c] text-[#edede1]">
                             <div class="max-w-md">
@@ -86,10 +86,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- Train illustration -->
-                            <div class="absolute right-4 top-1/2 transform -translate-y-1/2 opacity-30">
-                                <i class="fas fa-train text-6xl"></i>
-                            </div>
+                           
                         </div>
 
                         <!-- Staff List Button -->
@@ -119,55 +116,10 @@
                             @endforeach
                         </div>
                     </div>
-                    
-                    <!-- Right Column - Lost and Found Reports -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 h-full">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-xl font-semibold text-amber-900">Lost and Found Reports</h3>
-                                <button class="text-gray-400 hover:text-gray-600">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </button>
-                            </div>
-                            
-                            <!-- Reports List -->
-                            <div class="space-y-4 max-h-96 overflow-y-auto">
-                                @php
-                                    $reports = [
-                                        ['item' => 'Luggage lost', 'user' => 'aamina Fazeel'],
-                                        ['item' => 'Brown Duffel', 'user' => 'Avery Davis'],
-                                        ['item' => 'Blue Suitcase', 'user' => 'Cahaya Dewi'],
-                                        ['item' => 'Beige Clutch', 'user' => 'Olivia Wilson'],
-                                        ['item' => 'White Tote', 'user' => 'Yael Amari'],
-                                        ['item' => 'Silver briefcase', 'user' => 'Juliana Silva'],
-                                        ['item' => 'Black Backpack', 'user' => 'Itsuki Takahashi']
-                                    ];
-                                @endphp
-
-                                @foreach($reports as $report)
-                                <div class="report-item bg-white/90 backdrop-blur-sm rounded-lg p-4 cursor-pointer transition-all duration-300">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
-                                            <i class="fas fa-suitcase text-white text-sm"></i>
-                                        </div>
-                                        <div class="flex-1">
-                                            <h4 class="font-medium text-gray-800">{{ $report['item'] }}</h4>
-                                            <p class="text-sm text-gray-600">{{ $report['user'] }}</p>
-                                        </div>
-                                        <i class="fas fa-chevron-right text-gray-400"></i>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-
-                            <!-- Discover All Button -->
-                            <div class="mt-6 text-center">
-                                <a href="#" class="text-amber-800 font-medium hover:underline">
-                                    Discover All
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+   
+                        
+                  
+               
                 </div>
             </div>
         </main>
