@@ -201,7 +201,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/staff/{id}', [AdminController::class, 'showStaff'])->name('admin.staff.show');
         Route::get('/staff/{id}/profile', [AdminController::class, 'showStaff'])->name('admin.staff.profile.show');
-        Route::post('/staff/{id}/profile', [AdminController::class, 'updateProfile'])->name('staff.profile.update');
+        Route::post('/staff/{id}/profile', [AdminController::class, 'updateProfile'])->name('admin.staff.profile.update');
         // Route::post('/staff/{id}/password', [AdminController::class, 'updatePassword'])->name('staff.profile.updatePassword');
         Route::delete('/staff/{id}/profile', [AdminController::class, 'destroy'])->name('staff.profile.destroy');
 

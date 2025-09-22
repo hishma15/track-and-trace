@@ -60,7 +60,7 @@
             </div>
             @endif
 
-            <form action="{{ route('staff.profile.update', $staff->id) }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
+            <form action="{{ route('admin.staff.profile.update', $staff->id) }}" method="POST" class="rounded-b-xl p-6 shadow space-y-4 bg-[#edede1]/45">
                 @csrf
 
                 <div class="p-8 overflow-y-auto max-w-4xl mx-auto">
