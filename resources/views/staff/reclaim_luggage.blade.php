@@ -99,6 +99,7 @@
                         </button>
                     </div>
                 </form>
+                {{-- @include('partials.reclaim_otp') --}}
             </div>
         </div>
     </main>

@@ -1,11 +1,33 @@
-@push('styles')
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Reclaim Luggage - Track & Trace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
-@endpush
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
+    <style>
+        [x-cloak] { display: none !important; }
+        .nav-item.active {
+            background: rgba(139, 69, 19, 0.15);
+            border-right: 3px solid #8B4513;
+        }
+        .form-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    
 
-<div x-data="{ openModal: {{ $errors->any() ? 'true' : 'false' }} }">
+<div>
     <!-- Trigger Button -->
-    <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all" @click="openModal = true">
+    {{-- <div class="action-card rounded-2xl p-6 cursor-pointer bg-white/80 transition-all" @click="openModal = true">
         <div class="flex items-center gap-4">
             <div class="w-20 h-20 bg-orange-100 rounded-xl flex items-center justify-center">
                 <img src="{{ asset('images/otp.png') }}" alt="OTP" class="w-15 h-15">
@@ -14,7 +36,7 @@
                 <span class="text-xl font-semibold text-gray-800">Verify OTP</span>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Modal Background -->
     <div
@@ -77,3 +99,7 @@
         </div>
     </div>
 </div>
+
+
+</body>
+</html>

@@ -91,50 +91,102 @@ Track & Trace Team
     /**
      * Verify OTP and finalize reclaim
      */
-    public function verifyReclaimOtp(Request $request, $reclaimId)
-    {
-        $request->validate(['otp' => 'required|numeric']);
+//     public function verifyReclaimOtp(Request $request, $reclaimId)
+//     {
+//         $request->validate(['otp' => 'required|numeric']);
 
-        $reclaim = LuggageReclaim::findOrFail($reclaimId);
-        $travelerUser = $reclaim->traveler->user;
+//         $reclaim = LuggageReclaim::findOrFail($reclaimId);
+//         $travelerUser = $reclaim->traveler->user;
 
-        if ($reclaim->otp_code == $request->otp && !$reclaim->otp_verified) {
-            // Mark OTP as verified
-            $reclaim->update([
-                'otp_verified' => true,
-                'reclaimed_at' => Carbon::now(),
-            ]);
+//         if ($reclaim->otp_code == $request->otp && !$reclaim->otp_verified) {
+//             // Mark OTP as verified
+//             $reclaim->update([
+//                 'otp_verified' => true,
+//                 'reclaimed_at' => Carbon::now(),
+//             ]);
 
-            // Update luggage status → safe
-            $reclaim->luggage->update(['status' => 'safe']);
+//             // Update luggage status → safe
+//             $reclaim->luggage->update(['status' => 'safe']);
 
-            // Send confirmation mail
-            Mail::raw("
+//             // Send confirmation mail
+//             Mail::raw("
+// Dear {$travelerUser->first_name},
+
+// Your luggage (ID: {$reclaim->luggage->id}) has been successfully reclaimed.
+
+// Collector: {$reclaim->collector_name}  
+// Collector {$reclaim->collector_id_type} : {$reclaim->collector_id_number}  
+// Handled By: {$staffFirstName} {$staffLastName} ({$staffOrganization})
+// Date: {$reclaim->reclaimed_at->format('Y-m-d H:i')}  
+
+// Your luggage status has been updated to Safe ✅
+
+// ⚠️ Track and Trace will not hold any responsibilty about this luggage as it has been successfully reclaimed. 
+
+// Thank you for using Track & Trace.
+// ", function ($message) use ($travelerUser) {
+//                 $message->to($travelerUser->email)
+//                         ->subject('Luggage Successfully Reclaimed');
+//             });
+
+//             return redirect()->route('staff.lost_luggages')
+//                 ->with('success', 'OTP verified. Luggage marked as Safe.');
+//         }
+
+//         return back()->withErrors(['otp' => 'Invalid or already used OTP.']);
+//     }
+
+public function verifyReclaimOtp(Request $request, $reclaimId)
+{
+    $request->validate(['otp' => 'required|numeric']);
+
+    $reclaim = LuggageReclaim::findOrFail($reclaimId);
+    $travelerUser = $reclaim->traveler->user;
+
+    if ($reclaim->otp_code == $request->otp && !$reclaim->otp_verified) {
+        // Mark OTP as verified
+        $reclaim->update([
+            'otp_verified' => true,
+            'reclaimed_at' => Carbon::now(),
+        ]);
+
+        // Update luggage status → safe
+        $reclaim->luggage->update(['status' => 'safe']);
+
+        // ✅ Get staff details
+        $staffUser = Auth::user();
+        $staffFirstName = $staffUser->first_name ?? 'Unknown';
+        $staffLastName = $staffUser->last_name ?? '';
+        $staffOrganization = $staffUser->staff->organization ?? 'N/A';
+
+        // Send confirmation mail
+        Mail::raw("
 Dear {$travelerUser->first_name},
 
 Your luggage (ID: {$reclaim->luggage->id}) has been successfully reclaimed.
 
 Collector: {$reclaim->collector_name}  
-Collector {$reclaim->collector_id_type} : {$reclaim->collector_id_number}  
-Handled By: {$staffFirstName} {$staffLastName} ({$staffOrganization})
+Collector {$reclaim->collector_id_type}: {$reclaim->collector_id_number}  
+Handled By: {$staffFirstName} {$staffLastName} ({$staffOrganization})  
 Date: {$reclaim->reclaimed_at->format('Y-m-d H:i')}  
 
 Your luggage status has been updated to Safe ✅
 
-⚠️ Track and Trace will not hold any responsibilty about this luggage as it has been successfully reclaimed. 
+⚠️ Track & Trace will not be responsible for this luggage going forward.
 
 Thank you for using Track & Trace.
 ", function ($message) use ($travelerUser) {
-                $message->to($travelerUser->email)
-                        ->subject('Luggage Successfully Reclaimed');
-            });
+            $message->to($travelerUser->email)
+                    ->subject('Luggage Successfully Reclaimed');
+        });
 
-            return redirect()->route('staff.lost_luggages')
-                ->with('success', 'OTP verified. Luggage marked as Safe.');
-        }
-
-        return back()->withErrors(['otp' => 'Invalid or already used OTP.']);
+        return redirect()->route('staff.reports')
+        ->with('success', 'OTP verified. Luggage marked as Safe and added to reports.');
     }
+
+    return back()->withErrors(['otp' => 'Invalid or already used OTP.']);
+}
+
 
     /**
      * Resend OTP for an existing reclaim request
