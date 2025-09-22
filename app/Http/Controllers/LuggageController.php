@@ -328,16 +328,13 @@ public function manualLookup($unique_code)
     $qrCode = QRCodeModel::where('unique_code', strtolower(trim($unique_code)))
         ->with(['luggage.traveler.user'])
         ->first();
-
     if (!$qrCode || !$qrCode->luggage) {
         return response()->json([
             'success' => false,
             'message' => 'Luggage not found'
         ]);
     }
-
     $luggage = $qrCode->luggage;
-
     // Prepare luggage data with proper image path
     $luggageData = [
         'id' => $luggage->id,
@@ -353,7 +350,6 @@ public function manualLookup($unique_code)
         'date_found' => $luggage->date_found ? $luggage->date_found->format('Y-m-d H:i:s') : null,
         'image_path' => $luggage->image_path ? asset('storage/' . $luggage->image_path) : null
     ];
-
     // Prepare traveler data
     $travelerData = [
         'first_name' => $luggage->traveler->user->first_name ?? '',
@@ -362,7 +358,6 @@ public function manualLookup($unique_code)
         'phone_no' => $luggage->traveler->user->phone_no ?? '',
         'national_id' => $luggage->traveler->national_id ?? ''
     ];
-
     return response()->json([
         'success' => true,
         'luggage' => [

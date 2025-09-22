@@ -25,13 +25,11 @@ class AdminLoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             if (Auth::user()->role !== 'Admin') {
                 Auth::logout();
                 return back()->withErrors(['login' => 'Unauthorized. You are not an admin.']);
             }
-
             // Generate OTP
             $otp = rand(100000, 999999);
             $user = Auth::user();
@@ -40,21 +38,13 @@ class AdminLoginController extends Controller
                 'otp_expires_at' => Carbon::now()->addMinutes(5),
                 'is_otp_verified' => false,
             ]);
-            
             // Send OTP via Email (or SMS)
             Mail::raw("Your OTP is: $otp", function($message) use ($user) {
                 $message->to($user->email)->subject('Your Admin OTP');
             });
-
-
             // Redirect to OTP verification page
             return redirect()->route('admin.verify-otp')->with('status', 'OTP sent to your email.');
-
-            // $request->session()->regenerate();
-
-            // return redirect()->route('admin.adminDashboard');
         }
-
         return back()->withErrors(['login' => 'Invalid credentials.']);
     }
 

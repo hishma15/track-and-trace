@@ -52,11 +52,6 @@ class StaffController extends Controller
             ]);
         }
 
-        // if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
-        //     $request->session()->regenerate();
-        //     return redirect()->intended(route('staff.staffDashboard'));
-        // }
-
         if (Auth::attempt([$fieldType => $login, 'password' => $password])) {
             $user = Auth::user();
             $staff = $user->staff;

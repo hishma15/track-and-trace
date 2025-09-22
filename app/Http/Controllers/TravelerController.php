@@ -307,18 +307,14 @@ class TravelerController extends Controller
             'otp_expires_at' => Carbon::now()->addMinutes(5),
             'is_otp_verified' => false,
         ]);
-
+        
         // Send OTP via email (or log it)
         Mail::raw("Your new OTP is: $otp", function($message) use ($user) {
             $message->to($user->email)->subject('Your Traveler OTP');
         });
-
         return redirect()->route('traveler.verify-otp')
             ->with('status', 'A new OTP has been sent to your email.');
     }
-
-
-
 
     public function notifications()
 {

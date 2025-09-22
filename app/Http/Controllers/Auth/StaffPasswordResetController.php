@@ -29,9 +29,7 @@ class StaffPasswordResetController extends Controller
         if (!$user || $user->role !== 'Staff') {
             return back()->with('status', 'If that email exists, a reset link has been sent.');
         }
-
         $token = Str::random(64);
-
         // Store plain token (same as Traveler)
         DB::table('password_resets')->updateOrInsert(
             ['email' => $request->email],
@@ -40,13 +38,11 @@ class StaffPasswordResetController extends Controller
                 'created_at' => Carbon::now()
             ]
         );
-
         // Generate URL with token + email
         $url = route('staff.password.reset', [
             'token' => $token,
             'email' => $request->email
         ]);
-
         // Send email
         Mail::send('emails.password-reset', ['url' => $url], function ($message) use ($request) {
             $message->to($request->email);
