@@ -180,7 +180,7 @@ Thank you for using Track & Trace.
                     ->subject('Luggage Successfully Reclaimed');
         });
 
-        return redirect()->route('staff.reports')
+        return redirect()->route('staff.lost_luggages')
         ->with('success', 'OTP verified. Luggage marked as Safe and added to reports.');
     }
 
