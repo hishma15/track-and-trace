@@ -99,11 +99,11 @@
                     About Us
                 </a> -->
 
-                <a href="#"
+                <!-- <a href="#"
                    class="nav-item flex items-center gap-3 p-3 rounded-lg text-gray-700 font-medium {{ $active === 'help' ? 'active' : '' }}">
                     <i class="fas fa-question-circle w-5 h-5"></i>
                     Help & Support
-                </a>
+                </a> -->
 
                 {{-- Logout --}}
                 <form method="POST" action="{{ route('staff.logout') }}">

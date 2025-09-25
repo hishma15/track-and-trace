@@ -73,7 +73,7 @@
                                 <p class="text-lg mb-6 opacity-90">QR Based Lost Luggage management system</p>
                                 
                                 <div class="flex gap-4">
-                                    <a href="#" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
+                                    <a href="{{ route('statistics') }}" class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
                                         Reports
                                     </a>
                                     <!-- Updated button with Alpine.js click handler -->
@@ -82,7 +82,7 @@
                                         class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition"
                                         type="button"
                                     >
-                                        Manage Staff
+                                        Regsiter Staff
                                     </button>
                                 </div>
                             </div>

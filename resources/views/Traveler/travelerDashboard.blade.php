@@ -109,9 +109,12 @@
                                 <p class="text-lg mb-6 opacity-90">QR Based Lost Luggage management system</p>
                                 
                                 <div class="flex gap-4">
-                                    <button class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
-                                        Reports
-                                    </button>
+                                    <a href="{{ route('traveler.lostLuggageReports') }}">
+    <button class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
+        Reports
+    </button>
+</a>
+
                                     <!-- <button class="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg font-medium hover:bg-white/30 transition">
                                         Give Feedback
                                     </button> -->
@@ -213,12 +216,7 @@
 
                         </div>
 
-                        <!-- Quick Report Button -->
-                        <div class="flex justify-center">
-                            <button class="bg-white/80 backdrop-blur-sm px-8 py-3 rounded-lg cursor-pointer font-medium text-[#55372c] hover:bg-white/60 transition shadow-md">
-                                REPORT
-                            </button>
-                        </div>
+                        
 
                         <!-- Action Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

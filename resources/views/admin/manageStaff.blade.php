@@ -57,13 +57,7 @@
 
             <div x-data="registerStaffModal()">
                 <!-- Button to open modal -->
-                <button
-                    @click="openModal = true"
-                    class="bg-[#55372c] backdrop-blur-sm text-white px-6 py-3 w-1/2 m-2 flex justify-center items-center rounded-lg font-medium hover:bg-[#55372c]/90 transition"
-                    type="button"
-                >
-                    Manage Staff
-                </button>
+                
 
                 <!-- Include modal partial inside same scope -->
                 @include('partials.register-staff-modal')

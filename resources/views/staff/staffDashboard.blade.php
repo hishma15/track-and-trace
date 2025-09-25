@@ -116,12 +116,12 @@
 
                         </div>
 
-                        <!-- Quick Report Button -->
+                        <!-- Quick Report Button
                         <div class="flex justify-center">
                             <button class="bg-white/80 backdrop-blur-sm px-8 py-3 rounded-lg cursor-pointer font-medium text-[#55372c] hover:bg-white/60 transition shadow-md">
                                 REPORT
                             </button>
-                        </div>
+                        </div> -->
 
                         <!-- Action Cards -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
